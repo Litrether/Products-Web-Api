@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Contracts;
 using Entities;
-using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
@@ -23,11 +22,11 @@ namespace Repository
                 .Search(productParameters.SearchTerm)
                 .Sort(productParameters.OrderBy)
                 .IncludeFields()
+                .Filter(productParameters)
                 .ToListAsync();
 
             return PagedList<Product>
-                .ToPagedList(products, productParameters.PageNumber,
-                    productParameters.PageSize);
+                .ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
         }
 
         public async Task<Product> GetProductAsync(int productId, bool trackChanges) =>

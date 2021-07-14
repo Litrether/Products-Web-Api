@@ -114,7 +114,7 @@ namespace Products.Extensions
                     {
                         Name = "Victor Naumov",
                         Email = "anakinsanakins@gmail.com",
-                        Url = new Uri("https://twitter.com/johndoe"),
+                        Url = new Uri("https://vk.com/id267204544"),
                     }
                 });
                 s.SwaggerDoc("v2", new OpenApiInfo

@@ -16,5 +16,9 @@ namespace Entities.RequestFeatures
         public string Fields { get; set; }
         
         public string Currency { get; set; }
+
+        public string Categories { get; set; }
+
+        public string Providers { get; set; }
     }
 }

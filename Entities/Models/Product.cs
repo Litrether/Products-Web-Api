@@ -19,5 +19,10 @@ namespace Entities.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public Product Select(object p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

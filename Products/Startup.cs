@@ -1,5 +1,6 @@
 using System.IO;
 using Contracts;
+using CurrencyConverter.ExchangeRatesAbstractAPI;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,6 +44,8 @@ namespace Products
 
             services.AddScoped<IAutenticationManager, AuthenticationManager>();
             services.AddScoped<ICurrencyConverterManager, CurrencyConverterManager>();
+
+            services.AddScoped<ICurrencyDeserializer, CurrencyDeserializerERA>();
 
             services.AddAuthentication();
             services.AddAuthorization();

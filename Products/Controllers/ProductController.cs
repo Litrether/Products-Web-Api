@@ -42,7 +42,7 @@ namespace Products.Controllers
 
             var changedProduct = _currencyConverter.ChangeCurrency(products, productParameters.Currency);
 
-            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(products);
+            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(changedProduct);
 
             return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
         }
@@ -55,7 +55,7 @@ namespace Products.Controllers
             
             var changedProduct = _currencyConverter.ChangeCurrency(productEntity, productParameters.Currency);
 
-            var productDto = _mapper.Map<ProductDto>(productEntity);
+            var productDto = _mapper.Map<ProductDto>(changedProduct);
 
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));
         }
@@ -75,7 +75,7 @@ namespace Products.Controllers
 
             //todo Repair rerouting to GetProduct
             return CreatedAtRoute("GetProduct",
-                new { id = productToReturn.Id });
+                new { id = productToReturn.Id }, productToReturn);
         }
 
         [HttpPut("{id}", Name = "UpdateProduct")]

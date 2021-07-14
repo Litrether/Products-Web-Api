@@ -13,76 +13,63 @@ namespace Products.Managers
     {
         private readonly ILoggerManager _logger;
         private readonly IConfiguration _configuration;
+        private readonly ICurrencyDeserializer _currencyDeserializer;
 
         public CurrencyConverterManager(ILoggerManager logger,
-            IConfiguration configuration)
+            IConfiguration configuration, ICurrencyDeserializer currencyDeserializer)
         {
             _logger = logger;
             _configuration = configuration;
+            _currencyDeserializer = currencyDeserializer;
         }
-
 
         public IEnumerable<Product> ChangeCurrency(IEnumerable<Product> products, string currencyName)
         {
-            if (currencyName == null)
+            if (string.IsNullOrWhiteSpace(currencyName))
                 return products;
 
-            var url = string.Concat(_configuration.GetSection("CurrencyWebApi").Value, currencyName);
+            var exchangeRate = GetJsonResponse(currencyName);
+            var resultProducts = ConvertCurrency(products, exchangeRate);
 
-            var exchangeRate = GetExchangeRate(url, currencyName);
-            if (exchangeRate == 1)
-                return products;
-
-            var changedProductsDto = ConvertCurrency(products, exchangeRate);
-
-            return changedProductsDto;
+            return resultProducts;
         }
 
         public Product ChangeCurrency(Product product, string currencyName)
         {
-            if (currencyName == null)
+            if (string.IsNullOrWhiteSpace(currencyName))
                 return product;
 
-            var url = string.Concat(_configuration.GetSection("CurrencyWebApi").Value, currencyName);
+            var exchangeRate = GetJsonResponse(currencyName);
+            var resultProduct = ConvertCurrencyForEntities(product, exchangeRate);
 
-            var exchangeRate = GetExchangeRate(url, currencyName);
-            if (exchangeRate == 1)
-                return product;
-
-            var changedProductDto = ConvertCurrencyForEntities(product, exchangeRate);
-
-            return changedProductDto;
+            return resultProduct;
         }
 
-        private decimal GetExchangeRate(string url, string currencyName)
+        private decimal GetJsonResponse(string currencyName)
         {
-            string jsonResponse;
+            var url = _configuration.GetSection("CurrencyWebApi").Value;
+
+            string jsonResponse = null;
             try
             {
                 jsonResponse = new WebClient().DownloadString(url);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError($"{ex.Message}");
-                return 1;
+                _logger.LogError("Server doesn't have connection to the outside Currency Web Api.");
             }
 
-            var response = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(jsonResponse);
+            decimal exchangeRate = 1;
+            try
+            {
+                exchangeRate = _currencyDeserializer.Deserialize(jsonResponse, currencyName);
+            }
+            catch
+            {
+                _logger.LogError($"Currency \"{currencyName}\" doesn't exists in the outside Currency Web Api.");
+            }
 
-            //var dynamicExchangeRate = new JavaScriptSerializer().Deserialize<dynamic>(jsonExchangeRate);
-
-            //var result = (decimal)dynamicExchangeRate["exchange_rates"][currencyName.ToUpper()];
-
-            //if (result == 0) {
-            //    _logger.LogError($"Currency doesn't exists in the Web Api. Url: {url}");
-            //    return 1;
-            //}
-
-            var result = decimal.Parse(response["exchange_rates"][currencyName.ToUpper()]);
-
-            _logger.LogInfo(result.ToString());
-
-            return result;
+            return exchangeRate;
         }
 
         private IEnumerable<Product> ConvertCurrency(IEnumerable<Product> products,
