@@ -20,5 +20,10 @@ namespace Entities.RequestFeatures
         public string Categories { get; set; }
 
         public string Providers { get; set; }
+
+        public decimal MinCost { get; set; }
+
+        //todo dodelat'
+        public decimal MaxCost { get; set; } = decimal.MaxValue;
     }
 }

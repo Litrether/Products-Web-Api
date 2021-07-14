@@ -14,7 +14,6 @@ namespace Entities.DataTransferObjects
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Product name is a required field.")]
-        [Range(0, 100000, ErrorMessage = "Range cost from 0$ to 100000$.")]
         public decimal Cost { get; set; }
 
         [Required(ErrorMessage = "Provider id name is a required field.")]

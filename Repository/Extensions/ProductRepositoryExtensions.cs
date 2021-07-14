@@ -44,6 +44,8 @@ namespace Repository.Extensions
                     products = products.Where(p => splitProvidersString.Contains(p.Provider.Name));
             }
 
+            
+
             return products;
         }
 

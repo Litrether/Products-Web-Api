@@ -77,7 +77,7 @@ namespace Products.Extensions
             IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            var secretKey = configuration.GetSection("SECRET").Value;
 
             services.AddAuthentication(options =>
             {
@@ -114,7 +114,7 @@ namespace Products.Extensions
                     {
                         Name = "Victor Naumov",
                         Email = "anakinsanakins@gmail.com",
-                        Url = new Uri("https://vk.com/id267204544"),
+                        Url = new Uri("https://twitter.com/johndoe"),
                     }
                 });
                 s.SwaggerDoc("v2", new OpenApiInfo

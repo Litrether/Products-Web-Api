@@ -9,7 +9,7 @@ namespace Products
         {
             CreateHostBuilder(args).Build().Run();
         }
-        //todo add service currencyconverter to project;
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

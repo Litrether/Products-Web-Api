@@ -11,7 +11,7 @@ using Products.ActionFilters;
 
 namespace Products.Controllers
 {
-    //todo add for methods and controller role access
+    //todo Add for methods and controller role access
     [ApiVersion("1.0")]
     [Route("api/products")]
     [ApiController]

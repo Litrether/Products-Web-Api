@@ -19,7 +19,7 @@ namespace Products
     {
         public Startup(IConfiguration configuration)
         {
-            LogManager.LoadConfiguration($"{Directory.GetCurrentDirectory()}/nlog.config");
+            LogManager.LoadConfiguration($"{Directory.GetCurrentDirectory()}/Properties/nlog.config");
             Configuration = configuration;
         }
 
@@ -45,7 +45,7 @@ namespace Products
             services.AddScoped<IAutenticationManager, AuthenticationManager>();
             services.AddScoped<ICurrencyConverterManager, CurrencyConverterManager>();
 
-            services.AddScoped<ICurrencyDeserializer, CurrencyDeserializerERA>();
+            services.AddScoped<ICurrencyConnection, CurrencyConnectionERA>();
 
             services.AddAuthentication();
             services.AddAuthorization();
