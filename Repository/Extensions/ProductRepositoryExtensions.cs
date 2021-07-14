@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using Entities.Models;
 using Entities.RequestFeatures;
@@ -46,8 +47,6 @@ namespace Repository.Extensions
                     products = products.Where(p => splitProvidersString.Contains(p.Provider.Name));
             }
 
-            products = products.Where(p => (minCost <= p.Cost && p.Cost <= maxCost));
-
             return products;
         }
 
@@ -68,5 +67,14 @@ namespace Repository.Extensions
         public static IQueryable<Product> IncludeFields(this IQueryable<Product> products) =>
             products.Include(p => p.Category)
                     .Include(p => p.Provider);
+
+        public static IQueryable<Product> CurrencyChange(this IQueryable<Product> products, decimal exchangeRate) {
+            //todo Finish create Currency Change to produxtRepo extensions 
+            if (exchangeRate != 0)
+                foreach (var p in products)
+                    p.Cost *= exchangeRate;
+
+            return products;
+        }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
@@ -17,35 +19,34 @@ namespace Products.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+        private readonly ICurrencyConnection _currencyConnection;
+        private readonly IDataShaper<ProductDto> _dataShaper;
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private readonly IDataShaper<ProductDto> _dataShaper;
-        private readonly ICurrencyConverterManager _currencyConverter;
 
         public ProductController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper,
-             IDataShaper<ProductDto> dataShaper, ICurrencyConverterManager currencyConverter)
+             IDataShaper<ProductDto> dataShaper, ICurrencyConnection currencyConnection)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _dataShaper = dataShaper;
-            _currencyConverter = currencyConverter;
+            _currencyConnection = currencyConnection;
         }
 
         [HttpGet(Name = "GetProducts")]
         public async Task<IActionResult> GetProducts(
             [FromQuery] ProductParameters productParameters)
         {
-            if (productParameters.ValidCostRange == false)
-                return BadRequest("Invalid cost range. Max cost can't be less then min cost");
+            if (productParameters.MaxCost < productParameters.MinCost)
+                return BadRequest("Invalid cost range.");
 
-            var products = await _repository.Product.GetAllProductsAsync(
-                productParameters, trackChanges: false);
+            var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
-            var changedProduct = _currencyConverter.ChangeCurrency(products, productParameters.Currency);
+            var products = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
 
-            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(changedProduct);
+            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(products);
 
             return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
         }
@@ -54,16 +55,18 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public IActionResult GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {
+            if (productParameters.MaxCost < productParameters.MinCost)
+                return BadRequest("Invalid cost range.");
+
             var productEntity = HttpContext.Items["product"] as Product;
             
-            var changedProduct = _currencyConverter.ChangeCurrency(productEntity, productParameters.Currency);
-
-            var productDto = _mapper.Map<ProductDto>(changedProduct);
+            var productDto = _mapper.Map<ProductDto>(productEntity);
 
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));
         }
 
         [HttpPost(Name = "CreateProduct")]
+        [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
         public async Task<IActionResult> CreateProduct(
@@ -76,9 +79,8 @@ namespace Products.Controllers
 
             var productToReturn = _mapper.Map<ProductDto>(productEntity);
 
-            //todo Repair rerouting to GetProduct
-            return CreatedAtRoute("GetProduct",
-                new { id = productToReturn.Id }, productToReturn);
+            return RedirectToRoute("GetProduct",
+                new { id = productToReturn.Id });
         }
 
         [HttpPut("{id}", Name = "UpdateProduct")]

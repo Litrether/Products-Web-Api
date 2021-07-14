@@ -103,6 +103,7 @@ namespace Products.Extensions
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
+            //todo configure swagger that it work
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new OpenApiInfo
@@ -127,30 +128,36 @@ namespace Products.Extensions
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 s.IncludeXmlComments(xmlPath);
 
-                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                var securityScheme = new OpenApiSecurityScheme
                 {
-                    In = ParameterLocation.Header,
-                    Description = "Place to add JWT with Bearer",
                     Name = "Autorization",
-                    Type = SecuritySchemeType.ApiKey,
+                    Description = "Place to add JWT with Bearer",
+                    Type = SecuritySchemeType.Http,
+                    In = ParameterLocation.Header,
+                    BearerFormat = "JWT",
                     Scheme = "Bearer"
-                });
+                };
+                s.AddSecurityDefinition("Bearer", securityScheme);
 
-                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Name = "Bearer",
-                        },
-                        new List<string>() 
-                    }
-                });
+                var securityRequirement = new OpenApiSecurityRequirement();
+                securityRequirement.Add(securityScheme, new string[] { });
+                s.AddSecurityRequirement(securityRequirement);
+
+                //s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                //{
+                //    {
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference
+                //            {
+                //                Type = ReferenceType.SecurityScheme,
+                //                Id = "Bearer"
+                //            },
+                //            Name = "Bearer",
+                //        },
+                //        new List<string>() 
+                //    }
+                //});
             });
         }
 

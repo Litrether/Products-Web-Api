@@ -9,6 +9,9 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
     {
         public decimal GetExchangeRate(string currencyName)
         {
+            if (string.IsNullOrWhiteSpace(currencyName))
+                return 0;
+
             var url = @"https://exchange-rates.abstractapi.com/v1/live/?api_key=f775232ebe7c4e3793a4fe6b73f4295f&base=USD";
 
             var jsonResponse = new WebClient().DownloadString(url);
