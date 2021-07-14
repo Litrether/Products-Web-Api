@@ -37,6 +37,9 @@ namespace Products.Controllers
         public async Task<IActionResult> GetProducts(
             [FromQuery] ProductParameters productParameters)
         {
+            if (productParameters.ValidCostRange == false)
+                return BadRequest("Invalid cost range. Max cost can't be less then min cost");
+
             var products = await _repository.Product.GetAllProductsAsync(
                 productParameters, trackChanges: false);
 

@@ -23,7 +23,6 @@ namespace Entities.RequestFeatures
 
         public decimal MinCost { get; set; }
 
-        //todo dodelat'
         public decimal MaxCost { get; set; } = decimal.MaxValue;
     }
 }

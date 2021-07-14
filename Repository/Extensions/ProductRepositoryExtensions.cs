@@ -29,6 +29,8 @@ namespace Repository.Extensions
         {
             var filterByCategoriesString = productParameters.Categories;
             var filterByProvidersString = productParameters.Providers;
+            var minCost = productParameters.MinCost;
+            var maxCost = productParameters.MaxCost;
 
             if (string.IsNullOrWhiteSpace(filterByCategoriesString) == false)
             {
@@ -44,7 +46,7 @@ namespace Repository.Extensions
                     products = products.Where(p => splitProvidersString.Contains(p.Provider.Name));
             }
 
-            
+            products = products.Where(p => (minCost <= p.Cost && p.Cost <= maxCost));
 
             return products;
         }

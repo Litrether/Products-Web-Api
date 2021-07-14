@@ -15,7 +15,7 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
 
             var deserializedResponse = JsonSerializer.Deserialize<CurrencyERA>(jsonResponse); 
 
-            var result = (decimal)deserializedResponse.ExchangeRates[currencyName.ToUpper()];
+            var result = deserializedResponse.ExchangeRates[currencyName.ToUpper()];
                 
             return result;
         }
