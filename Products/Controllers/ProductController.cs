@@ -17,7 +17,8 @@ namespace Products.Controllers
     //todo Add for methods and controller role access
     [Route("api/products")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
+    [ResponseCache(CacheProfileName = "180SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class ProductController : ControllerBase
     {

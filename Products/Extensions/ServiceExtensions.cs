@@ -4,9 +4,11 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Contracts;
+using CurrencyConverter.ExchangeRatesAbstractAPI;
 using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -183,5 +185,20 @@ namespace Products.Extensions
 
         public static void ConfigureAutoMapper(this IServiceCollection services) =>
             services.AddAutoMapper(typeof(Startup));
+
+        public static void ConfigureResponseCaching(this IServiceCollection services) =>
+            services.AddResponseCaching();
+
+        public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
+            services.AddHttpCacheHeaders(
+                (expirationOpt) =>
+                {
+                    expirationOpt.MaxAge = 65;
+                    expirationOpt.CacheLocation = CacheLocation.Private;
+                },
+                (validationOpt) =>
+                {
+                    validationOpt.MustRevalidate = true;
+                });
     }
 }

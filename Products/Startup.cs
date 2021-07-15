@@ -47,10 +47,13 @@ namespace Products
             services.ConfigureValidationAttributes();
             services.ConfigureDataShaper();
             services.ConfigureAutoMapper();
+            services.ConfigureResponseCaching();
+            services.ConfigureHttpCacheHeaders();
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
+                config.CacheProfiles.Add("180SecondsDuration", new CacheProfile { Duration = 180 });
             }).AddNewtonsoftJson()
               .AddXmlDataContractSerializerFormatters();
         }
@@ -70,6 +73,10 @@ namespace Products
             {
                 ForwardedHeaders = ForwardedHeaders.All
             });
+
+            //todo add using ETag and Validation
+            app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
 
             app.UseRouting();
 

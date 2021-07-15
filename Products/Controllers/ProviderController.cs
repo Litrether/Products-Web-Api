@@ -13,6 +13,7 @@ namespace Products.Controllers
 {
     [Route("api/providers")]
     [ApiController]
+    [ResponseCache(CacheProfileName = "180SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class ProviderController : ControllerBase
     {

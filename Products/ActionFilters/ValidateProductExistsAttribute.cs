@@ -27,12 +27,14 @@ namespace Products.ActionFilters
 
             var trackChanges =
                 (method.Equals("PUT") || method.Equals("PATCH")) ? true : false;
-
             var id = (int)context.ActionArguments["id"];
 
-            var currencyName = (context.ActionArguments["productParameters"] as ProductParameters).Currency;
-
-            var exchangeRate = _currencyConnection.GetExchangeRate(currencyName);
+            decimal exchangeRate = 1;
+            if (context.ActionArguments.ContainsKey("productParameters"))
+            {
+                var currencyName = (context.ActionArguments["productParameters"] as ProductParameters).Currency;
+                exchangeRate = _currencyConnection.GetExchangeRate(currencyName);
+            }
 
             var product = await _repository.Product.GetProductAsync(id, trackChanges, exchangeRate);
             if (product == null)

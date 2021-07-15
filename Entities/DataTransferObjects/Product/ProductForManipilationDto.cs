@@ -22,11 +22,5 @@ namespace Entities.DataTransferObjects
         [Required(ErrorMessage = "Category id is a required field.")]
         public int CategoryId { get; set; }
 
-        [JsonIgnore]
-        public Provider Provider { get; set; }
-
-        [JsonIgnore]
-        public Category Category { get; set; }
-
     }
 }

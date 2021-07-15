@@ -12,6 +12,7 @@ namespace Products.Controllers
 {
     [Route("api/categories")]
     [ApiController]
+    [ResponseCache(CacheProfileName = "180SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class CategoryController : ControllerBase
     {
@@ -28,6 +29,7 @@ namespace Products.Controllers
         }
 
         [HttpGet(Name = "GetCategories")]
+        [ResponseCache(Duration = 120)]
         public async Task<IActionResult> GetCategories(
             [FromQuery] CategoryParameters categoryParameters)
         {
