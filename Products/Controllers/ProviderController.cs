@@ -11,9 +11,9 @@ using Products.ActionFilters;
 
 namespace Products.Controllers
 {
-    [ApiVersion("1.0")]
     [Route("api/providers")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class ProviderController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

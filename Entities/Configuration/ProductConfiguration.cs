@@ -14,7 +14,7 @@ namespace Entities.Configuration
                 {
                     Id = 1,
                     Name = "Mi Keyboard",
-                    Description = "",
+                    Description = "Best of the best keyboard in the world!",
                     Cost = 49.99m,
                     CategoryId = 2,
                     ProviderId = 2,

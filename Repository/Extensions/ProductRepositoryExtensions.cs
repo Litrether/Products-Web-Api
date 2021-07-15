@@ -25,13 +25,11 @@ namespace Repository.Extensions
                 c.Provider.Name.ToLower().Contains(lowerCaseTerm));
         }
 
-        public static IQueryable<Product> Filter(this IQueryable<Product> products,
+        public static IQueryable<Product> FilterByProperties(this IQueryable<Product> products,
             ProductParameters productParameters)
         {
             var filterByCategoriesString = productParameters.Categories;
             var filterByProvidersString = productParameters.Providers;
-            var minCost = productParameters.MinCost;
-            var maxCost = productParameters.MaxCost;
 
             if (string.IsNullOrWhiteSpace(filterByCategoriesString) == false)
             {
@@ -68,13 +66,26 @@ namespace Repository.Extensions
             products.Include(p => p.Category)
                     .Include(p => p.Provider);
 
-        public static IQueryable<Product> CurrencyChange(this IQueryable<Product> products, decimal exchangeRate) {
-            //todo Finish create Currency Change to produxtRepo extensions 
-            if (exchangeRate != 0)
-                foreach (var p in products)
-                    p.Cost *= exchangeRate;
+        public static IEnumerable<Product> FilterByCurrency(this IEnumerable<Product> products,
+            ProductParameters productParameters) =>
+            products.Where(p => productParameters.MinCost <= p.Cost && p.Cost <= productParameters.MaxCost);
+
+        public static IEnumerable<Product> ConvertCurrency(this IEnumerable<Product> products,
+            decimal exchangeRate)
+        {
+            if(exchangeRate != 0)
+                 products.AsParallel().ForAll(p => ConvertCurrencyForEntities(p, exchangeRate));
 
             return products;
         }
+
+        public static Product ConvertCurrencyForEntities(this Product products, decimal exchangeRate)
+        {
+            if(exchangeRate != 0)
+                products.Cost *= exchangeRate;
+
+            return products;
+        }
+
     }
 }

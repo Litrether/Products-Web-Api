@@ -20,22 +20,29 @@ namespace Repository
             ProductParameters productParameters, bool trackChanges, decimal exchangeRate)
         {
             var products = await FindAll(trackChanges)
-                .CurrencyChange(exchangeRate)
                 .Search(productParameters.SearchTerm)
-                .Filter(productParameters)
+                .FilterByProperties(productParameters)
                 .IncludeFields()
                 .Sort(productParameters.OrderBy)
                 .ToListAsync();
 
+            products.ConvertCurrency(exchangeRate);
+            var filteredProducts = products.FilterByCurrency(productParameters);
+
             return PagedList<Product>
-                .ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
+                .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
 
-        public async Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate) =>
-            await FindByCondition(c => c.Id.Equals(productId), trackChanges)
+        public async Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate)
+        {
+            var product = await FindByCondition(c => c.Id.Equals(productId), trackChanges)
                 .IncludeFields()
-                .CurrencyChange(exchangeRate)
                 .SingleOrDefaultAsync();
+
+            product.ConvertCurrencyForEntities(exchangeRate);
+
+            return product;
+        }
 
         public void CreateProduct(Product product) =>
             Create(product);

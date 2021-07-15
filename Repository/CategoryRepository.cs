@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models;
@@ -15,7 +14,7 @@ namespace Repository
             : base(repositoryContext)
         {
         }
-    
+
         public async Task<PagedList<Category>> GetAllCategoriesAsync(
             CategoryParameters categoryParameters, bool trackChanges)
         {
@@ -24,7 +23,7 @@ namespace Repository
                 .Sort(categoryParameters.OrderBy)
                 .ToListAsync();
 
-                return PagedList<Category>
+            return PagedList<Category>
                 .ToPagedList(categories, categoryParameters.PageNumber,
                     categoryParameters.PageSize);
         }

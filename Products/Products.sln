@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "..\Contracts\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "..\Repository\Repository.csproj", "{C9FC4E8F-6193-48B3-998A-A53652679135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyConverter", "..\CurrencyConverter\CurrencyConverter.csproj", "{2CBBFD35-BC52-4493-AFE7-FBF5FC97E2CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyApiConnections", "..\CurrencyConverter\CurrencyApiConnections.csproj", "{2CBBFD35-BC52-4493-AFE7-FBF5FC97E2CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

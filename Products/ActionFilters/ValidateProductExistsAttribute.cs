@@ -10,10 +10,10 @@ namespace Products.ActionFilters
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
-        private readonly ICurrencyConnection _currencyConnection;
+        private readonly ICurrencyApiConnection _currencyConnection;
 
         public ValidateProductExistsAttribute(IRepositoryManager repository,
-            ILoggerManager logger, ICurrencyConnection currencyConnection)
+            ILoggerManager logger, ICurrencyApiConnection currencyConnection)
         {
             _repository = repository;
             _logger = logger;

@@ -10,9 +10,9 @@ using Products.ActionFilters;
 
 namespace Products.Controllers
 {
-    [ApiVersion("1.0")]
     [Route("api/categories")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class CategoryController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

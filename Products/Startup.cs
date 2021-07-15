@@ -43,9 +43,8 @@ namespace Products
             services.ConfigureDataShaper();
 
             services.AddScoped<IAutenticationManager, AuthenticationManager>();
-            services.AddScoped<ICurrencyConverterManager, CurrencyConverterManager>();
 
-            services.AddScoped<ICurrencyConnection, CurrencyConnectionERA>();
+            services.AddScoped<ICurrencyApiConnection, CurrencyApiConnectionERA>();
 
             services.AddAuthentication();
             services.AddAuthorization();
@@ -93,7 +92,6 @@ namespace Products
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Products API v1");
                 s.SwaggerEndpoint("/swagger/v2/swagger.json", "Products API v2");
             });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

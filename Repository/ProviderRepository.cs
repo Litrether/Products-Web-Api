@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models;
@@ -33,7 +31,7 @@ namespace Repository
         public async Task<Provider> GetProviderAsync(int providerId, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(providerId), trackChanges)
             .SingleOrDefaultAsync();
-        
+
         public void CreateProvider(Provider provider) =>
             Create(provider);
 

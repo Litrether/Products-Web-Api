@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Entities.RequestFeatures
@@ -14,7 +15,8 @@ namespace Entities.RequestFeatures
         public string SearchTerm { get; set; }
 
         public string Fields { get; set; }
-        
+
+        [DefaultValue("USD")]
         public string Currency { get; set; }
 
         public string Categories { get; set; }

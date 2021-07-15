@@ -7,6 +7,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
@@ -14,19 +15,20 @@ using Products.ActionFilters;
 namespace Products.Controllers
 {
     //todo Add for methods and controller role access
-    [ApiVersion("1.0")]
     [Route("api/products")]
     [ApiController]
+    [Authorize]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class ProductController : ControllerBase
     {
-        private readonly ICurrencyConnection _currencyConnection;
+        private readonly ICurrencyApiConnection _currencyConnection;
         private readonly IDataShaper<ProductDto> _dataShaper;
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
         public ProductController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper,
-             IDataShaper<ProductDto> dataShaper, ICurrencyConnection currencyConnection)
+             IDataShaper<ProductDto> dataShaper, ICurrencyApiConnection currencyConnection)
         {
             _repository = repository;
             _logger = logger;
@@ -53,6 +55,7 @@ namespace Products.Controllers
 
         [HttpGet("{id}", Name = "GetProduct")]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
+
         public IActionResult GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {
             if (productParameters.MaxCost < productParameters.MinCost)
@@ -66,7 +69,6 @@ namespace Products.Controllers
         }
 
         [HttpPost(Name = "CreateProduct")]
-        [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
         public async Task<IActionResult> CreateProduct(

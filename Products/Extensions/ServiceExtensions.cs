@@ -101,63 +101,51 @@ namespace Products.Extensions
             });
         }
 
+
         public static void ConfigureSwagger(this IServiceCollection services)
         {
-            //todo configure swagger that it work
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Products API",
+                    Title = "Products API v1",
                     Version = "v1",
                     Description = "Products Web API",
                     Contact = new OpenApiContact
                     {
                         Name = "Victor Naumov",
                         Email = "anakinsanakins@gmail.com",
-                        Url = new Uri("https://twitter.com/johndoe"),
+                        Url = new Uri("https://vk.com/267204544"),
                     }
                 });
                 s.SwaggerDoc("v2", new OpenApiInfo
                 {
-                    Title = "Products API",
+                    Title = "Products API v2",
                     Version = "v2"
                 });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                s.IncludeXmlComments(xmlPath);
-
-                var securityScheme = new OpenApiSecurityScheme
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Name = "Autorization",
-                    Description = "Place to add JWT with Bearer",
-                    Type = SecuritySchemeType.Http,
                     In = ParameterLocation.Header,
-                    BearerFormat = "JWT",
+                    Description = "Place to add JWT with Bearer",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
-                };
-                s.AddSecurityDefinition("Bearer", securityScheme);
-
-                var securityRequirement = new OpenApiSecurityRequirement();
-                securityRequirement.Add(securityScheme, new string[] { });
-                s.AddSecurityRequirement(securityRequirement);
-
-                //s.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                //{
-                //    {
-                //        new OpenApiSecurityScheme
-                //        {
-                //            Reference = new OpenApiReference
-                //            {
-                //                Type = ReferenceType.SecurityScheme,
-                //                Id = "Bearer"
-                //            },
-                //            Name = "Bearer",
-                //        },
-                //        new List<string>() 
-                //    }
-                //});
+                });
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Name = "Bearer",
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
