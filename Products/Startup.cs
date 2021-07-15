@@ -1,6 +1,5 @@
 using System.IO;
 using Contracts;
-using CurrencyConverter.ExchangeRatesAbstractAPI;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using Products.Extensions;
-using Products.Managers;
 
 namespace Products
 {
@@ -27,39 +25,34 @@ namespace Products
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //todo Add caching
+            //todo good validation
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerServices();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.ConfigureCurrencyApiConnection();
             services.ConfigureSwagger();
             services.ConfigureVersioning();
+            services.ConfigureAuthenticationManager();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+            services.AddAuthentication();
+            services.AddAuthorization();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-
             services.ConfigureValidationAttributes();
             services.ConfigureDataShaper();
-
-            services.AddScoped<IAutenticationManager, AuthenticationManager>();
-
-            services.AddScoped<ICurrencyApiConnection, CurrencyApiConnectionERA>();
-
-            services.AddAuthentication();
-            services.AddAuthorization();
-
-            services.ConfigureIdentity();
-            services.ConfigureJWT(Configuration);
-
-            services.AddAutoMapper(typeof(Startup));
-
+            services.ConfigureAutoMapper();
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             }).AddNewtonsoftJson()
-                .AddXmlDataContractSerializerFormatters();
+              .AddXmlDataContractSerializerFormatters();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
@@ -71,11 +64,8 @@ namespace Products
             }
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
-
             app.UseCors("CorsPolicy");
-
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.All
@@ -92,6 +82,7 @@ namespace Products
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Products API v1");
                 s.SwaggerEndpoint("/swagger/v2/swagger.json", "Products API v2");
             });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

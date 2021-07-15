@@ -33,7 +33,9 @@ namespace Products.ActionFilters
             {
                 _logger.LogError($"Invalid model state for the object. Controller: { controller}, action: { action} ");
                 context.Result = new UnprocessableEntityObjectResult(context.ModelState);
+                return;
             }
+
 
             await next();
         }

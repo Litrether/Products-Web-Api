@@ -7,10 +7,10 @@ namespace Entities.DataTransferObjects
     public class ProductForManipilationDto
     {
         [Required(ErrorMessage = "Product name is a required field.")]
-        [MaxLength(30, ErrorMessage = "Maximum length for the name is 30 characters.")]
+        [MaxLength(75, ErrorMessage = "Maximum length for the name is 75 characters.")]
         public string Name { get; set; }
 
-        [MaxLength(150, ErrorMessage = "Maximum length for the description is 150 characters.")]
+        [MaxLength(300, ErrorMessage = "Maximum length for the description is 300 characters.")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Product name is a required field.")]

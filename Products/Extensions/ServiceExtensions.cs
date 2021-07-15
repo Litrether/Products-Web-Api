@@ -45,6 +45,12 @@ namespace Products.Extensions
         public static void ConfigureLoggerServices(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
 
+        public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
+            services.AddScoped<IAutenticationManager, AuthenticationManager>();
+        
+        public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
+            services.AddScoped<ICurrencyApiConnection, CurrencyApiConnectionERA>();
+
         public static void ConfigureSqlContext(this IServiceCollection services,
            IConfiguration configuration) =>
            services.AddDbContext<RepositoryContext>(options =>
@@ -100,7 +106,6 @@ namespace Products.Extensions
                 };
             });
         }
-
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
@@ -175,5 +180,8 @@ namespace Products.Extensions
             services.AddScoped<IDataShaper<ProviderDto>, DataShaper<ProviderDto>>();
             services.AddScoped<IDataShaper<CategoryDto>, DataShaper<CategoryDto>>();
         }
+
+        public static void ConfigureAutoMapper(this IServiceCollection services) =>
+            services.AddAutoMapper(typeof(Startup));
     }
 }
