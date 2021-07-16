@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using Contracts;
 using System.Net;
-using System.Reflection;
 using System.Text.Json;
-using Contracts;
 
 namespace CurrencyConverter.ExchangeRatesAbstractAPI
 {
@@ -20,7 +17,7 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
 
             if (deserializedResponse.ExchangeRates.ContainsKey(currencyName.ToUpper()))
                 return deserializedResponse.ExchangeRates[currencyName.ToUpper()];
-                
+
             return 0;
         }
     }

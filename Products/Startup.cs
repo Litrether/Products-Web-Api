@@ -1,4 +1,3 @@
-using System.IO;
 using Contracts;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using Products.Extensions;
+using System.IO;
 
 namespace Products
 {

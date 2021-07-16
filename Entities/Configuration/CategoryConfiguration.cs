@@ -29,7 +29,7 @@ namespace Entities.Configuration
                 {
                     Id = 4,
                     Name = "Car"
-                } 
+                }
             );
         }
     }

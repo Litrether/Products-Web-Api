@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -25,7 +25,7 @@ namespace Products.Controllers
         {
             _repository = repository;
             _logger = logger;
-            _mapper = mapper; 
+            _mapper = mapper;
         }
 
         [HttpGet(Name = "GetCategories")]
@@ -57,12 +57,12 @@ namespace Products.Controllers
             [FromBody] CategoryForManipulationDto category)
         {
             var categoryEntity = _mapper.Map<Category>(category);
-            
+
             _repository.Category.CreateCategory(categoryEntity);
             await _repository.SaveAsync();
 
             var categoryToReturn = _mapper.Map<CategoryDto>(categoryEntity);
-            
+
             return CreatedAtRoute("GetCategory",
                 new { id = categoryToReturn.Id }, categoryToReturn);
         }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using Contracts;
+﻿using Contracts;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Repository
 {
@@ -21,7 +21,7 @@ namespace Repository
             trackChanges ?
             RepositoryContext.Set<T>() :
             RepositoryContext.Set<T>()
-              .AsNoTracking(); 
+              .AsNoTracking();
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression,
             bool trackChanges) =>

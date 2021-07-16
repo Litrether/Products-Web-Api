@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Entities.Models
+﻿namespace Entities.Models
 {
     public class Product
     {
@@ -11,9 +7,9 @@ namespace Entities.Models
         public string Name { get; set; }
 
         public string Description { get; set; }
-        
+
         public decimal Cost { get; set; }
-    
+
         public int ProviderId { get; set; }
         public Provider Provider { get; set; }
 

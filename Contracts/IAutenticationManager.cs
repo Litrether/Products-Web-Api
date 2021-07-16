@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Entities.DataTransferObjects;
+﻿using Entities.DataTransferObjects;
+using System.Threading.Tasks;
 
 namespace Contracts
 {

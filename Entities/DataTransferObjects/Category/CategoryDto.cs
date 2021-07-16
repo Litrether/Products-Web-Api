@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace Entities.DataTransferObjects
+﻿namespace Entities.DataTransferObjects
 {
     public class CategoryDto
     {
         public int Id { get; set; }
-        
+
         public string Name { get; set; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using Entities.Models;
+﻿using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions.Utility;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace Repository.Extensions
 {
@@ -73,15 +73,15 @@ namespace Repository.Extensions
         public static IEnumerable<Product> ConvertCurrency(this IEnumerable<Product> products,
             decimal exchangeRate)
         {
-            if(exchangeRate != 0)
-                 products.AsParallel().ForAll(p => ConvertCurrencyForEntities(p, exchangeRate));
+            if (exchangeRate != 0)
+                products.AsParallel().ForAll(p => ConvertCurrencyForEntities(p, exchangeRate));
 
             return products;
         }
 
         public static Product ConvertCurrencyForEntities(this Product products, decimal exchangeRate)
         {
-            if(exchangeRate != 0)
+            if (exchangeRate != 0)
                 products.Cost *= exchangeRate;
 
             return products;

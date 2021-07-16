@@ -9,7 +9,7 @@ namespace Entities.Configuration
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasData
-            (     
+            (
                 new Product
                 {
                     Id = 1,

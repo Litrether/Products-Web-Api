@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using Contracts;
+﻿using Contracts;
 using CurrencyConverter.ExchangeRatesAbstractAPI;
 using Entities;
 using Entities.DataTransferObjects;
@@ -22,6 +17,9 @@ using Microsoft.OpenApi.Models;
 using Products.ActionFilters;
 using Products.Managers;
 using Repository.DataShaping;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Products.Extensions
 {
@@ -49,7 +47,7 @@ namespace Products.Extensions
 
         public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
             services.AddScoped<IAutenticationManager, AuthenticationManager>();
-        
+
         public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
             services.AddScoped<ICurrencyApiConnection, CurrencyApiConnectionERA>();
 

@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Contracts;
+﻿using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Threading.Tasks;
 
 namespace Products.ActionFilters
-{ 
+{
     public class ValidateCategoryExistsAttribute : IAsyncActionFilter
     {
         private readonly IRepositoryManager _repository;
@@ -17,7 +17,7 @@ namespace Products.ActionFilters
             _logger = logger;
         }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, 
+        public async Task OnActionExecutionAsync(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
             var trackChanges = context.HttpContext.Request.Method.Equals("PUT");

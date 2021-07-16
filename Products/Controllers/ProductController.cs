@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -63,7 +60,7 @@ namespace Products.Controllers
                 return BadRequest("Invalid cost range.");
 
             var productEntity = HttpContext.Items["product"] as Product;
-            
+
             var productDto = _mapper.Map<ProductDto>(productEntity);
 
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));

@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Contracts;
+﻿using Contracts;
 using Entities;
-using Entities.Models;
 using Repository;
+using System.Threading.Tasks;
 
 namespace Products.Managers
 {

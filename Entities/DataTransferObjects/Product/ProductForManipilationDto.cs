@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using Entities.Models;
 
 namespace Entities.DataTransferObjects
 {

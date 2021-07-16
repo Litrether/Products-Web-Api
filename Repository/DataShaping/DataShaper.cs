@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Contracts;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using Contracts;
 
 namespace Repository.DataShaping
 {
@@ -64,7 +64,7 @@ namespace Repository.DataShaping
         {
             var shapedData = new List<ExpandoObject>();
 
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 var shapedObject = FetchDataForEntity(entity, requiredProperties);
                 shapedData.Add(shapedObject);
@@ -79,7 +79,7 @@ namespace Repository.DataShaping
         {
             var shapedObject = new ExpandoObject();
 
-            foreach(var property in requiredProperties)
+            foreach (var property in requiredProperties)
             {
                 var objectPropertyValue = property.GetValue(entity);
                 shapedObject.TryAdd(property.Name, objectPropertyValue);

@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
-using Entities.Models;
+﻿using Entities.Models;
 using Entities.RequestFeatures;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Contracts
 {
     public interface IProductRepository
     {
 
-        public Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges, 
+        public Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges,
             decimal exchangeRate);
 
         public Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate);

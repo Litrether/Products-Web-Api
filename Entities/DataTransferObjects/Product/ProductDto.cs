@@ -1,7 +1,5 @@
-﻿using Entities.Models;
-
-namespace Entities.DataTransferObjects
-{ 
+﻿namespace Entities.DataTransferObjects
+{
     public class ProductDto
     {
         public int Id { get; set; }

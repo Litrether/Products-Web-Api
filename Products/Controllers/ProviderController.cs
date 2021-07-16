@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
@@ -8,6 +6,8 @@ using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -57,12 +57,12 @@ namespace Products.Controllers
             [FromBody] ProviderForManipilationDto provider)
         {
             var providerEntity = _mapper.Map<Provider>(provider);
-            
+
             _repository.Provider.CreateProvider(providerEntity);
             await _repository.SaveAsync();
 
             var providerToReturn = _mapper.Map<ProviderDto>(providerEntity);
-            
+
             return CreatedAtRoute("GetProvider",
                 new { id = providerToReturn.Id }, providerToReturn);
         }

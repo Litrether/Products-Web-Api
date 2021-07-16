@@ -16,7 +16,7 @@ namespace Products
 
             CreateMap<Category, CategoryDto>();
 
-            
+
             CreateMap<ProductForManipilationDto, Product>();
             CreateMap<ProductForManipilationDto, Product>().ReverseMap();
 

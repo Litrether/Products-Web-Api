@@ -35,7 +35,7 @@ namespace Entities.Configuration
                     Id = 5,
                     Name = "Audi"
                 }
-            ); 
+            );
         }
     }
 }

@@ -48,10 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\logs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CurrencyConverter\CurrencyApiConnections.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
