@@ -26,7 +26,6 @@ namespace Products
         public void ConfigureServices(IServiceCollection services)
         {
             //todo Add caching
-            //todo good validation
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerServices();
