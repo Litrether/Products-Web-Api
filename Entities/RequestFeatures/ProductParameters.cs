@@ -13,7 +13,6 @@ namespace Entities.RequestFeatures
 
         public string Fields { get; set; }
 
-        [DefaultValue("USD")]
         public string Currency { get; set; }
 
         public string Categories { get; set; }

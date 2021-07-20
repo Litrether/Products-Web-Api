@@ -1,7 +1,9 @@
 ﻿using Contracts;
+using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 using System.Threading.Tasks;
 
 namespace Products.ActionFilters
@@ -36,7 +38,17 @@ namespace Products.ActionFilters
                 exchangeRate = _currencyConnection.GetExchangeRate(currencyName);
             }
 
-            var product = await _repository.Product.GetProductAsync(id, trackChanges, exchangeRate);
+            Product product;
+            try
+            {
+                product = await _repository.Product.GetProductAsync(id, trackChanges, exchangeRate);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                context.Result = new BadRequestObjectResult(ex.Message);
+                return;
+            }
             if (product == null)
             {
                 _logger.LogInfo($"Product with id: {id} doesn't exist in the database.");

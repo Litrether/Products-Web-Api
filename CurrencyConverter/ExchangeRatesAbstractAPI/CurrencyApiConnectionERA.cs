@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using System;
 using System.Net;
 using System.Text.Json;
 
@@ -13,12 +14,14 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
 
             var jsonResponse = new WebClient().DownloadString(url);
 
+            
+
             var deserializedResponse = JsonSerializer.Deserialize<CurrencyERA>(jsonResponse);
 
-            if (deserializedResponse.ExchangeRates.ContainsKey(currencyName.ToUpper()))
-                return deserializedResponse.ExchangeRates[currencyName.ToUpper()];
+            if (currencyName != null && deserializedResponse.ExchangeRates.ContainsKey(currencyName.ToUpper()) == false )
+                throw new Exception("Currency name doesn't exist in the external Web Api!");
 
-            return 0;
+            return 1;
         }
     }
 }
