@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>cb01f531-9c7b-4f8e-aec9-3ee47d7560fc</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,11 +18,7 @@
     <EmbeddedResource Remove="ActionFilters\ServiceAttributes\**" />
     <None Remove="ActionFilters\ServiceAttributes\**" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="nlog.config" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <None Include="nlog.config" />
   </ItemGroup>

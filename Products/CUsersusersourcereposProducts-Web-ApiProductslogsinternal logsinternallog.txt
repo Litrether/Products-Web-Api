@@ -1,0 +1,35 @@
+2021-07-20 11:43:03.6683 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 11:43:03.6983 Info Loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 11:43:03.8123 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.7.3.1580. Product version: 1.7.3+5b992558f6b1c15def05efe3168eb20d7965b82a. GlobalAssemblyCache: False
+2021-07-20 11:43:03.8157 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll succeeded!
+2021-07-20 11:43:03.8157 Info Message Template Auto Format enabled
+2021-07-20 11:43:03.8703 Info Adding target FileTarget(Name=logfile)
+2021-07-20 11:43:03.9242 Info Validating config: TargetNames=logfile, ConfigItems=14, FilePath=/app/nlog.config
+2021-07-20 12:00:50.5309 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:00:50.5420 Info Loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:00:50.6224 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.7.3.1580. Product version: 1.7.3+5b992558f6b1c15def05efe3168eb20d7965b82a. GlobalAssemblyCache: False
+2021-07-20 12:00:50.6262 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll succeeded!
+2021-07-20 12:00:50.6262 Info Message Template Auto Format enabled
+2021-07-20 12:00:50.6603 Info Adding target FileTarget(Name=logfile)
+2021-07-20 12:00:50.6892 Info Validating config: TargetNames=logfile, ConfigItems=14, FilePath=/app/nlog.config
+2021-07-20 12:03:13.8529 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:03:13.8666 Info Loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:03:13.9499 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.7.3.1580. Product version: 1.7.3+5b992558f6b1c15def05efe3168eb20d7965b82a. GlobalAssemblyCache: False
+2021-07-20 12:03:13.9499 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll succeeded!
+2021-07-20 12:03:13.9593 Info Message Template Auto Format enabled
+2021-07-20 12:03:13.9902 Info Adding target FileTarget(Name=logfile)
+2021-07-20 12:03:14.0168 Info Validating config: TargetNames=logfile, ConfigItems=14, FilePath=/app/nlog.config
+2021-07-20 12:03:38.9883 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:03:39.0014 Info Loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:03:39.0876 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.7.3.1580. Product version: 1.7.3+5b992558f6b1c15def05efe3168eb20d7965b82a. GlobalAssemblyCache: False
+2021-07-20 12:03:39.0876 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll succeeded!
+2021-07-20 12:03:39.0975 Info Message Template Auto Format enabled
+2021-07-20 12:03:39.1324 Info Adding target FileTarget(Name=logfile)
+2021-07-20 12:03:39.1615 Info Validating config: TargetNames=logfile, ConfigItems=14, FilePath=/app/nlog.config
+2021-07-20 12:10:05.7498 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:10:05.7605 Info Loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll
+2021-07-20 12:10:05.8450 Info NLog.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 1.7.3.1580. Product version: 1.7.3+5b992558f6b1c15def05efe3168eb20d7965b82a. GlobalAssemblyCache: False
+2021-07-20 12:10:05.8450 Info Auto loading assembly file: /app/bin/Debug/netcoreapp3.1/NLog.Extensions.Logging.dll succeeded!
+2021-07-20 12:10:05.8450 Info Message Template Auto Format enabled
+2021-07-20 12:10:05.8849 Info Adding target FileTarget(Name=logfile)
+2021-07-20 12:10:05.9131 Info Validating config: TargetNames=logfile, ConfigItems=14, FilePath=/app/nlog.config
