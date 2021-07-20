@@ -21,7 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Properties\nlog.config" />
+    <Content Remove="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="nlog.config" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,7 +17,7 @@ namespace Products
     {
         public Startup(IConfiguration configuration)
         {
-            LogManager.LoadConfiguration($"{Directory.GetCurrentDirectory()}/Properties/nlog.config");
+            LogManager.LoadConfiguration($"{Directory.GetCurrentDirectory()}/nlog.config");
             Configuration = configuration;
         }
 
