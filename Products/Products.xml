@@ -73,12 +73,12 @@
             <param name="id"></param>
             <returns> Provider with a given id </returns>
         </member>
-        <member name="M:Products.Controllers.ProviderController.CreateProvider(Entities.DataTransferObjects.ProviderForManipilationDto)">
+        <member name="M:Products.Controllers.ProviderController.CreateProvider(Entities.DataTransferObjects.ProviderForManipulationDto)">
             <summary> Create newly provider </summary>
             <param name="provider"></param>
             <returns> Created provider with id </returns>
         </member>
-        <member name="M:Products.Controllers.ProviderController.UpdateProvider(System.Int32,Entities.DataTransferObjects.ProviderForManipilationDto)">
+        <member name="M:Products.Controllers.ProviderController.UpdateProvider(System.Int32,Entities.DataTransferObjects.ProviderForManipulationDto)">
             <summary> Update an existing provider by id </summary>
             <param name="id"></param>
             <param name="provider"></param>

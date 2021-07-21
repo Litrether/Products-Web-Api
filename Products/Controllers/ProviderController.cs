@@ -51,7 +51,8 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public IActionResult GetProvider(int id)
         {
-            var providerEntity = HttpContext.Items["provider"] as Provider;
+            //todo repair 
+            var providerEntity = _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
             var providerDto = _mapper.Map<ProviderDto>(providerEntity);
             return Ok(providerDto);
@@ -62,8 +63,9 @@ namespace Products.Controllers
         /// <returns> Created provider with id </returns>
         [HttpPost(Name = "CreateProvider")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public async Task<IActionResult> CreateProvider(
-            [FromBody] ProviderForManipilationDto provider)
+            [FromBody] ProviderForManipulationDto provider)
         {
             var providerEntity = _mapper.Map<Provider>(provider);
 
@@ -84,9 +86,9 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public async Task<IActionResult> UpdateProvider(int id,
-            [FromBody] ProviderForManipilationDto provider)
+            [FromBody] ProviderForManipulationDto provider)
         {
-            var providerEntity = HttpContext.Items["provider"] as Provider;
+            var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
             _mapper.Map(provider, providerEntity);
             await _repository.SaveAsync();
@@ -101,7 +103,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public async Task<IActionResult> DeleteProvider(int id)
         {
-            var providerEntity = HttpContext.Items["provider"] as Provider;
+            var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
             _repository.Provider.DeleteProvider(providerEntity);
             await _repository.SaveAsync();

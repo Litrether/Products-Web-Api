@@ -13,14 +13,16 @@ namespace Products
                 .ForMember(p => p.Provider, opt => opt.MapFrom(x => x.Provider.Name));
 
             CreateMap<Provider, ProviderDto>();
+            CreateMap<Provider, ProviderDto>().ReverseMap();
 
             CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryDto>().ReverseMap();
 
 
             CreateMap<ProductForManipulationDto, Product>();
             CreateMap<ProductForManipulationDto, Product>().ReverseMap();
 
-            CreateMap<ProviderForManipilationDto, Provider>();
+            CreateMap<ProviderForManipulationDto, Provider>();
 
             CreateMap<CategoryForManipulationDto, Category>();
 

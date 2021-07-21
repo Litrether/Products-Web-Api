@@ -2,7 +2,7 @@
 
 namespace Entities.DataTransferObjects
 {
-    public class ProviderForManipilationDto
+    public class ProviderForManipulationDto
     {
         [Required(ErrorMessage = "Provider name is a required field.")]
         [MaxLength(75, ErrorMessage = "Maximum length for the name is 75 characters.")]
