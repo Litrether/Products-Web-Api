@@ -25,8 +25,8 @@ namespace Repository
                 .Sort(productParameters.OrderBy)
                 .ToListAsync();
 
-            products.ConvertCurrency(exchangeRate);
-            var filteredProducts = products.FilterByCurrency(productParameters);
+            products?.ConvertCurrency(exchangeRate);
+            var filteredProducts = products?.FilterByCurrency(productParameters);
 
             return PagedList<Product>
                 .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
@@ -38,7 +38,7 @@ namespace Repository
                 .IncludeFields()
                 .SingleOrDefaultAsync();
 
-            product.ConvertCurrencyForEntities(exchangeRate);
+            product?.ConvertCurrencyForEntities(exchangeRate);
 
             return product;
         }

@@ -36,23 +36,23 @@
             <returns>The products list</returns>
         </member>
         <member name="M:Products.Controllers.ProductController.GetProduct(System.Int32,Entities.RequestFeatures.ProductParameters)">
-            <summary> Get product by id  </summary>
+            <summary> Get product by id </summary>
             <param name="id"></param>
             <param name="productParameters"></param>
-            <returns> Product with a given id </returns>
+            <returns> Product with a given id</returns>
         </member>
-        <member name="M:Products.Controllers.ProductController.CreateProduct(Entities.DataTransferObjects.ProductForManipilationDto)">
+        <member name="M:Products.Controllers.ProductController.CreateProduct(Entities.DataTransferObjects.ProductForManipulationDto)">
             <summary> Create newly product </summary>
             <param name="product"></param>
             <returns> Created product with id </returns>
         </member>
-        <member name="M:Products.Controllers.ProductController.UpdateProduct(System.Int32,Entities.DataTransferObjects.ProductForManipilationDto)">
+        <member name="M:Products.Controllers.ProductController.UpdateProduct(System.Int32,Entities.DataTransferObjects.ProductForManipulationDto)">
             <summary> Update an existing product by id </summary>
             <param name="id"></param>
             <param name="product"></param>
             <returns> No content </returns>
         </member>
-        <member name="M:Products.Controllers.ProductController.PartiallyUpdateProduct(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Entities.DataTransferObjects.ProductForManipilationDto})">
+        <member name="M:Products.Controllers.ProductController.PartiallyUpdateProduct(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Entities.DataTransferObjects.ProductForManipulationDto})">
             <summary> Partical update an existing product by id </summary>
             <param name="id"></param>
             <param name="patchDoc"></param>
@@ -95,12 +95,12 @@
         </member>
         <member name="M:Messenger.Controllers.AccountController.Authenticate(Entities.DataTransferObjects.UserForManipulationDto)">
             <summary> Authenticate and autorization user if his exists in the database</summary>
-            <param name="UserForManipulationDto"></param>
+            <param name="user"></param>
             <returns>Bearer token</returns>
         </member>
         <member name="M:Messenger.Controllers.AccountController.DeleteUser(Entities.DataTransferObjects.UserForManipulationDto)">
             <summary> Delete user after authenticate </summary>
-            <param name="UserForManipulationDto"></param>
+            <param name="user"></param>
             <returns>Bearer token</returns>
         </member>
     </members>

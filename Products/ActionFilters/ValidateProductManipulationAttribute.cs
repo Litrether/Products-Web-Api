@@ -20,7 +20,7 @@ namespace Products.ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var product = context.ActionArguments["product"] as ProductForManipilationDto;
+            var product = context.ActionArguments["product"] as ProductForManipulationDto;
 
             var category = await _repository.Category.GetCategoryAsync(product.CategoryId, false);
             if (category == null)

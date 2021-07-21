@@ -1,6 +1,10 @@
 ﻿using Contracts;
+using Entities.DataTransferObjects;
+using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Products.ActionFilters
@@ -20,18 +24,95 @@ namespace Products.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
-            var trackChanges = context.HttpContext.Request.Method.Equals("PUT");
+            var method = context.HttpContext.Request.Method;
+
+            switch (method)
+            {
+                case "GET": 
+                    await GetByIdFilter(context, next);
+                    break;
+                case "POST":
+                    await PostFilter(context, next);
+                    break;
+                case "PUT":
+                    await PutFilter(context, next);
+                    break;
+                case "DELETE":
+                    await DeleteFilter(context, next);
+                    break;
+            }
+        }
+
+        private async Task GetByIdFilter(ActionExecutingContext context,
+            ActionExecutionDelegate next)
+        {
             var id = (int)context.ActionArguments["id"];
 
-            var category = await _repository.Category.GetCategoryAsync(id, trackChanges);
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
             if (category == null)
             {
-                _logger.LogInfo($"Category with id: {id} doesn't exist in the database.");
+                _logger.LogInfo($"Category with id: {id} doesn't exist in the database");
                 context.Result = new NotFoundResult();
                 return;
             }
 
-            context.HttpContext.Items.Add("category", category);
+            await next();
+        }
+
+        private async Task PostFilter(ActionExecutingContext context,
+            ActionExecutionDelegate next)
+        {
+            var categoryForCreate = context.ActionArguments["category"] as CategoryForManipulationDto;
+
+            var isExistInDatabase = await _repository.Category.CheckExistByName(categoryForCreate.Name, trackChanges: false);
+            if (isExistInDatabase)
+            {
+                _logger.LogInfo($"Category with name: \"{categoryForCreate.Name}\" exists in the database");
+                context.Result = new BadRequestObjectResult($"Category with name: \"{categoryForCreate.Name}\" exists in the database");
+                return;
+            }
+
+            await next();
+        }
+
+        private async Task PutFilter(ActionExecutingContext context,
+            ActionExecutionDelegate next)
+        {
+            var id = (int)context.ActionArguments["id"];
+            var categoryForUpdate = context.ActionArguments["category"] as CategoryForManipulationDto;
+
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: true);
+            if (category == null)
+            {
+                _logger.LogInfo($"Category with id: {id} doesn't exist in the database");
+                context.Result = new NotFoundResult();
+                return;
+            }
+
+            var isExistInDatabase = await _repository.Category.CheckExistByName(categoryForUpdate.Name, trackChanges: false);
+            if(isExistInDatabase)
+            {
+                _logger.LogInfo($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
+                context.Result = new BadRequestObjectResult($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
+                return;
+            }
+
+            await next();
+        }
+
+        private async Task DeleteFilter(ActionExecutingContext context,
+            ActionExecutionDelegate next)
+        {
+            var id = (int)context.ActionArguments["id"];
+
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
+            if (category == null)
+            {
+                _logger.LogInfo($"Category with id: {id} doesn't exist in the database");
+                context.Result = new NotFoundResult();
+                return;
+            }
+
             await next();
         }
     }

@@ -54,10 +54,10 @@ namespace Products.Controllers
             return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
         }
 
-        /// <summary> Get product by id  </summary>
+        /// <summary> Get product by id </summary>
         /// <param name="id"></param>
         /// <param name="productParameters"></param>
-        /// <returns> Product with a given id </returns>
+        /// <returns> Product with a given id</returns>
         [HttpGet("{id}", Name = "GetProduct")]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public IActionResult GetProduct(int id, [FromQuery] ProductParameters productParameters)
@@ -79,7 +79,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
         public async Task<IActionResult> CreateProduct(
-            [FromBody] ProductForManipilationDto product)
+            [FromBody] ProductForManipulationDto product)
         {
             var productEntity = _mapper.Map<Product>(product);
 
@@ -101,7 +101,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
         public async Task<IActionResult> UpdateProduct(int id,
-            [FromBody] ProductForManipilationDto product)
+            [FromBody] ProductForManipulationDto product)
         {
             var productEntity = HttpContext.Items["product"] as Product;
 
@@ -119,7 +119,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public async Task<IActionResult> PartiallyUpdateProduct(int id,
-            [FromBody] JsonPatchDocument<ProductForManipilationDto> patchDoc)
+            [FromBody] JsonPatchDocument<ProductForManipulationDto> patchDoc)
         {
             if (patchDoc == null)
             {
@@ -129,7 +129,7 @@ namespace Products.Controllers
 
             var productEntity = HttpContext.Items["product"] as Product;
 
-            var productToPatch = _mapper.Map<ProductForManipilationDto>(productEntity);
+            var productToPatch = _mapper.Map<ProductForManipulationDto>(productEntity);
 
             patchDoc.ApplyTo(productToPatch, ModelState);
 
@@ -150,7 +150,6 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProduct")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public async Task<IActionResult> DeleteProduct(int id)
         {

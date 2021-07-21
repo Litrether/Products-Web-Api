@@ -51,7 +51,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public IActionResult GetCategory(int id)
         {
-            var categoryEntity = HttpContext.Items["category"] as Category;
+            var categoryEntity = _repository.Category.GetCategoryAsync(id, trackChanges: false);
 
             var categoryDto = _mapper.Map<CategoryDto>(categoryEntity);
             return Ok(categoryDto);
@@ -62,6 +62,7 @@ namespace Products.Controllers
         /// <returns> Created category with id </returns>
         [HttpPost(Name = "CreateCategory")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public async Task<IActionResult> CreateCategory(
             [FromBody] CategoryForManipulationDto category)
         {
@@ -86,7 +87,7 @@ namespace Products.Controllers
         public async Task<IActionResult> UpdateCategory(int id,
             [FromBody] CategoryForManipulationDto category)
         {
-            var categoryEntity = HttpContext.Items["category"] as Category;
+            var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: true);
 
             _mapper.Map(category, categoryEntity);
             await _repository.SaveAsync();
@@ -101,7 +102,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var categoryEntity = HttpContext.Items["category"] as Category;
+            var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
 
             _repository.Category.DeleteCategory(categoryEntity);
             await _repository.SaveAsync();

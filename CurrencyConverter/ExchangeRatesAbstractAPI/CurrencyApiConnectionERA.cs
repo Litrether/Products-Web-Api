@@ -16,8 +16,8 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
 
             var deserializedResponse = JsonSerializer.Deserialize<CurrencyERA>(jsonResponse);
 
-            if (currencyName != null && deserializedResponse.ExchangeRates.ContainsKey(currencyName.ToUpper()) == false )
-                throw new Exception("Currency name doesn't exist in the external Web Api!");
+            if (currencyName != null && deserializedResponse.ExchangeRates.ContainsKey(currencyName.ToUpper()))
+                return deserializedResponse.ExchangeRates[currencyName.ToUpper()];
 
             return 1;
         }

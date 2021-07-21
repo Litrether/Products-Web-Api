@@ -2,7 +2,7 @@
 
 namespace Entities.DataTransferObjects
 {
-    public class ProductForManipilationDto
+    public class ProductForManipulationDto
     {
         [Required(ErrorMessage = "Product name is a required field.")]
         [MaxLength(75, ErrorMessage = "Maximum length for the name is 75 characters.")]
@@ -12,6 +12,7 @@ namespace Entities.DataTransferObjects
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Product name is a required field.")]
+        [Range(0.01, 10000000, ErrorMessage = "Product cost can't be lower than 0.01$ and above than 10000000$.")]
         public decimal Cost { get; set; }
 
         [Required(ErrorMessage = "Provider id name is a required field.")]

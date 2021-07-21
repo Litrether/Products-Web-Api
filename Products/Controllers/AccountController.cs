@@ -61,7 +61,7 @@ namespace Messenger.Controllers
 
 
         /// <summary> Authenticate and autorization user if his exists in the database</summary>
-        /// <param name="UserForManipulationDto"></param>
+        /// <param name="user"></param>
         /// <returns>Bearer token</returns>
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -78,7 +78,7 @@ namespace Messenger.Controllers
         }
 
         /// <summary> Delete user after authenticate </summary>
-        /// <param name="UserForManipulationDto"></param>
+        /// <param name="user"></param>
         /// <returns>Bearer token</returns>
         [HttpDelete("delete")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
