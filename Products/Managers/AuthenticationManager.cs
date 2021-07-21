@@ -26,7 +26,7 @@ namespace Products.Managers
             _configuration = configuration;
         }
 
-        public async Task<bool> ValidateUser(UserForAutenticationDto userForAuth)
+        public async Task<bool> ValidateUser(UserForManipulationDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
 

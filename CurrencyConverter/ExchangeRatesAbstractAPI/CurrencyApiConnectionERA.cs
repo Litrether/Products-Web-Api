@@ -14,8 +14,6 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
 
             var jsonResponse = new WebClient().DownloadString(url);
 
-            
-
             var deserializedResponse = JsonSerializer.Deserialize<CurrencyERA>(jsonResponse);
 
             if (currencyName != null && deserializedResponse.ExchangeRates.ContainsKey(currencyName.ToUpper()) == false )

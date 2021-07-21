@@ -19,6 +19,8 @@ using Products.Managers;
 using Repository.DataShaping;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Products.Extensions
@@ -119,8 +121,7 @@ namespace Products.Extensions
                     Contact = new OpenApiContact
                     {
                         Name = "Victor Naumov",
-                        Email = "anakinsanakins@gmail.com",
-                        Url = new Uri("https://vk.com/267204544"),
+                        Url = new Uri("https://vk.com/id267204544"),
                     }
                 });
                 s.SwaggerDoc("v2", new OpenApiInfo
@@ -128,6 +129,11 @@ namespace Products.Extensions
                     Title = "Products API v2",
                     Version = "v2"
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                s.IncludeXmlComments(xmlPath);
+
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,

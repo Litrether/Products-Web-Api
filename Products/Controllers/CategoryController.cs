@@ -28,6 +28,9 @@ namespace Products.Controllers
             _mapper = mapper;
         }
 
+        /// <summary> Get list of all categories </summary>
+        /// <param name="categoryParameters"></param>
+        /// <returns>The categories list</returns>
         [HttpGet(Name = "GetCategories")]
         [ResponseCache(Duration = 120)]
         public async Task<IActionResult> GetCategories(
@@ -41,6 +44,9 @@ namespace Products.Controllers
             return Ok(categoriesDto);
         }
 
+        /// <summary> Get category by id </summary>
+        /// <param name="id"></param>
+        /// <returns>Category with a given id</returns>
         [HttpGet("{id}", Name = "GetCategory")]
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public IActionResult GetCategory(int id)
@@ -51,6 +57,9 @@ namespace Products.Controllers
             return Ok(categoryDto);
         }
 
+        /// <summary> Create newly category </summary>
+        /// <param name="category"></param>
+        /// <returns> Created category with id </returns>
         [HttpPost(Name = "CreateCategory")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCategory(
@@ -63,10 +72,14 @@ namespace Products.Controllers
 
             var categoryToReturn = _mapper.Map<CategoryDto>(categoryEntity);
 
-            return CreatedAtRoute("GetCategory",
-                new { id = categoryToReturn.Id }, categoryToReturn);
+            return RedirectToRoute("GetCategory",
+                new { id = categoryToReturn.Id });
         }
 
+        /// <summary> Update an existing category by id </summary>
+        /// <param name="id"></param>
+        /// <param name="category"></param>
+        /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateCategory")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
@@ -81,6 +94,9 @@ namespace Products.Controllers
             return NoContent();
         }
 
+        /// <summary> Delete an existing category by id </summary>
+        /// <param name="id"></param>
+        /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteCategory")]
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public async Task<IActionResult> DeleteCategory(int id)

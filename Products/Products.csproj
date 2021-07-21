@@ -12,6 +12,11 @@
     <DocumentationFile>C:\Users\user\source\repos\Products-Web-Api\Products\Products.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>Products.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="ActionFilters\ServiceAttributes\**" />
     <Content Remove="ActionFilters\ServiceAttributes\**" />

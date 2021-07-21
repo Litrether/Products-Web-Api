@@ -2,7 +2,7 @@
 
 namespace Entities.DataTransferObjects
 {
-    public class UserForAutenticationDto
+    public class UserForManipulationDto
     {
         [Required(ErrorMessage = "Username is required field.")]
         public string UserName { get; set; }

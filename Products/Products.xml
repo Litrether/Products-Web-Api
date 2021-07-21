@@ -4,5 +4,104 @@
         <name>Products</name>
     </assembly>
     <members>
+        <member name="M:Products.Controllers.CategoryController.GetCategories(Entities.RequestFeatures.CategoryParameters)">
+            <summary> Get list of all categories </summary>
+            <param name="categoryParameters"></param>
+            <returns>The categories list</returns>
+        </member>
+        <member name="M:Products.Controllers.CategoryController.GetCategory(System.Int32)">
+            <summary> Get category by id </summary>
+            <param name="id"></param>
+            <returns>Category with a given id</returns>
+        </member>
+        <member name="M:Products.Controllers.CategoryController.CreateCategory(Entities.DataTransferObjects.CategoryForManipulationDto)">
+            <summary> Create newly category </summary>
+            <param name="category"></param>
+            <returns> Created category with id </returns>
+        </member>
+        <member name="M:Products.Controllers.CategoryController.UpdateCategory(System.Int32,Entities.DataTransferObjects.CategoryForManipulationDto)">
+            <summary> Update an existing category by id </summary>
+            <param name="id"></param>
+            <param name="category"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Products.Controllers.CategoryController.DeleteCategory(System.Int32)">
+            <summary> Delete an existing category by id </summary>
+            <param name="id"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Products.Controllers.ProductController.GetProducts(Entities.RequestFeatures.ProductParameters)">
+            <summary> Get list of all products </summary>
+            <param name="productParameters"></param>
+            <returns>The products list</returns>
+        </member>
+        <member name="M:Products.Controllers.ProductController.GetProduct(System.Int32,Entities.RequestFeatures.ProductParameters)">
+            <summary> Get product by id  </summary>
+            <param name="id"></param>
+            <param name="productParameters"></param>
+            <returns> Product with a given id </returns>
+        </member>
+        <member name="M:Products.Controllers.ProductController.CreateProduct(Entities.DataTransferObjects.ProductForManipilationDto)">
+            <summary> Create newly product </summary>
+            <param name="product"></param>
+            <returns> Created product with id </returns>
+        </member>
+        <member name="M:Products.Controllers.ProductController.UpdateProduct(System.Int32,Entities.DataTransferObjects.ProductForManipilationDto)">
+            <summary> Update an existing product by id </summary>
+            <param name="id"></param>
+            <param name="product"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Products.Controllers.ProductController.PartiallyUpdateProduct(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Entities.DataTransferObjects.ProductForManipilationDto})">
+            <summary> Partical update an existing product by id </summary>
+            <param name="id"></param>
+            <param name="patchDoc"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Products.Controllers.ProductController.DeleteProduct(System.Int32)">
+            <summary> Delete an existing product by id </summary>
+            <param name="id"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Products.Controllers.ProviderController.GetProviders(Entities.RequestFeatures.ProviderParameters)">
+            <summary> Get list of all providers </summary>
+            <param name="providerParameters"></param>
+            <returns>The providers list</returns>
+        </member>
+        <member name="M:Products.Controllers.ProviderController.GetProvider(System.Int32)">
+            <summary> Get provider by id </summary>
+            <param name="id"></param>
+            <returns> Provider with a given id </returns>
+        </member>
+        <member name="M:Products.Controllers.ProviderController.CreateProvider(Entities.DataTransferObjects.ProviderForManipilationDto)">
+            <summary> Create newly provider </summary>
+            <param name="provider"></param>
+            <returns> Created provider with id </returns>
+        </member>
+        <member name="M:Products.Controllers.ProviderController.UpdateProvider(System.Int32,Entities.DataTransferObjects.ProviderForManipilationDto)">
+            <summary> Update an existing provider by id </summary>
+            <param name="id"></param>
+            <param name="provider"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Products.Controllers.ProviderController.DeleteProvider(System.Int32)">
+            <summary> Delete an existing provider by id </summary>
+            <param name="id"></param>
+            <returns> No content </returns>
+        </member>
+        <member name="M:Messenger.Controllers.AccountController.RegisterUser(Entities.DataTransferObjects.UserForRegistrationDto)">
+            <summary> Create a new user account </summary>
+            <param name="userForRegistration"></param>
+        </member>
+        <member name="M:Messenger.Controllers.AccountController.Authenticate(Entities.DataTransferObjects.UserForManipulationDto)">
+            <summary> Authenticate and autorization user if his exists in the database</summary>
+            <param name="UserForManipulationDto"></param>
+            <returns>Bearer token</returns>
+        </member>
+        <member name="M:Messenger.Controllers.AccountController.DeleteUser(Entities.DataTransferObjects.UserForManipulationDto)">
+            <summary> Delete user after authenticate </summary>
+            <param name="UserForManipulationDto"></param>
+            <returns>Bearer token</returns>
+        </member>
     </members>
 </doc>

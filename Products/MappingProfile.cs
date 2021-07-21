@@ -27,7 +27,7 @@ namespace Products
 
             CreateMap<UserForRegistrationDto, User>();
 
-            CreateMap<UserForAutenticationDto, User>();
+            CreateMap<UserForManipulationDto, User>();
         }
     }
 }

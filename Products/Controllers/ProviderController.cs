@@ -29,6 +29,9 @@ namespace Products.Controllers
             _mapper = mapper;
         }
 
+        /// <summary> Get list of all providers </summary>
+        /// <param name="providerParameters"></param>
+        /// <returns>The providers list</returns>
         [HttpGet(Name = "GetProviders")]
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
@@ -41,6 +44,9 @@ namespace Products.Controllers
             return Ok(providersDto);
         }
 
+        /// <summary> Get provider by id </summary>
+        /// <param name="id"></param>
+        /// <returns> Provider with a given id </returns>
         [HttpGet("{id}", Name = "GetProvider")]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public IActionResult GetProvider(int id)
@@ -51,6 +57,9 @@ namespace Products.Controllers
             return Ok(providerDto);
         }
 
+        /// <summary> Create newly provider </summary>
+        /// <param name="provider"></param>
+        /// <returns> Created provider with id </returns>
         [HttpPost(Name = "CreateProvider")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateProvider(
@@ -63,10 +72,14 @@ namespace Products.Controllers
 
             var providerToReturn = _mapper.Map<ProviderDto>(providerEntity);
 
-            return CreatedAtRoute("GetProvider",
-                new { id = providerToReturn.Id }, providerToReturn);
+            return RedirectToRoute("GetProvider",
+                new { id = providerToReturn.Id });
         }
 
+        /// <summary> Update an existing provider by id </summary>
+        /// <param name="id"></param>
+        /// <param name="provider"></param>
+        /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProvider")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
@@ -81,6 +94,9 @@ namespace Products.Controllers
             return NoContent();
         }
 
+        /// <summary> Delete an existing provider by id </summary>
+        /// <param name="id"></param>
+        /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProvider")]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public async Task<IActionResult> DeleteProvider(int id)

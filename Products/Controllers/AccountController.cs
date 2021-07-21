@@ -28,6 +28,8 @@ namespace Messenger.Controllers
             _authManager = authManager;
         }
 
+        /// <summary> Create a new user account </summary>
+        /// <param name="userForRegistration"></param>
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser(
@@ -44,15 +46,27 @@ namespace Messenger.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            try
+            {
+                await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            }
+            catch
+            {
+                return BadRequest($"One or all roles doesn't exist: {string.Join(' ', userForRegistration.Roles)} \n\r" +
+                    $"Possible roles: Administrator, Manager and User");
+            }
 
             return StatusCode(201);
-        }
+            }
 
+
+        /// <summary> Authenticate and autorization user if his exists in the database</summary>
+        /// <param name="UserForManipulationDto"></param>
+        /// <returns>Bearer token</returns>
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate(
-            [FromBody] UserForAutenticationDto user)
+            [FromBody] UserForManipulationDto user)
         {
             if (await _authManager.ValidateUser(user) == false)
             {
@@ -61,6 +75,35 @@ namespace Messenger.Controllers
             }
 
             return Ok(new { Token = await _authManager.CreateToken() });
+        }
+
+        /// <summary> Delete user after authenticate </summary>
+        /// <param name="UserForManipulationDto"></param>
+        /// <returns>Bearer token</returns>
+        [HttpDelete("delete")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> DeleteUser(
+            [FromBody] UserForManipulationDto user)
+        {
+
+            if (await _authManager.ValidateUser(user) == false)
+            {
+                _logger.LogWarn($"{nameof(Authenticate)}: Delete failed. Wrong username or password.");
+                return Unauthorized();
+            }
+
+            var userForDelete = await _userManager.FindByNameAsync(user.UserName);
+
+            var result = await _userManager.DeleteAsync(userForDelete);
+            if (result.Succeeded == false)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.TryAddModelError(error.Code, error.Description);
+
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
         }
     }
 }

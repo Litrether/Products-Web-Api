@@ -35,6 +35,9 @@ namespace Products.Controllers
             _currencyConnection = currencyConnection;
         }
 
+        /// <summary> Get list of all products </summary>
+        /// <param name="productParameters"></param>
+        /// <returns>The products list</returns>
         [HttpGet(Name = "GetProducts")]
         public async Task<IActionResult> GetProducts(
             [FromQuery] ProductParameters productParameters)
@@ -51,13 +54,16 @@ namespace Products.Controllers
             return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
         }
 
+        /// <summary> Get product by id  </summary>
+        /// <param name="id"></param>
+        /// <param name="productParameters"></param>
+        /// <returns> Product with a given id </returns>
         [HttpGet("{id}", Name = "GetProduct")]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
-
         public IActionResult GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {
             if (productParameters.MaxCost < productParameters.MinCost)
-                return BadRequest("Invalid cost range.");
+                return BadRequest("Invalid cost range");
 
             var productEntity = HttpContext.Items["product"] as Product;
 
@@ -66,6 +72,9 @@ namespace Products.Controllers
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));
         }
 
+        /// <summary> Create newly product </summary>
+        /// <param name="product"></param>
+        /// <returns> Created product with id </returns>
         [HttpPost(Name = "CreateProduct")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
@@ -83,21 +92,29 @@ namespace Products.Controllers
                 new { id = productToReturn.Id });
         }
 
+        /// <summary> Update an existing product by id </summary>
+        /// <param name="id"></param>
+        /// <param name="product"></param>
+        /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProduct")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
         public async Task<IActionResult> UpdateProduct(int id,
-            [FromBody] ProductForManipilationDto Product)
+            [FromBody] ProductForManipilationDto product)
         {
             var productEntity = HttpContext.Items["product"] as Product;
 
-            _mapper.Map(Product, productEntity);
+            _mapper.Map(product, productEntity);
             await _repository.SaveAsync();
 
             return NoContent();
         }
 
+        /// <summary> Partical update an existing product by id </summary>
+        /// <param name="id"></param>
+        /// <param name="patchDoc"></param>
+        /// <returns> No content </returns>
         [HttpPatch("{id}", Name = "PartiallyUpdateProduct")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
@@ -129,6 +146,9 @@ namespace Products.Controllers
             return NoContent();
         }
 
+        /// <summary> Delete an existing product by id </summary>
+        /// <param name="id"></param>
+        /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProduct")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
