@@ -73,7 +73,7 @@ namespace Repository.Extensions
         public static IEnumerable<Product> ConvertCurrency(this IEnumerable<Product> products,
             decimal exchangeRate)
         {
-            if (exchangeRate != 0)
+            if (exchangeRate != default(decimal))
                 products.AsParallel().ForAll(p => ConvertCurrencyForEntities(p, exchangeRate));
 
             return products;
@@ -81,7 +81,7 @@ namespace Repository.Extensions
 
         public static Product ConvertCurrencyForEntities(this Product products, decimal exchangeRate)
         {
-            if (exchangeRate != 0)
+            if (exchangeRate != default(decimal))
                 products.Cost *= exchangeRate;
 
             return products;

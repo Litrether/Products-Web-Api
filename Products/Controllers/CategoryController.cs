@@ -49,9 +49,9 @@ namespace Products.Controllers
         /// <returns>Category with a given id</returns>
         [HttpGet("{id}", Name = "GetCategory")]
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
-        public IActionResult GetCategory(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
-            var categoryEntity = _repository.Category.GetCategoryAsync(id, trackChanges: false);
+            var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
 
             var categoryDto = _mapper.Map<CategoryDto>(categoryEntity);
             return Ok(categoryDto);
@@ -61,7 +61,6 @@ namespace Products.Controllers
         /// <param name="category"></param>
         /// <returns> Created category with id </returns>
         [HttpPost(Name = "CreateCategory")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public async Task<IActionResult> CreateCategory(
             [FromBody] CategoryForManipulationDto category)
@@ -82,7 +81,6 @@ namespace Products.Controllers
         /// <param name="category"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateCategory")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
         public async Task<IActionResult> UpdateCategory(int id,
             [FromBody] CategoryForManipulationDto category)

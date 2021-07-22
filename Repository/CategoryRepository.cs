@@ -4,7 +4,6 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repository

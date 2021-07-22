@@ -31,7 +31,7 @@ namespace Messenger.Controllers
         /// <summary> Create a new user account </summary>
         /// <param name="userForRegistration"></param>
         [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser(
             [FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -57,14 +57,14 @@ namespace Messenger.Controllers
             }
 
             return StatusCode(201);
-            }
+        }
 
 
         /// <summary> Authenticate and autorization user if his exists in the database</summary>
         /// <param name="user"></param>
         /// <returns>Bearer token</returns>
         [HttpPost("login")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate(
             [FromBody] UserForManipulationDto user)
         {
@@ -81,7 +81,7 @@ namespace Messenger.Controllers
         /// <param name="user"></param>
         /// <returns>Bearer token</returns>
         [HttpDelete("delete")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> DeleteUser(
             [FromBody] UserForManipulationDto user)
         {

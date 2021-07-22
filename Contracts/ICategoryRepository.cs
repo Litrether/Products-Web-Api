@@ -6,8 +6,8 @@ namespace Contracts
 {
     public interface ICategoryRepository
     {
-        public Task<PagedList<Category>> GetAllCategoriesAsync(
-            CategoryParameters categoryParameters, bool trackChanges);
+        public Task<PagedList<Category>> GetAllCategoriesAsync(CategoryParameters categoryParameters,
+            bool trackChanges);
 
         public Task<Category> GetCategoryAsync(int categoryId, bool trackChanges);
 

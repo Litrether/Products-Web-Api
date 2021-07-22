@@ -60,12 +60,12 @@ namespace Products.Controllers
         /// <returns> Product with a given id</returns>
         [HttpGet("{id}", Name = "GetProduct")]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
-        public IActionResult GetProduct(int id, [FromQuery] ProductParameters productParameters)
+        public async Task<IActionResult> GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {
             if (productParameters.MaxCost < productParameters.MinCost)
                 return BadRequest("Invalid cost range");
 
-            var productEntity = HttpContext.Items["product"] as Product;
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
 
             var productDto = _mapper.Map<ProductDto>(productEntity);
 
@@ -76,8 +76,7 @@ namespace Products.Controllers
         /// <param name="product"></param>
         /// <returns> Created product with id </returns>
         [HttpPost(Name = "CreateProduct")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
+        [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public async Task<IActionResult> CreateProduct(
             [FromBody] ProductForManipulationDto product)
         {
@@ -97,13 +96,11 @@ namespace Products.Controllers
         /// <param name="product"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProduct")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
-        [ServiceFilter(typeof(ValidateProductManipulationAttribute))]
         public async Task<IActionResult> UpdateProduct(int id,
             [FromBody] ProductForManipulationDto product)
         {
-            var productEntity = HttpContext.Items["product"] as Product;
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
 
             _mapper.Map(product, productEntity);
             await _repository.SaveAsync();
@@ -116,7 +113,6 @@ namespace Products.Controllers
         /// <param name="patchDoc"></param>
         /// <returns> No content </returns>
         [HttpPatch("{id}", Name = "PartiallyUpdateProduct")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public async Task<IActionResult> PartiallyUpdateProduct(int id,
             [FromBody] JsonPatchDocument<ProductForManipulationDto> patchDoc)
@@ -127,7 +123,7 @@ namespace Products.Controllers
                 return BadRequest("patchDoc object is null");
             }
 
-            var productEntity = HttpContext.Items["product"] as Product;
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
 
             var productToPatch = _mapper.Map<ProductForManipulationDto>(productEntity);
 
@@ -153,7 +149,7 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProductExistsAttribute))]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var productEntity = HttpContext.Items["product"] as Product;
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
 
             _repository.Product.DeleteProduct(productEntity);
             await _repository.SaveAsync();

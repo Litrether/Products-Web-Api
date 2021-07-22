@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Products.ActionFilters;
 using Products.Managers;
+using Repository;
 using Repository.DataShaping;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Products.Extensions
         public static void ConfigureLoggerServices(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
 
-        public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
+        public static void ConfigureAuthenticationManager(this IServiceCollection services)=>
             services.AddScoped<IAutenticationManager, AuthenticationManager>();
 
         public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
@@ -174,10 +175,9 @@ namespace Products.Extensions
         public static void ConfigureValidationAttributes(this IServiceCollection services)
         {
             services.AddScoped<ValidateProductExistsAttribute>();
-            services.AddScoped<ValidateProductManipulationAttribute>();
             services.AddScoped<ValidateProviderExistsAttribute>();
             services.AddScoped<ValidateCategoryExistsAttribute>();
-            services.AddScoped<ValidationFilterAttribute>();
+            //services.AddScoped<ValidationFilterAttribute>();
         }
 
         public static void ConfigureDataShaper(this IServiceCollection services)

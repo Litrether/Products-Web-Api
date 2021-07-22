@@ -6,11 +6,11 @@ namespace Contracts
 {
     public interface IProductRepository
     {
+        public Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters,
+             bool trackChanges, decimal exchangeRate = default(decimal));
 
-        public Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges,
-            decimal exchangeRate);
-
-        public Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate);
+        public Task<Product> GetProductAsync(int productId, bool trackChanges,
+             decimal exchangeRate = default(decimal));
 
         public void CreateProduct(Product product);
 

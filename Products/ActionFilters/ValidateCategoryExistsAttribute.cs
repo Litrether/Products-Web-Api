@@ -1,21 +1,21 @@
 ﻿using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
-using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Linq;
+using Repository;
 using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
-    public class ValidateCategoryExistsAttribute : IAsyncActionFilter
+    public class ValidateCategoryExistsAttribute : ValidationFilterAttribute<Category>, IAsyncActionFilter
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
 
-        public ValidateCategoryExistsAttribute(IRepositoryManager repository,
+        public ValidateCategoryExistsAttribute(IRepositoryManager repository, 
             ILoggerManager logger)
+            : base (logger)
         {
             _repository = repository;
             _logger = logger;
@@ -28,7 +28,7 @@ namespace Products.ActionFilters
 
             switch (method)
             {
-                case "GET": 
+                case "GET":
                     await GetByIdFilter(context, next);
                     break;
                 case "POST":
@@ -49,12 +49,8 @@ namespace Products.ActionFilters
             var id = (int)context.ActionArguments["id"];
 
             var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
-            if (category == null)
-            {
-                _logger.LogInfo($"Category with id: {id} doesn't exist in the database");
-                context.Result = new NotFoundResult();
+            if (IsNullEntity(context, category, id))
                 return;
-            }
 
             await next();
         }
@@ -62,6 +58,9 @@ namespace Products.ActionFilters
         private async Task PostFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
+            if (IsValidRequstModel(context) == false)
+                return;
+
             var categoryForCreate = context.ActionArguments["category"] as CategoryForManipulationDto;
 
             var isExistInDatabase = await _repository.Category.CheckExistByName(categoryForCreate.Name, trackChanges: false);
@@ -78,19 +77,18 @@ namespace Products.ActionFilters
         private async Task PutFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
+            if (IsValidRequstModel(context) == false)
+                return;
+
             var id = (int)context.ActionArguments["id"];
             var categoryForUpdate = context.ActionArguments["category"] as CategoryForManipulationDto;
 
-            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: true);
-            if (category == null)
-            {
-                _logger.LogInfo($"Category with id: {id} doesn't exist in the database");
-                context.Result = new NotFoundResult();
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
+            if (IsNullEntity(context, category, id))
                 return;
-            }
 
             var isExistInDatabase = await _repository.Category.CheckExistByName(categoryForUpdate.Name, trackChanges: false);
-            if(isExistInDatabase)
+            if (isExistInDatabase)
             {
                 _logger.LogInfo($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
                 context.Result = new BadRequestObjectResult($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
@@ -106,14 +104,11 @@ namespace Products.ActionFilters
             var id = (int)context.ActionArguments["id"];
 
             var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
-            if (category == null)
-            {
-                _logger.LogInfo($"Category with id: {id} doesn't exist in the database");
-                context.Result = new NotFoundResult();
+            if (IsNullEntity(context, category, id))
                 return;
-            }
 
             await next();
         }
+
     }
 }

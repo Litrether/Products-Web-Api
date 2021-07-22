@@ -1,18 +1,20 @@
 ﻿using Contracts;
 using Entities.DataTransferObjects;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
-    public class ValidateProviderExistsAttribute : IAsyncActionFilter
+    public class ValidateProviderExistsAttribute : ValidationFilterAttribute<Provider>, IAsyncActionFilter
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
 
         public ValidateProviderExistsAttribute(IRepositoryManager repository,
             ILoggerManager logger)
+            : base (logger)
         {
             _repository = repository;
             _logger = logger;
@@ -46,12 +48,8 @@ namespace Products.ActionFilters
             var id = (int)context.ActionArguments["id"];
 
             var provider = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
-            if (provider == null)
-            {
-                _logger.LogInfo($"Provider with id: {id} doesn't exist in the database");
-                context.Result = new NotFoundResult();
+            if (IsNullEntity(context, provider, id))
                 return;
-            }
 
             await next();
         }
@@ -59,6 +57,9 @@ namespace Products.ActionFilters
         private async Task PostFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
+            if (IsValidRequstModel(context) == false)
+                return;
+
             var providerForCreate = context.ActionArguments["provider"] as ProviderForManipulationDto;
 
             var isExistInDatabase = await _repository.Provider.CheckExistByName(providerForCreate.Name, trackChanges: false);
@@ -75,16 +76,15 @@ namespace Products.ActionFilters
         private async Task PutFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
+            if (IsValidRequstModel(context) == false)
+                return;
+
             var id = (int)context.ActionArguments["id"];
             var providerForUpdate = context.ActionArguments["provider"] as ProviderForManipulationDto;
 
-            var provider = await _repository.Category.GetCategoryAsync(id, trackChanges: true);
-            if (provider == null)
-            {
-                _logger.LogInfo($"Provider with id: {id} doesn't exist in the database");
-                context.Result = new NotFoundResult();
+            var provider = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
+            if (IsNullEntity(context, provider, id))
                 return;
-            }
 
             var isExistInDatabase = await _repository.Provider.CheckExistByName(providerForUpdate.Name, trackChanges: false);
             if (isExistInDatabase)
@@ -103,12 +103,8 @@ namespace Products.ActionFilters
             var id = (int)context.ActionArguments["id"];
 
             var provider = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
-            if (provider == null)
-            {
-                _logger.LogInfo($"Provider with id: {id} doesn't exist in the database");
-                context.Result = new NotFoundResult();
+            if (IsNullEntity(context, provider, id))
                 return;
-            }
 
             await next();
         }

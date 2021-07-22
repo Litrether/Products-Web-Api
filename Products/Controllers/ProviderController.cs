@@ -3,7 +3,6 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Entities.RequestFeatures;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
@@ -49,10 +48,10 @@ namespace Products.Controllers
         /// <returns> Provider with a given id </returns>
         [HttpGet("{id}", Name = "GetProvider")]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
-        public IActionResult GetProvider(int id)
+        public async Task<IActionResult> GetProvider(int id)
         {
-            //todo repair 
-            var providerEntity = _repository.Provider.GetProviderAsync(id, trackChanges: false);
+            //todo repair
+            var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
             var providerDto = _mapper.Map<ProviderDto>(providerEntity);
             return Ok(providerDto);
@@ -62,7 +61,6 @@ namespace Products.Controllers
         /// <param name="provider"></param>
         /// <returns> Created provider with id </returns>
         [HttpPost(Name = "CreateProvider")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public async Task<IActionResult> CreateProvider(
             [FromBody] ProviderForManipulationDto provider)
@@ -83,7 +81,6 @@ namespace Products.Controllers
         /// <param name="provider"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProvider")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
         public async Task<IActionResult> UpdateProvider(int id,
             [FromBody] ProviderForManipulationDto provider)

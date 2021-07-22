@@ -15,8 +15,8 @@ namespace Repository
         {
         }
 
-        public async Task<PagedList<Product>> GetAllProductsAsync(
-            ProductParameters productParameters, bool trackChanges, decimal exchangeRate)
+        public async Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters,
+            bool trackChanges, decimal exchangeRate = default(decimal))
         {
             var products = await FindAll(trackChanges)
                 .Search(productParameters.SearchTerm)
@@ -32,7 +32,7 @@ namespace Repository
                 .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
 
-        public async Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate)
+        public async Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate = default(decimal))
         {
             var product = await FindByCondition(c => c.Id.Equals(productId), trackChanges)
                 .IncludeFields()

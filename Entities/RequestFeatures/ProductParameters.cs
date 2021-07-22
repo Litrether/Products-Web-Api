@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Entities.RequestFeatures
+﻿namespace Entities.RequestFeatures
 {
     public class ProductParameters : RequestParameters
     {

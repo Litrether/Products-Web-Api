@@ -1,12 +1,13 @@
 ﻿using Contracts;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Repository;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
-    public class ValidationFilterAttribute : IAsyncActionFilter
+    public abstract class ValidationFilterAttribute<T> where T : class
     {
         private readonly ILoggerManager _logger;
 
@@ -15,7 +16,7 @@ namespace Products.ActionFilters
             _logger = logger;
         }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public bool IsValidRequstModel(ActionExecutingContext context)
         {
             var action = context.RouteData.Values["action"];
             var controller = context.RouteData.Values["controller"];
@@ -26,17 +27,29 @@ namespace Products.ActionFilters
             {
                 _logger.LogError($"Object sent from client is null. Controller: {controller}, action: { action}");
                 context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action} ");
-                return;
+                return false;
             }
 
             if (context.ModelState.IsValid == false)
             {
                 _logger.LogError($"Invalid model state for the object. Controller: { controller}, action: { action} ");
                 context.Result = new UnprocessableEntityObjectResult(context.ModelState);
-                return;
+                return false;
             }
 
-            await next();
+            return true;
+        }
+
+        public bool IsNullEntity(ActionExecutingContext context, T entity, int id)
+        {
+            if (entity == null)
+            {
+                _logger.LogInfo($"Provider with id: {id} doesn't exist in the database");
+                context.Result = new NotFoundResult();
+                return true;
+            }
+
+            return false;
         }
     }
 }
