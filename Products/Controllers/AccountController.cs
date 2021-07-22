@@ -31,7 +31,7 @@ namespace Messenger.Controllers
         /// <summary> Create a new user account </summary>
         /// <param name="userForRegistration"></param>
         [HttpPost]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> RegisterUser(
             [FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -64,16 +64,10 @@ namespace Messenger.Controllers
         /// <param name="user"></param>
         /// <returns>Bearer token</returns>
         [HttpPost("login")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> Authenticate(
             [FromBody] UserForManipulationDto user)
         {
-            if (await _authManager.ValidateUser(user) == false)
-            {
-                _logger.LogWarn($"{nameof(Authenticate)}: Authentication failed. Wrong username or password.");
-                return Unauthorized();
-            }
-
             return Ok(new { Token = await _authManager.CreateToken() });
         }
 
@@ -81,17 +75,10 @@ namespace Messenger.Controllers
         /// <param name="user"></param>
         /// <returns>Bearer token</returns>
         [HttpDelete("delete")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> DeleteUser(
             [FromBody] UserForManipulationDto user)
         {
-
-            if (await _authManager.ValidateUser(user) == false)
-            {
-                _logger.LogWarn($"{nameof(Authenticate)}: Delete failed. Wrong username or password.");
-                return Unauthorized();
-            }
-
             var userForDelete = await _userManager.FindByNameAsync(user.UserName);
 
             var result = await _userManager.DeleteAsync(userForDelete);

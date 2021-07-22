@@ -16,6 +16,10 @@ namespace Entities
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Product>().HasIndex(p => new { p.Name, p.Description, p.Cost, p.CategoryId, p.ProviderId }).IsUnique();
+            modelBuilder.Entity<Provider>().HasIndex(p => p.Name).IsUnique();
+            modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
+
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());

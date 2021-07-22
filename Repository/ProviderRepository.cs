@@ -32,9 +32,6 @@ namespace Repository
             await FindByCondition(c => c.Id.Equals(providerId), trackChanges)
             .SingleOrDefaultAsync();
 
-        public async Task<bool> CheckExistByName(string providerName, bool trackChanges) =>
-            await FindAll(trackChanges).AnyAsync(p => p.Name.Equals(providerName));
-
         public void CreateProvider(Provider provider) =>
             Create(provider);
 

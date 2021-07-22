@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Repository;
+using System;
 using System.Threading.Tasks;
 
 namespace Products.Managers
@@ -50,7 +51,8 @@ namespace Products.Managers
             }
         }
 
+        //todo Обработчик дубликатов.
         public async Task SaveAsync() =>
-            await _repositoryContext.SaveChangesAsync();
+                await _repositoryContext.SaveChangesAsync();
     }
 }

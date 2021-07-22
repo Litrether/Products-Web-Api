@@ -1,8 +1,6 @@
 ﻿using Contracts;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Repository;
 using System.Linq;
 
 namespace Products.ActionFilters

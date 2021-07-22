@@ -32,9 +32,6 @@ namespace Repository
             await FindByCondition(c => c.Id.Equals(categoryId), trackChanges)
             .SingleOrDefaultAsync();
 
-        public async Task<bool> CheckExistByName(string categoryName, bool trackChanges) =>
-            await FindAll(trackChanges).AnyAsync(c => c.Name.Equals(categoryName));
-
         public void CreateCategory(Category category) =>
             Create(category);
 

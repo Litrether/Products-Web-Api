@@ -48,7 +48,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns>Category with a given id</returns>
         [HttpGet("{id}", Name = "GetCategory")]
-        [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
+        [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> GetCategory(int id)
         {
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
@@ -61,7 +61,7 @@ namespace Products.Controllers
         /// <param name="category"></param>
         /// <returns> Created category with id </returns>
         [HttpPost(Name = "CreateCategory")]
-        [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
+        [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> CreateCategory(
             [FromBody] CategoryForManipulationDto category)
         {
@@ -81,14 +81,15 @@ namespace Products.Controllers
         /// <param name="category"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateCategory")]
-        [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
+        [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> UpdateCategory(int id,
             [FromBody] CategoryForManipulationDto category)
         {
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: true);
 
             _mapper.Map(category, categoryEntity);
-            await _repository.SaveAsync();
+
+            
 
             return NoContent();
         }
@@ -97,7 +98,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteCategory")]
-        [ServiceFilter(typeof(ValidateCategoryExistsAttribute))]
+        [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);

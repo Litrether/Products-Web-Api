@@ -31,11 +31,47 @@ namespace Entities.Configuration
                 new Product
                 {
                     Id = 3,
+                    Name = "T-shirt",
+                    Description = "Bright color",
+                    Cost = 15.00m,
+                    CategoryId = 3,
+                    ProviderId = 3,
+                },
+                new Product
+                {
+                    Id = 4,
+                    Name = "Shirt",
+                    Description = "A lot of choice color",
+                    Cost = 9.99m,
+                    CategoryId = 3,
+                    ProviderId = 3,
+                },
+                new Product
+                {
+                    Id = 5,
                     Name = "Hat",
                     Description = "Good hat",
                     Cost = 15.00m,
                     CategoryId = 3,
                     ProviderId = 3,
+                },
+                new Product
+                {
+                    Id = 6,
+                    Name = "Telegram bot",
+                    Description = "You can yourself configure this bot",
+                    Cost = 95.00m,
+                    CategoryId = 5,
+                    ProviderId = 6,
+                },
+                new Product
+                {
+                    Id = 7,
+                    Name = "Macbook ",
+                    Description = "Good choice for programmer",
+                    Cost = 1100.00m,
+                    CategoryId = 6,
+                    ProviderId = 7,
                 }
             );
         }

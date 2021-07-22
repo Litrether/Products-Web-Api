@@ -11,8 +11,6 @@ namespace Contracts
 
         public Task<Category> GetCategoryAsync(int categoryId, bool trackChanges);
 
-        public Task<bool> CheckExistByName(string categoryName, bool trackChanges);
-
         public void CreateCategory(Category category);
 
         public void DeleteCategory(Category category);

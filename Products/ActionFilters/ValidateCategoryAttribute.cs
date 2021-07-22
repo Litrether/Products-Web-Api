@@ -1,21 +1,18 @@
 ﻿using Contracts;
-using Entities.DataTransferObjects;
 using Entities.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Repository;
 using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
-    public class ValidateCategoryExistsAttribute : ValidationFilterAttribute<Category>, IAsyncActionFilter
+    public class ValidateCategoryAttribute : ValidationFilterAttribute<Category>, IAsyncActionFilter
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
 
-        public ValidateCategoryExistsAttribute(IRepositoryManager repository, 
+        public ValidateCategoryAttribute(IRepositoryManager repository,
             ILoggerManager logger)
-            : base (logger)
+            : base(logger)
         {
             _repository = repository;
             _logger = logger;
@@ -61,16 +58,6 @@ namespace Products.ActionFilters
             if (IsValidRequstModel(context) == false)
                 return;
 
-            var categoryForCreate = context.ActionArguments["category"] as CategoryForManipulationDto;
-
-            var isExistInDatabase = await _repository.Category.CheckExistByName(categoryForCreate.Name, trackChanges: false);
-            if (isExistInDatabase)
-            {
-                _logger.LogInfo($"Category with name: \"{categoryForCreate.Name}\" exists in the database");
-                context.Result = new BadRequestObjectResult($"Category with name: \"{categoryForCreate.Name}\" exists in the database");
-                return;
-            }
-
             await next();
         }
 
@@ -81,19 +68,13 @@ namespace Products.ActionFilters
                 return;
 
             var id = (int)context.ActionArguments["id"];
-            var categoryForUpdate = context.ActionArguments["category"] as CategoryForManipulationDto;
 
             var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
             if (IsNullEntity(context, category, id))
                 return;
 
-            var isExistInDatabase = await _repository.Category.CheckExistByName(categoryForUpdate.Name, trackChanges: false);
-            if (isExistInDatabase)
-            {
-                _logger.LogInfo($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
-                context.Result = new BadRequestObjectResult($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
-                return;
-            }
+            //_logger.LogInfo($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
+            //context.Result = new BadRequestObjectResult($"Category with name: \"{categoryForUpdate.Name}\" exists in the database");
 
             await next();
         }

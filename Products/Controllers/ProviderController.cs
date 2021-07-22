@@ -47,7 +47,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> Provider with a given id </returns>
         [HttpGet("{id}", Name = "GetProvider")]
-        [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> GetProvider(int id)
         {
             //todo repair
@@ -61,7 +61,7 @@ namespace Products.Controllers
         /// <param name="provider"></param>
         /// <returns> Created provider with id </returns>
         [HttpPost(Name = "CreateProvider")]
-        [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> CreateProvider(
             [FromBody] ProviderForManipulationDto provider)
         {
@@ -81,7 +81,7 @@ namespace Products.Controllers
         /// <param name="provider"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProvider")]
-        [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> UpdateProvider(int id,
             [FromBody] ProviderForManipulationDto provider)
         {
@@ -97,12 +97,13 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProvider")]
-        [ServiceFilter(typeof(ValidateProviderExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> DeleteProvider(int id)
         {
             var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
             _repository.Provider.DeleteProvider(providerEntity);
+
             await _repository.SaveAsync();
 
             return NoContent();

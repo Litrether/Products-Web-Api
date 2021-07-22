@@ -3,19 +3,18 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Repository;
 using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
-    public class ValidateProductExistsAttribute : ValidationFilterAttribute<Product>, IAsyncActionFilter
+    public class ValidateProductAttribute : ValidationFilterAttribute<Product>, IAsyncActionFilter
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
 
-        public ValidateProductExistsAttribute(IRepositoryManager repository,
+        public ValidateProductAttribute(IRepositoryManager repository,
             ILoggerManager logger)
-            : base (logger)
+            : base(logger)
         {
             _repository = repository;
             _logger = logger;
@@ -45,7 +44,7 @@ namespace Products.ActionFilters
                     break;
             }
         }
-         
+
 
         private async Task GetByIdFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)

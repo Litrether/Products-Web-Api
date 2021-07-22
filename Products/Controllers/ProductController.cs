@@ -59,7 +59,7 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns> Product with a given id</returns>
         [HttpGet("{id}", Name = "GetProduct")]
-        [ServiceFilter(typeof(ValidateProductExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {
             if (productParameters.MaxCost < productParameters.MinCost)
@@ -76,7 +76,7 @@ namespace Products.Controllers
         /// <param name="product"></param>
         /// <returns> Created product with id </returns>
         [HttpPost(Name = "CreateProduct")]
-        [ServiceFilter(typeof(ValidateProductExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> CreateProduct(
             [FromBody] ProductForManipulationDto product)
         {
@@ -96,7 +96,7 @@ namespace Products.Controllers
         /// <param name="product"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProduct")]
-        [ServiceFilter(typeof(ValidateProductExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> UpdateProduct(int id,
             [FromBody] ProductForManipulationDto product)
         {
@@ -113,7 +113,7 @@ namespace Products.Controllers
         /// <param name="patchDoc"></param>
         /// <returns> No content </returns>
         [HttpPatch("{id}", Name = "PartiallyUpdateProduct")]
-        [ServiceFilter(typeof(ValidateProductExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> PartiallyUpdateProduct(int id,
             [FromBody] JsonPatchDocument<ProductForManipulationDto> patchDoc)
         {
@@ -146,7 +146,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProduct")]
-        [ServiceFilter(typeof(ValidateProductExistsAttribute))]
+        [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));

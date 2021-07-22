@@ -34,6 +34,16 @@ namespace Entities.Configuration
                 {
                     Id = 5,
                     Name = "Audi"
+                },
+                new Provider
+                {
+                    Id = 6,
+                    Name = "Innowise"
+                },
+                new Provider
+                {
+                    Id = 7,
+                    Name = "Apple"
                 }
             );
         }

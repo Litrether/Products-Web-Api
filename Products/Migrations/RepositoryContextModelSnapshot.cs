@@ -27,9 +27,13 @@ namespace Products.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Categories");
 
@@ -53,6 +57,16 @@ namespace Products.Migrations
                         {
                             Id = 4,
                             Name = "Car"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Software"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Laptop"
                         });
                 });
 
@@ -70,10 +84,10 @@ namespace Products.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ProviderId")
                         .HasColumnType("int");
@@ -84,6 +98,10 @@ namespace Products.Migrations
 
                     b.HasIndex("ProviderId");
 
+                    b.HasIndex("Name", "Description", "Cost", "CategoryId", "ProviderId")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL AND [Description] IS NOT NULL");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -92,7 +110,7 @@ namespace Products.Migrations
                             Id = 1,
                             CategoryId = 2,
                             Cost = 49.99m,
-                            Description = "",
+                            Description = "Best of the best keyboard in the world!",
                             Name = "Mi Keyboard",
                             ProviderId = 2
                         },
@@ -110,9 +128,45 @@ namespace Products.Migrations
                             Id = 3,
                             CategoryId = 3,
                             Cost = 15.00m,
+                            Description = "Bright color",
+                            Name = "T-shirt",
+                            ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 3,
+                            Cost = 9.99m,
+                            Description = "A lot of choice color",
+                            Name = "Shirt",
+                            ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 3,
+                            Cost = 15.00m,
                             Description = "Good hat",
                             Name = "Hat",
                             ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 5,
+                            Cost = 95.00m,
+                            Description = "You can yourself configure this bot",
+                            Name = "Telegram bot",
+                            ProviderId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 6,
+                            Cost = 1100.00m,
+                            Description = "Good choice for programmer",
+                            Name = "Macbook ",
+                            ProviderId = 7
                         });
                 });
 
@@ -124,9 +178,13 @@ namespace Products.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Providers");
 
@@ -155,6 +213,16 @@ namespace Products.Migrations
                         {
                             Id = 5,
                             Name = "Audi"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Innowise"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Apple"
                         });
                 });
 
@@ -261,22 +329,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "188fa276-9d93-4e6c-b9c3-1b1c786de049",
-                            ConcurrencyStamp = "4f6ba7d5-6882-4a15-911c-e706d0aeffe3",
+                            Id = "2dc05818-2b73-40c8-83bf-5a70551fab63",
+                            ConcurrencyStamp = "2bd9416a-5715-41a4-af23-f251e2bfeb4d",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "447a14f9-12a0-44f8-877e-0f983efa1f60",
-                            ConcurrencyStamp = "f38b7317-b367-4c9e-8a5e-3a79f4589ae3",
+                            Id = "ed902e03-0db1-4b2e-906f-656448ff71b7",
+                            ConcurrencyStamp = "ec788528-4deb-43d4-bd7d-0e755dccf32e",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "a8facbe4-3201-4576-b18c-308f1b498984",
-                            ConcurrencyStamp = "b061c0bb-3620-478d-aa50-9769169d14c1",
+                            Id = "88695675-a6bd-4826-8ec3-662bf8f1f39b",
+                            ConcurrencyStamp = "a1c7db62-96d2-481c-80dd-8929dd3d139f",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

@@ -29,6 +29,16 @@ namespace Entities.Configuration
                 {
                     Id = 4,
                     Name = "Car"
+                },
+                new Category
+                {
+                    Id = 5,
+                    Name = "Software"
+                },
+                new Category
+                {
+                    Id = 6,
+                    Name = "Laptop"
                 }
             );
         }
