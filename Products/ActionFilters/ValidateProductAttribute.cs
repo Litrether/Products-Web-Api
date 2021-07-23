@@ -23,47 +23,28 @@ namespace Products.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
+            if (IsValidRequstModel(context) == false)
+                return;
+
             var method = context.HttpContext.Request.Method;
 
-            switch (method)
+            if (method != "POST")
             {
-                case "GET":
-                    await GetByIdFilter(context, next);
-                    break;
-                case "POST":
-                    await PostFilter(context, next);
-                    break;
-                case "PUT":
-                    await PutFilter(context, next);
-                    break;
-                case "PATCH":
-                    await PatchFilter(context, next);
-                    break;
-                case "DELETE":
-                    await DeleteFilter(context, next);
-                    break;
+                var id = (int)context.ActionArguments["id"];
+
+                var product = await _repository.Product.GetProductAsync(id, trackChanges: false);
+                if (IsNullEntity(context, product, id))
+                    return;
             }
-        }
 
-
-        private async Task GetByIdFilter(ActionExecutingContext context,
-            ActionExecutionDelegate next)
-        {
-            var id = (int)context.ActionArguments["id"];
-
-            var product = await _repository.Product.GetProductAsync(id, trackChanges: false);
-            if (IsNullEntity(context, product, id))
-                return;
+            if (method == "POST" || method == "PUT")
+                await CheckExistRelatedElements(context);
 
             await next();
         }
 
-        private async Task PostFilter(ActionExecutingContext context,
-            ActionExecutionDelegate next)
+        private async Task CheckExistRelatedElements(ActionExecutingContext context)
         {
-            if (IsValidRequstModel(context) == false)
-                return;
-
             var productForCreate = context.ActionArguments["product"] as ProductForManipulationDto;
 
             var category = await _repository.Category.GetCategoryAsync(productForCreate.CategoryId, false);
@@ -83,61 +64,9 @@ namespace Products.ActionFilters
                 context.Result = new BadRequestObjectResult($"Provider with id: {productForCreate.ProviderId} doesn't exist in the database.");
                 return;
             }
-
-            await next();
-        }
-
-        private async Task PutFilter(ActionExecutingContext context,
-            ActionExecutionDelegate next)
-        {
-            if (IsValidRequstModel(context) == false)
-                return;
-
-            var id = (int)context.ActionArguments["id"];
-
-            var product = await _repository.Product.GetProductAsync(id, trackChanges: false);
-            if (IsNullEntity(context, product, id))
-                return;
-
-            var productForUpdate = context.ActionArguments["product"] as ProductForManipulationDto;
-
-            var category = await _repository.Category.GetCategoryAsync(productForUpdate.CategoryId, false);
-            if (category == null)
-            {
-                _logger.LogInfo($"Category with id: {productForUpdate.CategoryId} doesn't exist in the database.");
-
-                context.Result = new BadRequestObjectResult($"Category with id: {productForUpdate.CategoryId} doesn't exist in the database.");
-                return;
-            }
-
-            var provider = await _repository.Provider.GetProviderAsync(productForUpdate.ProviderId, false);
-            if (provider == null)
-            {
-                _logger.LogInfo($"Provider with id: {productForUpdate.ProviderId} doesn't exist in the database.");
-
-                context.Result = new BadRequestObjectResult($"Provider with id: {productForUpdate.ProviderId} doesn't exist in the database.");
-                return;
-            }
-
-            await next();
         }
 
         private async Task PatchFilter(ActionExecutingContext context,
-            ActionExecutionDelegate next)
-        {
-            if (IsValidRequstModel(context) == false)
-                return;
-
-            var id = (int)context.ActionArguments["id"];
-
-            var product = await _repository.Product.GetProductAsync(id, trackChanges: false);
-            if (IsNullEntity(context, product, id))
-                return;
-
-            await next();
-        }
-
-        private async Task DeleteFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
             var id = (int)context.ActionArguments["id"];

@@ -19,6 +19,7 @@ namespace Products.ActionFilters
             var action = context.RouteData.Values["action"];
             var controller = context.RouteData.Values["controller"];
 
+            //todo repair for different requests
             var param = context.ActionArguments
                 .SingleOrDefault(x => x.Value.ToString().Contains("Dto")).Value;
             if (param == null)
@@ -27,7 +28,6 @@ namespace Products.ActionFilters
                 context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action} ");
                 return false;
             }
-
             if (context.ModelState.IsValid == false)
             {
                 _logger.LogError($"Invalid model state for the object. Controller: { controller}, action: { action} ");
