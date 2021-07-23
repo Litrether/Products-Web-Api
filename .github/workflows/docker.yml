@@ -1,16 +1,20 @@
 name: Docker Series Builds
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
 
 jobs:
 
   build:
-  
     runs-on: ubuntu-latest
     
     steps:
-    
       - uses: actions/checkout@v2
 
-      - name: docker builds
-        run: docker build . -t litrether/products:latest
+      - name: docker builds products
+        run: docker build . -t litrether/products
