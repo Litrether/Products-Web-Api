@@ -16,5 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+	- name: docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+
       - name: docker builds products
         run: docker build . -t litrether/products
+
+      - name: docker push
+        run: docker push litrether/products:latest
