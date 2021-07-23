@@ -1,0 +1,16 @@
+name: Docker Series Builds
+
+on: [push]
+
+jobs:
+
+  build:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+      - uses: actions/checkout@v2
+
+      - name: docker builds
+        run: docker build . -t litrether/products:latest
