@@ -50,7 +50,6 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> GetProvider(int id)
         {
-            //todo repair
             var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
             var providerDto = _mapper.Map<ProviderDto>(providerEntity);

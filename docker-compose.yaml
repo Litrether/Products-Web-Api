@@ -1,0 +1,12 @@
+version: "3.4"
+services:
+  csharp: #docker run -it -v ${PWD}:/Products -w /Products -p 5000:5000 litrether/products:latest /bin/sh
+    container_name: products
+    image: litrether/products:latest
+    build:
+      context: .
+      target: debug
+    volumes:
+    - ./Products/:/Products/
+    ports:
+      - 5001:5000
