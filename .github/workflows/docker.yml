@@ -9,20 +9,19 @@ on:
   workflow_dispatch:
 
 jobs:
-
   build:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v2
-
-	- name: docker login
+      - name: docker login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}   
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
-
-      - name: docker builds products
-        run: docker build . -t litrether/products
-
-      - name: docker push
-        run: docker push litrether/products:latest
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: docker build products
+        run: |
+          docker build . -t litrether/products
+      - name: docker push products
+        run: |
+          docker push litrether/products:latest
