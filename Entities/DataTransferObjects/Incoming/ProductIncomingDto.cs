@@ -12,7 +12,7 @@ namespace Entities.DataTransferObjects.Incoming
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Product name is a required field.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Product cost can't be lower 0.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Product cost should be upper 0.01$")]
         public double Cost { get; set; }
 
         [Required(ErrorMessage = "Provider id name is a required field.")]

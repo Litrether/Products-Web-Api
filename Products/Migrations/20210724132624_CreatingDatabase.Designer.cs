@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Products.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20210724104317_CreatingDatabase")]
+    [Migration("20210724132624_CreatingDatabase")]
     partial class CreatingDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,7 +123,7 @@ namespace Products.Migrations
                         {
                             Id = 2,
                             CategoryId = 3,
-                            Cost = 25.00m,
+                            Cost = 25m,
                             Description = "Essential collection",
                             Name = "Sweatpants",
                             ProviderId = 3
@@ -132,7 +132,7 @@ namespace Products.Migrations
                         {
                             Id = 3,
                             CategoryId = 3,
-                            Cost = 15.00m,
+                            Cost = 15m,
                             Description = "Bright color",
                             Name = "T-shirt",
                             ProviderId = 3
@@ -150,7 +150,7 @@ namespace Products.Migrations
                         {
                             Id = 5,
                             CategoryId = 3,
-                            Cost = 15.00m,
+                            Cost = 15m,
                             Description = "Good hat",
                             Name = "Hat",
                             ProviderId = 3
@@ -159,7 +159,7 @@ namespace Products.Migrations
                         {
                             Id = 6,
                             CategoryId = 5,
-                            Cost = 95.00m,
+                            Cost = 95m,
                             Description = "You can yourself configure this bot",
                             Name = "Telegram bot",
                             ProviderId = 6
@@ -168,7 +168,7 @@ namespace Products.Migrations
                         {
                             Id = 7,
                             CategoryId = 6,
-                            Cost = 1100.00m,
+                            Cost = 1100m,
                             Description = "Good choice for programmer",
                             Name = "Macbook ",
                             ProviderId = 7
@@ -335,22 +335,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "eaba5b10-270f-4182-9aa2-edad38fef5a1",
-                            ConcurrencyStamp = "c518c6ca-1b63-4d02-86dc-024f4ab7a7fb",
+                            Id = "07e0c360-fafd-4a7b-a294-544c35e4a3c0",
+                            ConcurrencyStamp = "c2cb03ec-e04d-4875-bc21-1372c4d40699",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "9645a783-7804-4cb1-8024-be6525d9d006",
-                            ConcurrencyStamp = "a037fdfc-24a7-437a-bd15-60947888c1a5",
+                            Id = "f3e4634a-78e1-4424-8a2e-ae2c4c7b6749",
+                            ConcurrencyStamp = "c290152a-0224-4514-9e7d-e36fb027c454",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "62e95cd4-71f2-4873-82f8-40cc5a077242",
-                            ConcurrencyStamp = "dd31fe24-08b6-4f4b-b34f-1c57c1c3c027",
+                            Id = "3e82ef99-6e3b-45d2-96d5-be3b5fc3f70f",
+                            ConcurrencyStamp = "23f513ef-d3de-4aa6-b938-edfbe2f51834",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

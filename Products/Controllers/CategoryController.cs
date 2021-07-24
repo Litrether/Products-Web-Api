@@ -6,6 +6,7 @@ using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 
@@ -55,6 +56,7 @@ namespace Products.Controllers
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
 
             var categoryDto = _mapper.Map<CategoryOutgoingDto>(categoryEntity);
+
             return Ok(categoryDto);
         }
 
@@ -62,6 +64,7 @@ namespace Products.Controllers
         /// <param name="category"></param>
         /// <returns> Created category with id </returns>
         [HttpPost(Name = "CreateCategory")]
+        [Authorize(Roles = ("Administrator"))]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> CreateCategory(
             [FromBody] CategoryIncomingDto category)
@@ -69,7 +72,6 @@ namespace Products.Controllers
             var categoryEntity = _mapper.Map<Category>(category);
 
             _repository.Category.CreateCategory(categoryEntity);
-
 
             try
             {
@@ -92,6 +94,7 @@ namespace Products.Controllers
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateCategory")]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
+        [Authorize(Roles = ("Administrator"))]
         public async Task<IActionResult> UpdateCategory(int id,
             [FromBody] CategoryIncomingDto category)
         {
@@ -115,6 +118,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteCategory")]
+        [Authorize(Roles = ("Administrator"))]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> DeleteCategory(int id)
         {

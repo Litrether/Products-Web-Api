@@ -189,7 +189,7 @@ namespace Products.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Cost = table.Column<double>(type: "money", nullable: false),
+                    Cost = table.Column<decimal>(type: "money", nullable: false),
                     ProviderId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -215,9 +215,9 @@ namespace Products.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "eaba5b10-270f-4182-9aa2-edad38fef5a1", "c518c6ca-1b63-4d02-86dc-024f4ab7a7fb", "User", "USER" },
-                    { "9645a783-7804-4cb1-8024-be6525d9d006", "a037fdfc-24a7-437a-bd15-60947888c1a5", "Manager", "MANAGER" },
-                    { "62e95cd4-71f2-4873-82f8-40cc5a077242", "dd31fe24-08b6-4f4b-b34f-1c57c1c3c027", "Administrator", "ADMINISTRATOR" }
+                    { "07e0c360-fafd-4a7b-a294-544c35e4a3c0", "c2cb03ec-e04d-4875-bc21-1372c4d40699", "User", "USER" },
+                    { "f3e4634a-78e1-4424-8a2e-ae2c4c7b6749", "c290152a-0224-4514-9e7d-e36fb027c454", "Manager", "MANAGER" },
+                    { "3e82ef99-6e3b-45d2-96d5-be3b5fc3f70f", "23f513ef-d3de-4aa6-b938-edfbe2f51834", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -253,12 +253,12 @@ namespace Products.Migrations
                 values: new object[,]
                 {
                     { 1, 2, 49.99m, "Best of the best keyboard in the world!", "Mi Keyboard", 2 },
-                    { 2, 3, 25.00m, "Essential collection", "Sweatpants", 3 },
-                    { 3, 3, 15.00m, "Bright color", "T-shirt", 3 },
+                    { 2, 3, 25m, "Essential collection", "Sweatpants", 3 },
+                    { 3, 3, 15m, "Bright color", "T-shirt", 3 },
                     { 4, 3, 9.99m, "A lot of choice color", "Shirt", 3 },
-                    { 5, 3, 15.00m, "Good hat", "Hat", 3 },
-                    { 6, 5, 95.00m, "You can yourself configure this bot", "Telegram bot", 6 },
-                    { 7, 6, 1100.00m, "Good choice for programmer", "Macbook ", 7 }
+                    { 5, 3, 15m, "Good hat", "Hat", 3 },
+                    { 6, 5, 95m, "You can yourself configure this bot", "Telegram bot", 6 },
+                    { 7, 6, 1100m, "Good choice for programmer", "Macbook ", 7 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -12,22 +12,15 @@ namespace Products
             CreateMap<Product, ProductOutgoingDto>()
                 .ForMember(p => p.Category, opt => opt.MapFrom(x => x.Category.Name))
                 .ForMember(p => p.Provider, opt => opt.MapFrom(x => x.Provider.Name));
-
-            CreateMap<Provider, ProviderOutgoingDto>();
-
-            CreateMap<Category, CategoryOutgoingDto>();
-
-
-            //CreateMap<ProductForManipulationDto, Product>();
             CreateMap<ProductIncomingDto, Product>().ReverseMap();
 
+            CreateMap<Provider, ProviderOutgoingDto>();
             CreateMap<ProviderIncomingDto, Provider>();
 
+            CreateMap<Category, CategoryOutgoingDto>();
             CreateMap<CategoryIncomingDto, Category>();
 
-
             CreateMap<UserRegistrationDto, User>();
-
             CreateMap<UserValidationDto, User>();
         }
     }

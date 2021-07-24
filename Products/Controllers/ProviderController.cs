@@ -6,6 +6,7 @@ using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 
@@ -28,6 +29,7 @@ namespace Products.Controllers
             _logger = logger;
             _mapper = mapper;
         }
+
 
         /// <summary> Get list of all providers </summary>
         /// <param name="providerParameters"></param>
@@ -61,6 +63,7 @@ namespace Products.Controllers
         /// <param name="provider"></param>
         /// <returns> Created provider with id </returns>
         [HttpPost(Name = "CreateProvider")]
+        [Authorize(Roles = ("Administrator"))]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> CreateProvider(
             [FromBody] ProviderIncomingDto provider)
@@ -89,6 +92,7 @@ namespace Products.Controllers
         /// <param name="provider"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProvider")]
+        [Authorize(Roles = ("Administrator"))]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> UpdateProvider(int id,
             [FromBody] ProviderIncomingDto provider)
@@ -113,6 +117,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProvider")]
+        [Authorize(Roles = ("Administrator"))]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> DeleteProvider(int id)
         {

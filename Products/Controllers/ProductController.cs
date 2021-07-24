@@ -6,16 +6,15 @@ using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 
 namespace Products.Controllers
 {
-    //todo Add for methods and controller role access
     [Route("api/products")]
     [ApiController]
-    //[Authorize]
     [ResponseCache(CacheProfileName = "180SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class ProductController : ControllerBase
@@ -79,6 +78,7 @@ namespace Products.Controllers
         /// <param name="product"></param>
         /// <returns> Created product with id </returns>
         [HttpPost(Name = "CreateProduct")]
+        [Authorize(Roles = ("Administrator, Manager"))]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> CreateProduct(
             [FromBody] ProductIncomingDto product)
@@ -107,6 +107,7 @@ namespace Products.Controllers
         /// <param name="product"></param>
         /// <returns> No content </returns>
         [HttpPut("{id}", Name = "UpdateProduct")]
+        [Authorize(Roles = ("Administrator, Manager"))]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> UpdateProduct(int id,
             [FromBody] ProductIncomingDto product)
@@ -132,6 +133,7 @@ namespace Products.Controllers
         /// <param name="patchDoc"></param>
         /// <returns> No content </returns>
         [HttpPatch("{id}", Name = "PartiallyUpdateProduct")]
+        [Authorize(Roles = ("Administrator, Manager"))]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> PartiallyUpdateProduct(int id,
             [FromBody] JsonPatchDocument<ProductIncomingDto> patchDoc)
@@ -146,9 +148,10 @@ namespace Products.Controllers
 
             var productToPatch = _mapper.Map<ProductIncomingDto>(productEntity);
 
-            patchDoc.ApplyTo(productToPatch, ModelState);
+            patchDoc.ApplyTo(productToPatch);
 
-            if (ModelState.IsValid == false)
+            ModelState.ClearValidationState(nameof(ProductIncomingDto));
+            if (TryValidateModel(productToPatch, nameof(ProductIncomingDto)) == false)
             {
                 _logger.LogError("Invalid model state for the patch document.");
                 return UnprocessableEntity(ModelState);
@@ -172,6 +175,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> No content </returns>
         [HttpDelete("{id}", Name = "DeleteProduct")]
+        [Authorize(Roles = ("Administrator, Manager"))]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> DeleteProduct(int id)
         {

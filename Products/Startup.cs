@@ -34,6 +34,7 @@ namespace Products
             services.ConfigureSwagger();
             services.ConfigureVersioning();
             services.ConfigureAuthenticationManager();
+            services.ConfigureRoleManager();
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
             services.AddAuthentication();

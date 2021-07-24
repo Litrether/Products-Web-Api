@@ -101,7 +101,7 @@
         <member name="M:Messenger.Controllers.AccountController.DeleteUser(Entities.DataTransferObjects.Incoming.UserValidationDto)">
             <summary> Delete user after authenticate </summary>
             <param name="user"></param>
-            <returns>Bearer token</returns>
+            <returns>No content</returns>
         </member>
     </members>
 </doc>

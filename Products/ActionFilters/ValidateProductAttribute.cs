@@ -68,18 +68,5 @@ namespace Products.ActionFilters
 
             return true;
         }
-
-        //todo Create Patch validation filter
-        private async Task PatchFilter(ActionExecutingContext context,
-            ActionExecutionDelegate next)
-        {
-            var id = (int)context.ActionArguments["id"];
-
-            var product = await _repository.Product.GetProductAsync(id, trackChanges: false);
-            if (IsNullEntity(context, product, id))
-                return;
-
-            await next();
-        }
     }
 }

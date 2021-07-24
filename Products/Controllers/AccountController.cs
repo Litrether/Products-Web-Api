@@ -9,9 +9,9 @@ using Products.ActionFilters;
 
 namespace Messenger.Controllers
 {
-    [ApiVersion("1.0")]
     [Route("api/account")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class AccountController : ControllerBase
     {
         private readonly ILoggerManager _logger;
@@ -36,25 +36,23 @@ namespace Messenger.Controllers
             [FromBody] UserRegistrationDto userForRegistration)
         {
             var user = _mapper.Map<User>(userForRegistration);
-
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
-            if (result.Succeeded == false)
-            {
-                foreach (var error in result.Errors)
-                    ModelState.TryAddModelError(error.Code, error.Description);
-
-                return BadRequest(ModelState);
-            }
-
             try
             {
-                await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+                var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+                if (result.Succeeded == false)
+                {
+                    foreach (var error in result.Errors)
+                        ModelState.TryAddModelError(error.Code, error.Description);
+
+                    return BadRequest(ModelState);
+                }
             }
-            catch
+            catch (System.Exception ex)
             {
-                return BadRequest($"One or all roles doesn't exist: {string.Join(' ', userForRegistration.Roles)}/ \n\r" +
-                    $"Possible roles: Administrator, Manager and User/");
+                return BadRequest(ex.InnerException.Message);
             }
+
+            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
             return StatusCode(201);
         }
@@ -73,7 +71,7 @@ namespace Messenger.Controllers
 
         /// <summary> Delete user after authenticate </summary>
         /// <param name="user"></param>
-        /// <returns>Bearer token</returns>
+        /// <returns>No content</returns>
         [HttpDelete("delete")]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> DeleteUser(
@@ -90,7 +88,7 @@ namespace Messenger.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok();
+            return NoContent();
         }
     }
 }

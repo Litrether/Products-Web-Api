@@ -50,6 +50,9 @@ namespace Products.Extensions
         public static void ConfigureAuthenticationManager(this IServiceCollection services) =>
             services.AddScoped<IAutenticationManager, AuthenticationManager>();
 
+        public static void ConfigureRoleManager(this IServiceCollection services) =>
+            services.AddScoped<RoleManager<IdentityRole>>();
+
         public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
             services.AddScoped<ICurrencyApiConnection, CurrencyApiConnectionERA>();
 
@@ -173,17 +176,17 @@ namespace Products.Extensions
 
         public static void ConfigureValidationAttributes(this IServiceCollection services)
         {
+            services.AddScoped<ValidateAccountAttribute>();
+            services.AddScoped<ValidateCategoryAttribute>();
             services.AddScoped<ValidateProductAttribute>();
             services.AddScoped<ValidateProviderAttribute>();
-            services.AddScoped<ValidateCategoryAttribute>();
-            //services.AddScoped<ValidationFilterAttribute>();
         }
 
         public static void ConfigureDataShaper(this IServiceCollection services)
         {
+            services.AddScoped<IDataShaper<CategoryOutgoingDto>, DataShaper<CategoryOutgoingDto>>();
             services.AddScoped<IDataShaper<ProductOutgoingDto>, DataShaper<ProductOutgoingDto>>();
             services.AddScoped<IDataShaper<ProviderOutgoingDto>, DataShaper<ProviderOutgoingDto>>();
-            services.AddScoped<IDataShaper<CategoryOutgoingDto>, DataShaper<CategoryOutgoingDto>>();
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services) =>
