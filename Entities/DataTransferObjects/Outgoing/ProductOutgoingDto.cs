@@ -1,6 +1,6 @@
-﻿namespace Entities.DataTransferObjects
+﻿namespace Entities.DataTransferObjects.Outcoming
 {
-    public class ProductDto
+    public class ProductOutgoingDto
     {
         public int Id { get; set; }
 
@@ -8,7 +8,7 @@
 
         public string Description { get; set; }
 
-        public decimal Cost { get; set; }
+        public double Cost { get; set; }
 
         public string Category { get; set; }
 

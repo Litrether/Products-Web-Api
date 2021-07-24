@@ -1,8 +1,8 @@
-﻿using Contracts;
+﻿using System;
+using System.Threading.Tasks;
+using Contracts;
 using Entities;
 using Repository;
-using System;
-using System.Threading.Tasks;
 
 namespace Products.Managers
 {
@@ -50,9 +50,17 @@ namespace Products.Managers
                 return _providerRepository;
             }
         }
-        // for commits
-        //todo Обработчик дубликатов.
-        public async Task SaveAsync() =>
+
+        public async Task SaveAsync()
+        {
+            try
+            {
                 await _repositoryContext.SaveChangesAsync();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

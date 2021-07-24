@@ -1,13 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Contracts;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Incoming;
+using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -20,13 +21,13 @@ namespace Products.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ICurrencyApiConnection _currencyConnection;
-        private readonly IDataShaper<ProductDto> _dataShaper;
+        private readonly IDataShaper<ProductOutgoingDto> _dataShaper;
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
         public ProductController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper,
-             IDataShaper<ProductDto> dataShaper, ICurrencyApiConnection currencyConnection)
+             IDataShaper<ProductOutgoingDto> dataShaper, ICurrencyApiConnection currencyConnection)
         {
             _repository = repository;
             _logger = logger;
@@ -49,7 +50,7 @@ namespace Products.Controllers
 
             var products = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
 
-            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(products);
+            var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
             return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
         }
@@ -63,11 +64,13 @@ namespace Products.Controllers
         public async Task<IActionResult> GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {
             if (productParameters.MaxCost < productParameters.MinCost)
-                return BadRequest("Invalid cost range");
+                return BadRequest("Invalid cost range.");
 
-            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
+            var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
-            var productDto = _mapper.Map<ProductDto>(productEntity);
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, exchangeRate);
+
+            var productDto = _mapper.Map<ProductOutgoingDto>(productEntity);
 
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));
         }
@@ -78,14 +81,22 @@ namespace Products.Controllers
         [HttpPost(Name = "CreateProduct")]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> CreateProduct(
-            [FromBody] ProductForManipulationDto product)
+            [FromBody] ProductIncomingDto product)
         {
             var productEntity = _mapper.Map<Product>(product);
 
             _repository.Product.CreateProduct(productEntity);
-            await _repository.SaveAsync();
 
-            var productToReturn = _mapper.Map<ProductDto>(productEntity);
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
+
+            var productToReturn = _mapper.Map<ProductOutgoingDto>(productEntity);
 
             return RedirectToRoute("GetProduct",
                 new { id = productToReturn.Id });
@@ -98,12 +109,20 @@ namespace Products.Controllers
         [HttpPut("{id}", Name = "UpdateProduct")]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> UpdateProduct(int id,
-            [FromBody] ProductForManipulationDto product)
+            [FromBody] ProductIncomingDto product)
         {
-            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: true);
 
             _mapper.Map(product, productEntity);
-            await _repository.SaveAsync();
+
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }
@@ -115,29 +134,36 @@ namespace Products.Controllers
         [HttpPatch("{id}", Name = "PartiallyUpdateProduct")]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> PartiallyUpdateProduct(int id,
-            [FromBody] JsonPatchDocument<ProductForManipulationDto> patchDoc)
+            [FromBody] JsonPatchDocument<ProductIncomingDto> patchDoc)
         {
             if (patchDoc == null)
             {
                 _logger.LogError("patchDoc object sent from client is null.");
-                return BadRequest("patchDoc object is null");
+                return BadRequest("PatchDoc object is null.");
             }
 
-            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: true);
 
-            var productToPatch = _mapper.Map<ProductForManipulationDto>(productEntity);
+            var productToPatch = _mapper.Map<ProductIncomingDto>(productEntity);
 
             patchDoc.ApplyTo(productToPatch, ModelState);
 
             if (ModelState.IsValid == false)
             {
-                _logger.LogError("Invalid model state for the patch document");
+                _logger.LogError("Invalid model state for the patch document.");
                 return UnprocessableEntity(ModelState);
             }
 
             _mapper.Map(productToPatch, productEntity);
 
-            await _repository.SaveAsync();
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }
@@ -149,10 +175,18 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, default(decimal));
+            var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false);
 
             _repository.Product.DeleteProduct(productEntity);
-            await _repository.SaveAsync();
+
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }

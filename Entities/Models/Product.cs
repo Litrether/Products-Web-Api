@@ -8,7 +8,7 @@
 
         public string Description { get; set; }
 
-        public decimal Cost { get; set; }
+        public double Cost { get; set; }
 
         public int ProviderId { get; set; }
         public Provider Provider { get; set; }

@@ -1,10 +1,10 @@
-﻿using Contracts;
+﻿using System.Threading.Tasks;
+using Contracts;
 using Entities;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -16,7 +16,7 @@ namespace Repository
         }
 
         public async Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters,
-            bool trackChanges, decimal exchangeRate = default(decimal))
+            bool trackChanges, double exchangeRate = default(double))
         {
             var products = await FindAll(trackChanges)
                 .Search(productParameters.SearchTerm)
@@ -32,7 +32,7 @@ namespace Repository
                 .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
 
-        public async Task<Product> GetProductAsync(int productId, bool trackChanges, decimal exchangeRate = default(decimal))
+        public async Task<Product> GetProductAsync(int productId, bool trackChanges, double exchangeRate = default(double))
         {
             var product = await FindByCondition(c => c.Id.Equals(productId), trackChanges)
                 .IncludeFields()

@@ -12,6 +12,6 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
         public long LastUpdated { get; set; }
 
         [JsonPropertyName("exchange_rates")]
-        public Dictionary<string, decimal> ExchangeRates { get; set; }
+        public Dictionary<string, double> ExchangeRates { get; set; }
     }
 }

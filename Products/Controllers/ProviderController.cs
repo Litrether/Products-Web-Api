@@ -1,12 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Contracts;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Incoming;
+using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -38,7 +39,7 @@ namespace Products.Controllers
             var providers = await _repository.Provider.GetAllProvidersAsync(
                 providerParameters, trackChanges: false);
 
-            var providersDto = _mapper.Map<IEnumerable<ProviderDto>>(providers);
+            var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
 
             return Ok(providersDto);
         }
@@ -52,7 +53,7 @@ namespace Products.Controllers
         {
             var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
 
-            var providerDto = _mapper.Map<ProviderDto>(providerEntity);
+            var providerDto = _mapper.Map<ProviderOutgoingDto>(providerEntity);
             return Ok(providerDto);
         }
 
@@ -62,14 +63,22 @@ namespace Products.Controllers
         [HttpPost(Name = "CreateProvider")]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> CreateProvider(
-            [FromBody] ProviderForManipulationDto provider)
+            [FromBody] ProviderIncomingDto provider)
         {
             var providerEntity = _mapper.Map<Provider>(provider);
 
             _repository.Provider.CreateProvider(providerEntity);
-            await _repository.SaveAsync();
 
-            var providerToReturn = _mapper.Map<ProviderDto>(providerEntity);
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
+
+            var providerToReturn = _mapper.Map<ProviderOutgoingDto>(providerEntity);
 
             return RedirectToRoute("GetProvider",
                 new { id = providerToReturn.Id });
@@ -82,12 +91,20 @@ namespace Products.Controllers
         [HttpPut("{id}", Name = "UpdateProvider")]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> UpdateProvider(int id,
-            [FromBody] ProviderForManipulationDto provider)
+            [FromBody] ProviderIncomingDto provider)
         {
-            var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: false);
+            var providerEntity = await _repository.Provider.GetProviderAsync(id, trackChanges: true);
 
             _mapper.Map(provider, providerEntity);
-            await _repository.SaveAsync();
+
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }
@@ -103,7 +120,14 @@ namespace Products.Controllers
 
             _repository.Provider.DeleteProvider(providerEntity);
 
-            await _repository.SaveAsync();
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }

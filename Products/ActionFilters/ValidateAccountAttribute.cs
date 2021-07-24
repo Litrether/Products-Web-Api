@@ -1,9 +1,9 @@
-﻿using Contracts;
-using Entities.DataTransferObjects;
+﻿using System.Threading.Tasks;
+using Contracts;
+using Entities.DataTransferObjects.Incoming;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
@@ -24,19 +24,20 @@ namespace Products.ActionFilters
         {
             var requestPath = context.HttpContext.Request.Path.Value;
             var needValidateUser = requestPath.Contains("login") || requestPath.Contains("delete");
+            var method = context.HttpContext.Request.Method;
 
-            if (IsValidRequstModel(context) == false)
+            if (IsValidRequstModel(context, method) == false)
                 return;
 
-            if (needValidateUser && await TryValidateUser(context))
+            if (needValidateUser && await IsValidUser(context))
                 return;
 
             await next();
         }
 
-        private async Task<bool> TryValidateUser(ActionExecutingContext context)
+        private async Task<bool> IsValidUser(ActionExecutingContext context)
         {
-            var user = context.ActionArguments["user"] as UserForManipulationDto;
+            var user = context.ActionArguments["user"] as UserValidationDto;
 
             if (await _authManager.ValidateUser(user))
             {

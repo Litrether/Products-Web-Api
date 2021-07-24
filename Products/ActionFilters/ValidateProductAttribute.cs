@@ -1,9 +1,9 @@
-﻿using Contracts;
-using Entities.DataTransferObjects;
+﻿using System.Threading.Tasks;
+using Contracts;
+using Entities.DataTransferObjects.Incoming;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
@@ -23,10 +23,11 @@ namespace Products.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
-            if (IsValidRequstModel(context) == false)
-                return;
-
             var method = context.HttpContext.Request.Method;
+            var needCheckRelatedElements = method == "POST" || method == "PUT";
+
+            if (IsValidRequstModel(context, method) == false)
+                return;
 
             if (method != "POST")
             {
@@ -37,15 +38,15 @@ namespace Products.ActionFilters
                     return;
             }
 
-            if (method == "POST" || method == "PUT")
-                await CheckExistRelatedElements(context);
+            if (needCheckRelatedElements && await RelatedElementsExist(context) == false)
+                return;
 
             await next();
         }
 
-        private async Task CheckExistRelatedElements(ActionExecutingContext context)
+        private async Task<bool> RelatedElementsExist(ActionExecutingContext context)
         {
-            var productForCreate = context.ActionArguments["product"] as ProductForManipulationDto;
+            var productForCreate = context.ActionArguments["product"] as ProductIncomingDto;
 
             var category = await _repository.Category.GetCategoryAsync(productForCreate.CategoryId, false);
             if (category == null)
@@ -53,7 +54,7 @@ namespace Products.ActionFilters
                 _logger.LogInfo($"Category with id: {productForCreate.CategoryId} doesn't exist in the database.");
 
                 context.Result = new BadRequestObjectResult($"Category with id: {productForCreate.CategoryId} doesn't exist in the database.");
-                return;
+                return false;
             }
 
             var provider = await _repository.Provider.GetProviderAsync(productForCreate.ProviderId, false);
@@ -62,10 +63,13 @@ namespace Products.ActionFilters
                 _logger.LogInfo($"Provider with id: {productForCreate.ProviderId} doesn't exist in the database.");
 
                 context.Result = new BadRequestObjectResult($"Provider with id: {productForCreate.ProviderId} doesn't exist in the database.");
-                return;
+                return false;
             }
+
+            return true;
         }
 
+        //todo Create Patch validation filter
         private async Task PatchFilter(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {

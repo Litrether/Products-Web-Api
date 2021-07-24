@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities.DataTransferObjects
+namespace Entities.DataTransferObjects.Incoming
 {
-    public class UserForRegistrationDto
+    public class UserRegistrationDto
     {
         [Required(ErrorMessage = "User first name is a required field.")]
         [MaxLength(75, ErrorMessage = "Maximum length for the first name is 75 characters.")]

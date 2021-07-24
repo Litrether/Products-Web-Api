@@ -2,6 +2,6 @@
 {
     public interface ICurrencyApiConnection
     {
-        public decimal GetExchangeRate(string currencyName);
+        public double GetExchangeRate(string currencyName);
     }
 }

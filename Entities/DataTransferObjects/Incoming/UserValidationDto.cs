@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entities.DataTransferObjects
+namespace Entities.DataTransferObjects.Incoming
 {
-    public class UserForManipulationDto
+    public class UserValidationDto
     {
         [Required(ErrorMessage = "Username is required field.")]
         public string UserName { get; set; }

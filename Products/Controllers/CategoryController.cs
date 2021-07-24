@@ -1,12 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Contracts;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Incoming;
+using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -39,7 +40,7 @@ namespace Products.Controllers
             var categories = await _repository.Category.GetAllCategoriesAsync(
                 categoryParameters, trackChanges: false);
 
-            var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+            var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
 
             return Ok(categoriesDto);
         }
@@ -53,7 +54,7 @@ namespace Products.Controllers
         {
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
 
-            var categoryDto = _mapper.Map<CategoryDto>(categoryEntity);
+            var categoryDto = _mapper.Map<CategoryOutgoingDto>(categoryEntity);
             return Ok(categoryDto);
         }
 
@@ -63,14 +64,23 @@ namespace Products.Controllers
         [HttpPost(Name = "CreateCategory")]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> CreateCategory(
-            [FromBody] CategoryForManipulationDto category)
+            [FromBody] CategoryIncomingDto category)
         {
             var categoryEntity = _mapper.Map<Category>(category);
 
             _repository.Category.CreateCategory(categoryEntity);
-            await _repository.SaveAsync();
 
-            var categoryToReturn = _mapper.Map<CategoryDto>(categoryEntity);
+
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
+
+            var categoryToReturn = _mapper.Map<CategoryOutgoingDto>(categoryEntity);
 
             return RedirectToRoute("GetCategory",
                 new { id = categoryToReturn.Id });
@@ -83,13 +93,20 @@ namespace Products.Controllers
         [HttpPut("{id}", Name = "UpdateCategory")]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> UpdateCategory(int id,
-            [FromBody] CategoryForManipulationDto category)
+            [FromBody] CategoryIncomingDto category)
         {
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: true);
 
             _mapper.Map(category, categoryEntity);
 
-            
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }
@@ -104,7 +121,15 @@ namespace Products.Controllers
             var categoryEntity = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
 
             _repository.Category.DeleteCategory(categoryEntity);
-            await _repository.SaveAsync();
+
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }

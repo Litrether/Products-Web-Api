@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entities.DataTransferObjects
+namespace Entities.DataTransferObjects.Incoming
 {
-    public class ProviderForManipulationDto
+    public class ProviderIncomingDto
     {
         [Required(ErrorMessage = "Provider name is a required field.")]
         [MaxLength(75, ErrorMessage = "Maximum length for the name is 75 characters.")]

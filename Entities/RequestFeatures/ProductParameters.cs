@@ -17,8 +17,8 @@
 
         public string Providers { get; set; }
 
-        public decimal MinCost { get; set; }
+        public double MinCost { get; set; }
 
-        public decimal MaxCost { get; set; } = decimal.MaxValue;
+        public double MaxCost { get; set; } = double.MaxValue;
     }
 }

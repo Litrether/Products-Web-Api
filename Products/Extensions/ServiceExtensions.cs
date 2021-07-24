@@ -1,7 +1,12 @@
-﻿using Contracts;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using Contracts;
 using CurrencyConverter.ExchangeRatesAbstractAPI;
 using Entities;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,11 +22,6 @@ using Microsoft.OpenApi.Models;
 using Products.ActionFilters;
 using Products.Managers;
 using Repository.DataShaping;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
 
 namespace Products.Extensions
 {
@@ -181,9 +181,9 @@ namespace Products.Extensions
 
         public static void ConfigureDataShaper(this IServiceCollection services)
         {
-            services.AddScoped<IDataShaper<ProductDto>, DataShaper<ProductDto>>();
-            services.AddScoped<IDataShaper<ProviderDto>, DataShaper<ProviderDto>>();
-            services.AddScoped<IDataShaper<CategoryDto>, DataShaper<CategoryDto>>();
+            services.AddScoped<IDataShaper<ProductOutgoingDto>, DataShaper<ProductOutgoingDto>>();
+            services.AddScoped<IDataShaper<ProviderOutgoingDto>, DataShaper<ProviderOutgoingDto>>();
+            services.AddScoped<IDataShaper<CategoryOutgoingDto>, DataShaper<CategoryOutgoingDto>>();
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services) =>

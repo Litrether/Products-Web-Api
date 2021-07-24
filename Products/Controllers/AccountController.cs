@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Contracts;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Incoming;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
-using System.Threading.Tasks;
 
 namespace Messenger.Controllers
 {
@@ -33,7 +33,7 @@ namespace Messenger.Controllers
         [HttpPost]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> RegisterUser(
-            [FromBody] UserForRegistrationDto userForRegistration)
+            [FromBody] UserRegistrationDto userForRegistration)
         {
             var user = _mapper.Map<User>(userForRegistration);
 
@@ -52,8 +52,8 @@ namespace Messenger.Controllers
             }
             catch
             {
-                return BadRequest($"One or all roles doesn't exist: {string.Join(' ', userForRegistration.Roles)} \n\r" +
-                    $"Possible roles: Administrator, Manager and User");
+                return BadRequest($"One or all roles doesn't exist: {string.Join(' ', userForRegistration.Roles)}/ \n\r" +
+                    $"Possible roles: Administrator, Manager and User/");
             }
 
             return StatusCode(201);
@@ -66,7 +66,7 @@ namespace Messenger.Controllers
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> Authenticate(
-            [FromBody] UserForManipulationDto user)
+            [FromBody] UserValidationDto user)
         {
             return Ok(new { Token = await _authManager.CreateToken() });
         }
@@ -77,7 +77,7 @@ namespace Messenger.Controllers
         [HttpDelete("delete")]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> DeleteUser(
-            [FromBody] UserForManipulationDto user)
+            [FromBody] UserValidationDto user)
         {
             var userForDelete = await _userManager.FindByNameAsync(user.UserName);
 

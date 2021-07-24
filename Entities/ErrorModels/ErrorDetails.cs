@@ -9,6 +9,6 @@ namespace Entities.ErrorModels
         public string Message { get; set; }
 
         public override string ToString() =>
-                JsonSerializer.Serialize(this);
+            JsonSerializer.Serialize(this);
     }
 }

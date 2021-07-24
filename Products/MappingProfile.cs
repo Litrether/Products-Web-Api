@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Entities.DataTransferObjects;
+using Entities.DataTransferObjects.Incoming;
+using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 
 namespace Products
@@ -8,26 +9,26 @@ namespace Products
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDto>()
+            CreateMap<Product, ProductOutgoingDto>()
                 .ForMember(p => p.Category, opt => opt.MapFrom(x => x.Category.Name))
                 .ForMember(p => p.Provider, opt => opt.MapFrom(x => x.Provider.Name));
 
-            CreateMap<Provider, ProviderDto>();
+            CreateMap<Provider, ProviderOutgoingDto>();
 
-            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryOutgoingDto>();
 
 
             //CreateMap<ProductForManipulationDto, Product>();
-            CreateMap<ProductForManipulationDto, Product>().ReverseMap();
+            CreateMap<ProductIncomingDto, Product>().ReverseMap();
 
-            CreateMap<ProviderForManipulationDto, Provider>();
+            CreateMap<ProviderIncomingDto, Provider>();
 
-            CreateMap<CategoryForManipulationDto, Category>();
+            CreateMap<CategoryIncomingDto, Category>();
 
 
-            CreateMap<UserForRegistrationDto, User>();
+            CreateMap<UserRegistrationDto, User>();
 
-            CreateMap<UserForManipulationDto, User>();
+            CreateMap<UserValidationDto, User>();
         }
     }
 }

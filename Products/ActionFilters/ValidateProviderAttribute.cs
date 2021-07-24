@@ -1,7 +1,7 @@
-﻿using Contracts;
+﻿using System.Threading.Tasks;
+using Contracts;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {
@@ -21,10 +21,12 @@ namespace Products.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
-            if (IsValidRequstModel(context) == false)
+            var method = context.HttpContext.Request.Method;
+
+            if (IsValidRequstModel(context, method) == false)
                 return;
 
-            if (context.HttpContext.Request.Method != "POST")
+            if (method != "POST")
             {
                 var id = (int)context.ActionArguments["id"];
 
@@ -32,6 +34,7 @@ namespace Products.ActionFilters
                 if (IsNullEntity(context, provider, id))
                     return;
             }
+
             await next();
         }
     }

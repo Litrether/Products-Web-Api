@@ -1,3 +1,4 @@
+using System.IO;
 using Contracts;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using Products.Extensions;
-using System.IO;
 
 namespace Products
 {
@@ -25,7 +25,6 @@ namespace Products
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //todo Add caching
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerServices();
@@ -73,7 +72,6 @@ namespace Products
                 ForwardedHeaders = ForwardedHeaders.All
             });
 
-            //todo add using ETag and Validation
             app.UseResponseCaching();
             app.UseHttpCacheHeaders();
 

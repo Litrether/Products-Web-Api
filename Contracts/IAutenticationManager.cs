@@ -1,11 +1,11 @@
-﻿using Entities.DataTransferObjects;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Entities.DataTransferObjects.Incoming;
 
 namespace Contracts
 {
     public interface IAutenticationManager
     {
-        public Task<bool> ValidateUser(UserForManipulationDto userForAuth);
+        public Task<bool> ValidateUser(UserValidationDto userForAuth);
 
         public Task<string> CreateToken();
     }

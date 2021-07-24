@@ -81,13 +81,16 @@ namespace Products.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<int>("ProviderId")
                         .HasColumnType("int");
@@ -178,13 +181,14 @@ namespace Products.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Providers");
 
@@ -329,22 +333,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2dc05818-2b73-40c8-83bf-5a70551fab63",
-                            ConcurrencyStamp = "2bd9416a-5715-41a4-af23-f251e2bfeb4d",
+                            Id = "eaba5b10-270f-4182-9aa2-edad38fef5a1",
+                            ConcurrencyStamp = "c518c6ca-1b63-4d02-86dc-024f4ab7a7fb",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "ed902e03-0db1-4b2e-906f-656448ff71b7",
-                            ConcurrencyStamp = "ec788528-4deb-43d4-bd7d-0e755dccf32e",
+                            Id = "9645a783-7804-4cb1-8024-be6525d9d006",
+                            ConcurrencyStamp = "a037fdfc-24a7-437a-bd15-60947888c1a5",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "88695675-a6bd-4826-8ec3-662bf8f1f39b",
-                            ConcurrencyStamp = "a1c7db62-96d2-481c-80dd-8929dd3d139f",
+                            Id = "62e95cd4-71f2-4873-82f8-40cc5a077242",
+                            ConcurrencyStamp = "dd31fe24-08b6-4f4b-b34f-1c57c1c3c027",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

@@ -1,6 +1,6 @@
-﻿namespace Entities.DataTransferObjects
+﻿namespace Entities.DataTransferObjects.Outcoming
 {
-    public class CategoryDto
+    public class ProviderOutgoingDto
     {
         public int Id { get; set; }
 

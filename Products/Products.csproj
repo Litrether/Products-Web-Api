@@ -9,7 +9,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>5</WarningLevel>
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>C:\Users\user\source\repos\Products-Web-Api\Products\Products.xml</DocumentationFile>
+    <DocumentationFile>Products.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

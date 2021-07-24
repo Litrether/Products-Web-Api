@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Products.Migrations
 {
-    public partial class InitDatabase : Migration
+    public partial class CreatingDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,7 +68,7 @@ namespace Products.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -187,9 +187,9 @@ namespace Products.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Cost = table.Column<double>(type: "money", nullable: false),
                     ProviderId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -215,9 +215,9 @@ namespace Products.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2dc05818-2b73-40c8-83bf-5a70551fab63", "2bd9416a-5715-41a4-af23-f251e2bfeb4d", "User", "USER" },
-                    { "ed902e03-0db1-4b2e-906f-656448ff71b7", "ec788528-4deb-43d4-bd7d-0e755dccf32e", "Manager", "MANAGER" },
-                    { "88695675-a6bd-4826-8ec3-662bf8f1f39b", "a1c7db62-96d2-481c-80dd-8929dd3d139f", "Administrator", "ADMINISTRATOR" }
+                    { "eaba5b10-270f-4182-9aa2-edad38fef5a1", "c518c6ca-1b63-4d02-86dc-024f4ab7a7fb", "User", "USER" },
+                    { "9645a783-7804-4cb1-8024-be6525d9d006", "a037fdfc-24a7-437a-bd15-60947888c1a5", "Manager", "MANAGER" },
+                    { "62e95cd4-71f2-4873-82f8-40cc5a077242", "dd31fe24-08b6-4f4b-b34f-1c57c1c3c027", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -328,8 +328,7 @@ namespace Products.Migrations
                 name: "IX_Providers_Name",
                 table: "Providers",
                 column: "Name",
-                unique: true,
-                filter: "[Name] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
