@@ -30,7 +30,7 @@ namespace Messenger.Controllers
 
         /// <summary> Create a new user account </summary>
         /// <param name="userForRegistration"></param>
-        [HttpPost]
+        [HttpPost(Name = "RegisterUser")]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> RegisterUser(
             [FromBody] UserRegistrationDto userForRegistration)
@@ -54,14 +54,21 @@ namespace Messenger.Controllers
 
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
-            return StatusCode(201);
+
+            var userValidate = _mapper.Map<UserValidationDto>(userForRegistration);
+            if (await _authManager.ValidateUser(userValidate) == false)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new { Token = await _authManager.CreateToken() });
         }
 
 
         /// <summary> Authenticate and autorization user if his exists in the database</summary>
         /// <param name="user"></param>
         /// <returns>Bearer token</returns>
-        [HttpPost("login")]
+        [HttpPost("login", Name = "Authenticate")]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> Authenticate(
             [FromBody] UserValidationDto user)
@@ -72,7 +79,7 @@ namespace Messenger.Controllers
         /// <summary> Delete user after authenticate </summary>
         /// <param name="user"></param>
         /// <returns>No content</returns>
-        [HttpDelete("delete")]
+        [HttpDelete("delete", Name = "DeleteUser")]
         [ServiceFilter(typeof(ValidateAccountAttribute))]
         public async Task<IActionResult> DeleteUser(
             [FromBody] UserValidationDto user)

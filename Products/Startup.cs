@@ -53,8 +53,7 @@ namespace Products
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
                 config.CacheProfiles.Add("180SecondsDuration", new CacheProfile { Duration = 180 });
-            }).AddNewtonsoftJson()
-              .AddXmlDataContractSerializerFormatters();
+            }).AddNewtonsoftJson();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,

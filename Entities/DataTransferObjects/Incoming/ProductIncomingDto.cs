@@ -20,6 +20,5 @@ namespace Entities.DataTransferObjects.Incoming
 
         [Required(ErrorMessage = "Category id is a required field.")]
         public int CategoryId { get; set; }
-
     }
 }

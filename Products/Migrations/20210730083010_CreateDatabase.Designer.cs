@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Products.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20210724132624_CreatingDatabase")]
-    partial class CreatingDatabase
+    [Migration("20210730083010_CreateDatabase")]
+    partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,9 +240,6 @@ namespace Products.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -335,22 +332,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "07e0c360-fafd-4a7b-a294-544c35e4a3c0",
-                            ConcurrencyStamp = "c2cb03ec-e04d-4875-bc21-1372c4d40699",
+                            Id = "7d20376b-5ea9-42d6-892d-bf98233061dd",
+                            ConcurrencyStamp = "ac32ae94-67c6-442d-b8c5-c74b7ecbe1da",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "f3e4634a-78e1-4424-8a2e-ae2c4c7b6749",
-                            ConcurrencyStamp = "c290152a-0224-4514-9e7d-e36fb027c454",
+                            Id = "88630675-0612-4cb3-bf79-c51dc55666d1",
+                            ConcurrencyStamp = "0ee582db-1e30-4203-bbb0-a02dc63d2f29",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "3e82ef99-6e3b-45d2-96d5-be3b5fc3f70f",
-                            ConcurrencyStamp = "23f513ef-d3de-4aa6-b938-edfbe2f51834",
+                            Id = "c0f50f0d-1c16-46a3-abe4-48e545b1ff09",
+                            ConcurrencyStamp = "2744db73-0233-493f-950e-40cb50a52965",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

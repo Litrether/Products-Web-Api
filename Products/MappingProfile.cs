@@ -20,6 +20,7 @@ namespace Products
             CreateMap<Category, CategoryOutgoingDto>();
             CreateMap<CategoryIncomingDto, Category>();
 
+            CreateMap<UserRegistrationDto, UserValidationDto>();
             CreateMap<UserRegistrationDto, User>();
             CreateMap<UserValidationDto, User>();
         }
