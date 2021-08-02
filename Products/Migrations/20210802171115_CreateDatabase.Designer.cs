@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Products.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20210730083010_CreateDatabase")]
+    [Migration("20210802171115_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,32 +43,32 @@ namespace Products.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Phone"
+                            Name = "Vegetables"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Keyboard"
+                            Name = "Fruits"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Clothes"
+                            Name = "Grocery"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Car"
+                            Name = "Meat"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Software"
+                            Name = "Dairy Products"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Laptop"
+                            Name = "Confectionery"
                         });
                 });
 
@@ -82,17 +82,15 @@ namespace Products.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("money");
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ProviderId")
                         .HasColumnType("int");
@@ -113,65 +111,362 @@ namespace Products.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 2,
-                            Cost = 49.99m,
-                            Description = "Best of the best keyboard in the world!",
-                            Name = "Mi Keyboard",
-                            ProviderId = 2
+                            CategoryId = 5,
+                            Cost = 1.53,
+                            Description = "Contains useful trace elements",
+                            Name = "Yoghurt",
+                            ProviderId = 4
                         },
                         new
                         {
                             Id = 2,
-                            CategoryId = 3,
-                            Cost = 25m,
-                            Description = "Essential collection",
-                            Name = "Sweatpants",
-                            ProviderId = 3
+                            CategoryId = 5,
+                            Cost = 2.25,
+                            Description = "From the freshest milk",
+                            Name = "Butter",
+                            ProviderId = 4
                         },
                         new
                         {
                             Id = 3,
-                            CategoryId = 3,
-                            Cost = 15m,
-                            Description = "Bright color",
-                            Name = "T-shirt",
-                            ProviderId = 3
+                            CategoryId = 5,
+                            Cost = 1.1699999999999999,
+                            Description = "From the healthiest cows",
+                            Name = "Milk",
+                            ProviderId = 2
                         },
                         new
                         {
                             Id = 4,
-                            CategoryId = 3,
-                            Cost = 9.99m,
-                            Description = "A lot of choice color",
-                            Name = "Shirt",
-                            ProviderId = 3
+                            CategoryId = 6,
+                            Cost = 4.5,
+                            Description = "Baked with love",
+                            Name = "Cake",
+                            ProviderId = 5
                         },
                         new
                         {
                             Id = 5,
-                            CategoryId = 3,
-                            Cost = 15m,
-                            Description = "Good hat",
-                            Name = "Hat",
-                            ProviderId = 3
+                            CategoryId = 4,
+                            Cost = 3.8500000000000001,
+                            Description = "Fresh",
+                            Name = "Sausage",
+                            ProviderId = 1
                         },
                         new
                         {
                             Id = 6,
-                            CategoryId = 5,
-                            Cost = 95m,
-                            Description = "You can yourself configure this bot",
-                            Name = "Telegram bot",
-                            ProviderId = 6
+                            CategoryId = 4,
+                            Cost = 2.5499999999999998,
+                            Description = "The most delicious meat",
+                            Name = "Meatballs",
+                            ProviderId = 1
                         },
                         new
                         {
                             Id = 7,
-                            CategoryId = 6,
-                            Cost = 1100m,
-                            Description = "Good choice for programmer",
-                            Name = "Macbook ",
+                            CategoryId = 1,
+                            Cost = 1.1299999999999999,
+                            Description = "Only from the garden",
+                            Name = "Cabbage",
+                            ProviderId = 6
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 1,
+                            Cost = 1.0700000000000001,
+                            Description = "Purple as a bruise",
+                            Name = "Beetroot",
+                            ProviderId = 6
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 1,
+                            Cost = 1.78,
+                            Description = "At a discount",
+                            Name = "Asparagus",
+                            ProviderId = 2
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 2,
+                            Cost = 1.1000000000000001,
+                            Description = "Minions love them",
+                            Name = "Banana",
+                            ProviderId = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 2,
+                            Cost = 1.99,
+                            Description = "Hairy",
+                            Name = "Kivifruit",
+                            ProviderId = 2
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 2,
+                            Cost = 2.4199999999999999,
+                            Description = "Sugar taste",
+                            Name = "Melon",
                             ProviderId = 7
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoryId = 2,
+                            Cost = 1.72,
+                            Description = "Like an orange sunset",
+                            Name = "Orange",
+                            ProviderId = 7
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoryId = 2,
+                            Cost = 3.1000000000000001,
+                            Description = "Avocado colors",
+                            Name = "Avocado",
+                            ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoryId = 4,
+                            Cost = 5.4900000000000002,
+                            Description = "He can speak",
+                            Name = "Lamb",
+                            ProviderId = 1
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoryId = 4,
+                            Cost = 4.0,
+                            Description = "He was friends with a lamb",
+                            Name = "Veal",
+                            ProviderId = 1
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CategoryId = 4,
+                            Cost = 3.3500000000000001,
+                            Description = "Of today's production",
+                            Name = "Chop",
+                            ProviderId = 2
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CategoryId = 4,
+                            Cost = 3.1000000000000001,
+                            Description = "Out of the oven",
+                            Name = "Chicken",
+                            ProviderId = 2
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CategoryId = 6,
+                            Cost = 0.80000000000000004,
+                            Description = "For tea",
+                            Name = "Biscuit",
+                            ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CategoryId = 1,
+                            Cost = 1.2,
+                            Description = "From Belarusian fields",
+                            Name = "Potato",
+                            ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CategoryId = 5,
+                            Cost = 3.1200000000000001,
+                            Description = "For cakes",
+                            Name = "Cream",
+                            ProviderId = 4
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CategoryId = 5,
+                            Cost = 4.3200000000000003,
+                            Description = "Ratatouille near",
+                            Name = "Cheese",
+                            ProviderId = 4
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CategoryId = 2,
+                            Cost = 2.1000000000000001,
+                            Description = "Sour but expensive",
+                            Name = "Cranberry",
+                            ProviderId = 8
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CategoryId = 1,
+                            Cost = 0.75,
+                            Description = "Good for vision",
+                            Name = "Carrot",
+                            ProviderId = 5
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CategoryId = 6,
+                            Cost = 1.05,
+                            Description = "In the shape of a fish",
+                            Name = "Cookies",
+                            ProviderId = 7
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CategoryId = 2,
+                            Cost = 2.6299999999999999,
+                            Description = "Like a bruise",
+                            Name = "Plum",
+                            ProviderId = 5
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CategoryId = 4,
+                            Cost = 5.0999999999999996,
+                            Description = "Donald",
+                            Name = "Duck",
+                            ProviderId = 1
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CategoryId = 1,
+                            Cost = 2.6000000000000001,
+                            Description = "On Halloween",
+                            Name = "Pumpkin",
+                            ProviderId = 8
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CategoryId = 2,
+                            Cost = 1.5900000000000001,
+                            Description = "Which fell on newton",
+                            Name = "Apple",
+                            ProviderId = 8
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CategoryId = 6,
+                            Cost = 0.45000000000000001,
+                            Description = "From Belarus",
+                            Name = "Bread",
+                            ProviderId = 1
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CategoryId = 2,
+                            Cost = 1.49,
+                            Description = "From my garden",
+                            Name = "Raspberry",
+                            ProviderId = 5
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CategoryId = 2,
+                            Cost = 0.98999999999999999,
+                            Description = "Sour like cranberries",
+                            Name = "Lemon",
+                            ProviderId = 6
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CategoryId = 3,
+                            Cost = 1.2,
+                            Description = "Student food",
+                            Name = "Cereals",
+                            ProviderId = 5
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CategoryId = 6,
+                            Cost = 0.80000000000000004,
+                            Description = "For coffee",
+                            Name = "Wafer",
+                            ProviderId = 3
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CategoryId = 2,
+                            Cost = 1.8899999999999999,
+                            Description = "With a leaf",
+                            Name = "Apricot",
+                            ProviderId = 6
+                        },
+                        new
+                        {
+                            Id = 36,
+                            CategoryId = 4,
+                            Cost = 7.0999999999999996,
+                            Description = "Not for vegans",
+                            Name = "Beef",
+                            ProviderId = 1
+                        },
+                        new
+                        {
+                            Id = 37,
+                            CategoryId = 3,
+                            Cost = 5.6900000000000004,
+                            Description = "Delicious with stew",
+                            Name = "Buckwheat",
+                            ProviderId = 8
+                        },
+                        new
+                        {
+                            Id = 38,
+                            CategoryId = 3,
+                            Cost = 1.1799999999999999,
+                            Description = "Chinese delicacy",
+                            Name = "Rice",
+                            ProviderId = 8
+                        },
+                        new
+                        {
+                            Id = 39,
+                            CategoryId = 3,
+                            Cost = 0.94999999999999996,
+                            Description = "Ser",
+                            Name = "Oatmeal",
+                            ProviderId = 8
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CategoryId = 6,
+                            Cost = 4.9500000000000002,
+                            Description = "In the form of a heart",
+                            Name = "Pie",
+                            ProviderId = 6
                         });
                 });
 
@@ -184,8 +479,7 @@ namespace Products.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -198,37 +492,42 @@ namespace Products.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Samsung"
+                            Name = "Underdog"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Xiaomi"
+                            Name = "Atha Makina"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Nike"
+                            Name = "Shirin Agro"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Volvo"
+                            Name = "Milk Gorki"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Audi"
+                            Name = "Archeda"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Innowise"
+                            Name = "Pascual"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Apple"
+                            Name = "Javimar"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "MiLida"
                         });
                 });
 
@@ -332,22 +631,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7d20376b-5ea9-42d6-892d-bf98233061dd",
-                            ConcurrencyStamp = "ac32ae94-67c6-442d-b8c5-c74b7ecbe1da",
+                            Id = "432d6003-b0b2-4a10-9a9d-d3c165c462de",
+                            ConcurrencyStamp = "aa61e891-409f-4086-b47a-be846f1a72de",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "88630675-0612-4cb3-bf79-c51dc55666d1",
-                            ConcurrencyStamp = "0ee582db-1e30-4203-bbb0-a02dc63d2f29",
+                            Id = "6c9d45cd-0831-46b8-b87c-5605049b35a4",
+                            ConcurrencyStamp = "926aa0e5-3460-4fb9-97b7-d833ad0dfa15",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "c0f50f0d-1c16-46a3-abe4-48e545b1ff09",
-                            ConcurrencyStamp = "2744db73-0233-493f-950e-40cb50a52965",
+                            Id = "037e7dc1-6796-492c-8f6d-e9b7844b96ef",
+                            ConcurrencyStamp = "60033abf-4a99-4c45-a4d7-52dfea65547a",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

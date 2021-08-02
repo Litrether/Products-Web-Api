@@ -11,6 +11,8 @@ namespace Contracts
 
         public Task<Provider> GetProviderAsync(int providerId, bool trackChanges);
 
+        public Task<int> GetCountAsync();
+
         public void CreateProvider(Provider provider);
 
         public void DeleteProvider(Provider provider);

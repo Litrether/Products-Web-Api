@@ -67,7 +67,7 @@ namespace Products.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,9 +186,9 @@ namespace Products.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Cost = table.Column<decimal>(type: "money", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Cost = table.Column<double>(type: "float", nullable: false),
                     ProviderId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -214,9 +214,9 @@ namespace Products.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "7d20376b-5ea9-42d6-892d-bf98233061dd", "ac32ae94-67c6-442d-b8c5-c74b7ecbe1da", "User", "USER" },
-                    { "88630675-0612-4cb3-bf79-c51dc55666d1", "0ee582db-1e30-4203-bbb0-a02dc63d2f29", "Manager", "MANAGER" },
-                    { "c0f50f0d-1c16-46a3-abe4-48e545b1ff09", "2744db73-0233-493f-950e-40cb50a52965", "Administrator", "ADMINISTRATOR" }
+                    { "037e7dc1-6796-492c-8f6d-e9b7844b96ef", "60033abf-4a99-4c45-a4d7-52dfea65547a", "Administrator", "ADMINISTRATOR" },
+                    { "432d6003-b0b2-4a10-9a9d-d3c165c462de", "aa61e891-409f-4086-b47a-be846f1a72de", "User", "USER" },
+                    { "6c9d45cd-0831-46b8-b87c-5605049b35a4", "926aa0e5-3460-4fb9-97b7-d833ad0dfa15", "Manager", "MANAGER" }
                 });
 
             migrationBuilder.InsertData(
@@ -224,12 +224,12 @@ namespace Products.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Phone" },
-                    { 2, "Keyboard" },
-                    { 3, "Clothes" },
-                    { 4, "Car" },
-                    { 5, "Software" },
-                    { 6, "Laptop" }
+                    { 6, "Confectionery" },
+                    { 1, "Vegetables" },
+                    { 4, "Meat" },
+                    { 3, "Grocery" },
+                    { 2, "Fruits" },
+                    { 5, "Dairy Products" }
                 });
 
             migrationBuilder.InsertData(
@@ -237,13 +237,14 @@ namespace Products.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Samsung" },
-                    { 2, "Xiaomi" },
-                    { 3, "Nike" },
-                    { 4, "Volvo" },
-                    { 5, "Audi" },
-                    { 6, "Innowise" },
-                    { 7, "Apple" }
+                    { 1, "Underdog" },
+                    { 2, "Atha Makina" },
+                    { 4, "Milk Gorki" },
+                    { 5, "Archeda" },
+                    { 6, "Pascual" },
+                    { 7, "Javimar" },
+                    { 8, "MiLida" },
+                    { 3, "Shirin Agro" }
                 });
 
             migrationBuilder.InsertData(
@@ -251,13 +252,46 @@ namespace Products.Migrations
                 columns: new[] { "Id", "CategoryId", "Cost", "Description", "Name", "ProviderId" },
                 values: new object[,]
                 {
-                    { 1, 2, 49.99m, "Best of the best keyboard in the world!", "Mi Keyboard", 2 },
-                    { 2, 3, 25m, "Essential collection", "Sweatpants", 3 },
-                    { 3, 3, 15m, "Bright color", "T-shirt", 3 },
-                    { 4, 3, 9.99m, "A lot of choice color", "Shirt", 3 },
-                    { 5, 3, 15m, "Good hat", "Hat", 3 },
-                    { 6, 5, 95m, "You can yourself configure this bot", "Telegram bot", 6 },
-                    { 7, 6, 1100m, "Good choice for programmer", "Macbook ", 7 }
+                    { 5, 4, 3.8500000000000001, "Fresh", "Sausage", 1 },
+                    { 24, 1, 0.75, "Good for vision", "Carrot", 5 },
+                    { 26, 2, 2.6299999999999999, "Like a bruise", "Plum", 5 },
+                    { 31, 2, 1.49, "From my garden", "Raspberry", 5 },
+                    { 33, 3, 1.2, "Student food", "Cereals", 5 },
+                    { 7, 1, 1.1299999999999999, "Only from the garden", "Cabbage", 6 },
+                    { 8, 1, 1.0700000000000001, "Purple as a bruise", "Beetroot", 6 },
+                    { 32, 2, 0.98999999999999999, "Sour like cranberries", "Lemon", 6 },
+                    { 4, 6, 4.5, "Baked with love", "Cake", 5 },
+                    { 35, 2, 1.8899999999999999, "With a leaf", "Apricot", 6 },
+                    { 12, 2, 2.4199999999999999, "Sugar taste", "Melon", 7 },
+                    { 13, 2, 1.72, "Like an orange sunset", "Orange", 7 },
+                    { 25, 6, 1.05, "In the shape of a fish", "Cookies", 7 },
+                    { 23, 2, 2.1000000000000001, "Sour but expensive", "Cranberry", 8 },
+                    { 28, 1, 2.6000000000000001, "On Halloween", "Pumpkin", 8 },
+                    { 29, 2, 1.5900000000000001, "Which fell on newton", "Apple", 8 },
+                    { 37, 3, 5.6900000000000004, "Delicious with stew", "Buckwheat", 8 },
+                    { 40, 6, 4.9500000000000002, "In the form of a heart", "Pie", 6 },
+                    { 22, 5, 4.3200000000000003, "Ratatouille near", "Cheese", 4 },
+                    { 21, 5, 3.1200000000000001, "For cakes", "Cream", 4 },
+                    { 2, 5, 2.25, "From the freshest milk", "Butter", 4 },
+                    { 6, 4, 2.5499999999999998, "The most delicious meat", "Meatballs", 1 },
+                    { 15, 4, 5.4900000000000002, "He can speak", "Lamb", 1 },
+                    { 16, 4, 4.0, "He was friends with a lamb", "Veal", 1 },
+                    { 27, 4, 5.0999999999999996, "Donald", "Duck", 1 },
+                    { 30, 6, 0.45000000000000001, "From Belarus", "Bread", 1 },
+                    { 36, 4, 7.0999999999999996, "Not for vegans", "Beef", 1 },
+                    { 3, 5, 1.1699999999999999, "From the healthiest cows", "Milk", 2 },
+                    { 9, 1, 1.78, "At a discount", "Asparagus", 2 },
+                    { 10, 2, 1.1000000000000001, "Minions love them", "Banana", 2 },
+                    { 11, 2, 1.99, "Hairy", "Kivifruit", 2 },
+                    { 17, 4, 3.3500000000000001, "Of today's production", "Chop", 2 },
+                    { 18, 4, 3.1000000000000001, "Out of the oven", "Chicken", 2 },
+                    { 14, 2, 3.1000000000000001, "Avocado colors", "Avocado", 3 },
+                    { 19, 6, 0.80000000000000004, "For tea", "Biscuit", 3 },
+                    { 20, 1, 1.2, "From Belarusian fields", "Potato", 3 },
+                    { 34, 6, 0.80000000000000004, "For coffee", "Wafer", 3 },
+                    { 1, 5, 1.53, "Contains useful trace elements", "Yoghurt", 4 },
+                    { 38, 3, 1.1799999999999999, "Chinese delicacy", "Rice", 8 },
+                    { 39, 3, 0.94999999999999996, "Ser", "Oatmeal", 8 }
                 });
 
             migrationBuilder.CreateIndex(

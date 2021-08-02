@@ -13,37 +13,42 @@ namespace Entities.Configuration
                 new Provider
                 {
                     Id = 1,
-                    Name = "Samsung"
+                    Name = "Underdog"
                 },
                 new Provider
                 {
                     Id = 2,
-                    Name = "Xiaomi"
+                    Name = "Atha Makina"
                 },
                 new Provider
                 {
                     Id = 3,
-                    Name = "Nike"
+                    Name = "Shirin Agro"
                 },
                 new Provider
                 {
                     Id = 4,
-                    Name = "Volvo"
+                    Name = "Milk Gorki"
                 },
                 new Provider
                 {
                     Id = 5,
-                    Name = "Audi"
+                    Name = "Archeda"
                 },
                 new Provider
                 {
                     Id = 6,
-                    Name = "Innowise"
+                    Name = "Pascual"
                 },
                 new Provider
                 {
                     Id = 7,
-                    Name = "Apple"
+                    Name = "Javimar"
+                },
+                new Provider
+                {
+                    Id = 8,
+                    Name = "MiLida"
                 }
             );
         }

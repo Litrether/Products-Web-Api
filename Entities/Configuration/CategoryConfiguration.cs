@@ -13,32 +13,32 @@ namespace Entities.Configuration
                 new Category
                 {
                     Id = 1,
-                    Name = "Phone"
+                    Name = "Vegetables"
                 },
                 new Category
                 {
                     Id = 2,
-                    Name = "Keyboard"
+                    Name = "Fruits"
                 },
                 new Category
                 {
                     Id = 3,
-                    Name = "Clothes"
+                    Name = "Grocery"
                 },
                 new Category
                 {
                     Id = 4,
-                    Name = "Car"
+                    Name = "Meat"
                 },
                 new Category
                 {
                     Id = 5,
-                    Name = "Software"
+                    Name = "Dairy Products"
                 },
                 new Category
                 {
                     Id = 6,
-                    Name = "Laptop"
+                    Name = "Confectionery"
                 }
             );
         }

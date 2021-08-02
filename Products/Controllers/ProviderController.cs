@@ -35,6 +35,7 @@ namespace Products.Controllers
         /// <param name="providerParameters"></param>
         /// <returns>The providers list</returns>
         [HttpGet(Name = "GetProviders")]
+        [Authorize(Roles = ("User, Manager, Administrator"))]
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {
@@ -43,13 +44,16 @@ namespace Products.Controllers
 
             var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
 
-            return Ok(providersDto);
+            var totalAmount = await _repository.Provider.GetCountAsync();
+
+            return Ok(new { totalAmount = totalAmount, providers = providersDto});
         }
 
         /// <summary> Get provider by id </summary>
         /// <param name="id"></param>
         /// <returns> Provider with a given id </returns>
         [HttpGet("{id}", Name = "GetProvider")]
+        [Authorize(Roles = ("User, Manager, Administrator"))]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> GetProvider(int id)
         {

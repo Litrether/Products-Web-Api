@@ -39,6 +39,7 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns>The products list</returns>
         [HttpGet(Name = "GetProducts")]
+        [Authorize(Roles = ("User, Manager, Administrator"))]
         public async Task<IActionResult> GetProducts(
             [FromQuery] ProductParameters productParameters)
         {
@@ -51,7 +52,9 @@ namespace Products.Controllers
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
-            return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
+            var totalAmount = await _repository.Product.GetCountAsync();
+
+            return Ok( new { totalAmount = totalAmount, products = _dataShaper.ShapeData(productsDto, productParameters.Fields) });
         }
 
         /// <summary> Get product by id </summary>
@@ -59,6 +62,7 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns> Product with a given id</returns>
         [HttpGet("{id}", Name = "GetProduct")]
+        [Authorize(Roles = ("User, Manager, Administrator"))]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {

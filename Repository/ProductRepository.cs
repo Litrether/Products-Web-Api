@@ -43,6 +43,9 @@ namespace Repository
             return product;
         }
 
+        public async Task<int> GetCountAsync() =>
+            await FindAll(trackChanges: false).CountAsync();
+
         public void CreateProduct(Product product) =>
             Create(product);
 

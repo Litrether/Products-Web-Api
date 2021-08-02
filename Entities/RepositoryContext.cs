@@ -17,17 +17,17 @@ namespace Entities
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Product>().HasIndex(p => new { p.Name, p.Description, p.Cost, p.CategoryId, p.ProviderId }).IsUnique();
-            modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(75);
-            modelBuilder.Entity<Product>().Property(p => p.Description).HasMaxLength(300);
-            modelBuilder.Entity<Product>().Property(p => p.Cost).IsRequired().HasColumnType("money");
+            modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired();
+            modelBuilder.Entity<Product>().Property(p => p.Description);
+            modelBuilder.Entity<Product>().Property(p => p.Cost).IsRequired();
             modelBuilder.Entity<Product>().Property(p => p.CategoryId).IsRequired();
             modelBuilder.Entity<Product>().Property(p => p.ProviderId).IsRequired();
 
             modelBuilder.Entity<Provider>().HasIndex(p => p.Name).IsUnique();
-            modelBuilder.Entity<Provider>().Property(p => p.Name).IsRequired().HasMaxLength(75);
+            modelBuilder.Entity<Provider>().Property(p => p.Name).IsRequired();
 
             modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<Provider>().Property(p => p.Name).IsRequired().HasMaxLength(75);
+            modelBuilder.Entity<Provider>().Property(p => p.Name).IsRequired();
 
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());

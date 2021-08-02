@@ -12,6 +12,8 @@ namespace Contracts
         public Task<Product> GetProductAsync(int productId, bool trackChanges,
              double exchangeRate = default(double));
 
+        public Task<int> GetCountAsync();
+
         public void CreateProduct(Product product);
 
         public void DeleteProduct(Product product);

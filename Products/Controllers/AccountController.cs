@@ -54,14 +54,16 @@ namespace Messenger.Controllers
 
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
-
             var userValidate = _mapper.Map<UserValidationDto>(userForRegistration);
             if (await _authManager.ValidateUser(userValidate) == false)
             {
                 return BadRequest();
             }
+     
+            var userForRoles = await _userManager.FindByNameAsync(user.UserName);
+            var roles = await _userManager.GetRolesAsync(userForRoles);
 
-            return Ok(new { Token = await _authManager.CreateToken() });
+            return Ok(new { Token = await _authManager.CreateToken(), roles = roles });
         }
 
 
@@ -73,7 +75,10 @@ namespace Messenger.Controllers
         public async Task<IActionResult> Authenticate(
             [FromBody] UserValidationDto user)
         {
-            return Ok(new { Token = await _authManager.CreateToken() });
+            var userForRoles = await _userManager.FindByNameAsync(user.UserName);
+            var roles = await _userManager.GetRolesAsync(userForRoles);
+
+            return Ok(new { Token = await _authManager.CreateToken(), roles = roles });
         }
 
         /// <summary> Delete user after authenticate </summary>

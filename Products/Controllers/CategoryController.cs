@@ -34,6 +34,7 @@ namespace Products.Controllers
         /// <param name="categoryParameters"></param>
         /// <returns>The categories list</returns>
         [HttpGet(Name = "GetCategories")]
+        [Authorize(Roles = ("User, Manager, Administrator"))]
         [ResponseCache(Duration = 120)]
         public async Task<IActionResult> GetCategories(
             [FromQuery] CategoryParameters categoryParameters)
@@ -43,13 +44,16 @@ namespace Products.Controllers
 
             var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
 
-            return Ok(categoriesDto);
+            var totalAmount = await _repository.Category.GetCountAsync();
+
+            return Ok(new { totalAmount = totalAmount, categories = categoriesDto});
         }
 
         /// <summary> Get category by id </summary>
         /// <param name="id"></param>
         /// <returns>Category with a given id</returns>
         [HttpGet("{id}", Name = "GetCategory")]
+        [Authorize(Roles = ("User, Manager, Administrator"))]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> GetCategory(int id)
         {
