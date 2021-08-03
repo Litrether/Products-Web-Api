@@ -23,6 +23,10 @@
     <EmbeddedResource Remove="ActionFilters\ServiceAttributes\**" />
     <None Remove="ActionFilters\ServiceAttributes\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Controllers\CartController.cs~RF7ee6c54.TMP" />
+  </ItemGroup>
   
   <ItemGroup>
     <None Include="nlog.config" />

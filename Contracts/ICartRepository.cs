@@ -6,10 +6,10 @@ namespace Contracts
 {
     public interface ICartRepository
     {
-        public Task<(List<Product>, int)> GetUserCarts(User user);
+        public Task<(List<Product>, int)> GetCartProducts(User user);
 
-        public void CreateCart(Cart cart);
+        public void CreateCartProduct(Cart cart);
 
-        public void DeleteCart(Cart cart);
+        public void DeleteCartProduct(Cart cart);
     }
 }

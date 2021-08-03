@@ -176,6 +176,7 @@ namespace Products.Extensions
 
         public static void ConfigureValidationAttributes(this IServiceCollection services)
         {
+            services.AddScoped<ValidateCartAttribute>();
             services.AddScoped<ValidateAccountAttribute>();
             services.AddScoped<ValidateCategoryAttribute>();
             services.AddScoped<ValidateProductAttribute>();

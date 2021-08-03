@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
+using Entities.DataTransferObjects.Outgoing;
 using Entities.Models;
 
 namespace Products
@@ -23,6 +24,10 @@ namespace Products
             CreateMap<UserRegistrationDto, UserValidationDto>();
             CreateMap<UserRegistrationDto, User>();
             CreateMap<UserValidationDto, User>();
+
+            CreateMap<Cart, CartOutgoingDto>()
+                .ForMember(c => c.User, opt => opt.MapFrom(x => x.User.UserName));
+            CreateMap<CartOutgoingDto, Cart>().ReverseMap();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Repository
         {
         }
 
-        public async Task<(List<Product>, int)> GetUserCarts(User user)
+        public async Task<(List<Product>, int)> GetCartProducts(User user)
         {
             var carts = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges: false)
                 .IncludeFields()
@@ -27,10 +27,10 @@ namespace Repository
             return (products, products.Count);
         }
 
-        public void CreateCart(Cart cart) =>
+        public void CreateCartProduct(Cart cart) =>
             Create(cart);
 
-        public void DeleteCart(Cart cart) =>
+        public void DeleteCartProduct(Cart cart) =>
             Delete(cart);
     }
 }

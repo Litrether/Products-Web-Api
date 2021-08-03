@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.Outcoming;
+using Entities.DataTransferObjects.Outgoing;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Products.ActionFilters;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Products.Controllers
@@ -30,13 +33,13 @@ namespace Products.Controllers
 
         /// <summary> Get products from a user basket </summary>
         /// <returns> Products from a user basket</returns>
-        [HttpGet(Name = "GetUserCart")]
+        [HttpGet(Name = "GetCartProducts")]
         [Authorize]
-        public async Task<IActionResult> GetUserCart()
+        public async Task<IActionResult> GetCartProducts()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            var productsAndAmount = await _repository.Cart.GetUserCarts(user);
+            var productsAndAmount = await _repository.Cart.GetCartProducts(user);
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(productsAndAmount.Item1);
             var totalAmount = productsAndAmount.Item2;
@@ -47,47 +50,49 @@ namespace Products.Controllers
         /// <summary> Add product to user basket </summary>
         /// <param name="productId"></param>
         /// <returns>No content</returns>
-        [HttpPost("{productId}", Name = "AddProductToBasket")]
+        [HttpPost("{productId}", Name = "CreateCartProduct")]
         [Authorize]
-        public async Task<IActionResult> AddProductToBasket(int productId)
+        [ServiceFilter(typeof(ValidateCartAttribute))]
+        public async Task<IActionResult> CreateCartProduct(int productId)
         {
             var product = await _repository.Product.GetProductAsync(productId, trackChanges: false);
-            if (product == null)
-            {
-                _logger.LogError($"Products with id: {productId} doesn't exist in database");
-                return NotFound();
-            }
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var cart = new Cart { UserId = user.Id, ProductId = product.Id};
 
-            var cart = new Cart { UserId = user.Id,ProductId = product.Id};
+            var productsAndAmount = await _repository.Cart.GetCartProducts(user);
 
-            _repository.Cart.CreateCart(cart);
+            var productCart = productsAndAmount.Item1.Any(p => p.Id == product.Id);
+            if (productCart)
+            {
+                _logger.LogError($"Product with id: {productId} exist in cart");
+                return BadRequest($"Product with id: {productId} exist in cart");
+            }
+
+            _repository.Cart.CreateCartProduct(cart);
 
             await _repository.SaveAsync();
 
-            return Ok();
+            var cartDto = _mapper.Map<CartOutgoingDto>(cart);
+
+            return Ok(cartDto);
         }
 
 
         /// <summary> Delete user after authenticate </summary>
         /// <param name="productId"></param>
         /// <returns>No content</returns>
-        [HttpDelete(Name = "DeleteCarts")]
+        [HttpDelete(Name = "DeleteCartProduct")]
         [Authorize]
-        public async Task<IActionResult> DeleteCarts(int productId)
+        [ServiceFilter(typeof(ValidateCartAttribute))]
+        public async Task<IActionResult> DeleteCartProduct(int productId)
         {
             var product = await _repository.Product.GetProductAsync(productId, trackChanges: false);
-            if (product == null)
-            {
-                _logger.LogError($"Products with id: {productId} doesn't exist in database");
-                return NotFound();
-            }
+
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var cart = new Cart { UserId = user.Id, ProductId = product.Id };
 
-            var cart = new Cart { User = user, Product = product };
-
-            _repository.Cart.DeleteCart(cart);
+            _repository.Cart.DeleteCartProduct(cart);
 
             return NoContent();
         }

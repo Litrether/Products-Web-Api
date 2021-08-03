@@ -4,16 +4,16 @@
         <name>Products</name>
     </assembly>
     <members>
-        <member name="M:Products.Controllers.CartController.GetUserCart">
+        <member name="M:Products.Controllers.CartController.GetCartProducts">
             <summary> Get products from a user basket </summary>
             <returns> Products from a user basket</returns>
         </member>
-        <member name="M:Products.Controllers.CartController.AddProductToBasket(System.Int32)">
+        <member name="M:Products.Controllers.CartController.CreateCartProduct(System.Int32)">
             <summary> Add product to user basket </summary>
             <param name="productId"></param>
             <returns>No content</returns>
         </member>
-        <member name="M:Products.Controllers.CartController.DeleteCarts(System.Int32)">
+        <member name="M:Products.Controllers.CartController.DeleteCartProduct(System.Int32)">
             <summary> Delete user after authenticate </summary>
             <param name="productId"></param>
             <returns>No content</returns>
