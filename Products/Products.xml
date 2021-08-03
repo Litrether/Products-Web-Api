@@ -4,6 +4,20 @@
         <name>Products</name>
     </assembly>
     <members>
+        <member name="M:Products.Controllers.CartController.GetUserCart">
+            <summary> Get products from a user basket </summary>
+            <returns> Products from a user basket</returns>
+        </member>
+        <member name="M:Products.Controllers.CartController.AddProductToBasket(System.Int32)">
+            <summary> Add product to user basket </summary>
+            <param name="productId"></param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:Products.Controllers.CartController.DeleteCarts(System.Int32)">
+            <summary> Delete user after authenticate </summary>
+            <param name="productId"></param>
+            <returns>No content</returns>
+        </member>
         <member name="M:Products.Controllers.CategoryController.GetCategories(Entities.RequestFeatures.CategoryParameters)">
             <summary> Get list of all categories </summary>
             <param name="categoryParameters"></param>

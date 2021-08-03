@@ -34,7 +34,7 @@ namespace Products.Controllers
         /// <param name="categoryParameters"></param>
         /// <returns>The categories list</returns>
         [HttpGet(Name = "GetCategories")]
-        [Authorize(Roles = ("User, Manager, Administrator"))]
+        [Authorize]
         [ResponseCache(Duration = 120)]
         public async Task<IActionResult> GetCategories(
             [FromQuery] CategoryParameters categoryParameters)
@@ -54,7 +54,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns>Category with a given id</returns>
         [HttpGet("{id}", Name = "GetCategory")]
-        [Authorize(Roles = ("User, Manager, Administrator"))]
+        [Authorize]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> GetCategory(int id)
         {

@@ -12,13 +12,10 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
             var url = @"https://exchange-rates.abstractapi.com/v1/live/?api_key=f775232ebe7c4e3793a4fe6b73f4295f&base=USD";
 
             string jsonResponse;
-            try
+
+            using(var webClient = new WebClient())
             {
-                jsonResponse = new WebClient().DownloadString(url);
-            }
-            catch (System.Exception)
-            {
-                return default(double);
+                jsonResponse = webClient.DownloadString(url);
             }
 
             var deserializedResponse = JsonSerializer.Deserialize<CurrencyERA>(jsonResponse);

@@ -10,6 +10,8 @@ namespace Contracts
 
         public ICategoryRepository Category { get; }
 
+        public ICartRepository Cart { get; }
+
         public Task SaveAsync();
     }
 }

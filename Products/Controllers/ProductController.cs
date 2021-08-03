@@ -39,7 +39,7 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns>The products list</returns>
         [HttpGet(Name = "GetProducts")]
-        [Authorize(Roles = ("User, Manager, Administrator"))]
+       // [Authorize]
         public async Task<IActionResult> GetProducts(
             [FromQuery] ProductParameters productParameters)
         {
@@ -63,7 +63,7 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns> Product with a given id</returns>
         [HttpGet("{id}", Name = "GetProduct")]
-        [Authorize(Roles = ("User, Manager, Administrator"))]
+        [Authorize]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {

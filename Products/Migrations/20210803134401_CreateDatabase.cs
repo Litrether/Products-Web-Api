@@ -209,14 +209,40 @@ namespace Products.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Carts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "037e7dc1-6796-492c-8f6d-e9b7844b96ef", "60033abf-4a99-4c45-a4d7-52dfea65547a", "Administrator", "ADMINISTRATOR" },
-                    { "432d6003-b0b2-4a10-9a9d-d3c165c462de", "aa61e891-409f-4086-b47a-be846f1a72de", "User", "USER" },
-                    { "6c9d45cd-0831-46b8-b87c-5605049b35a4", "926aa0e5-3460-4fb9-97b7-d833ad0dfa15", "Manager", "MANAGER" }
+                    { "80e3cf12-3391-48c8-85f2-3c2c9fc5c52a", "f5b0d0c4-a386-479b-b7a7-bb89d415ff8a", "Administrator", "ADMINISTRATOR" },
+                    { "939473a8-0aae-4116-8ee4-979c8e9e7550", "3cff9dac-9e76-4b29-86d5-331239d1b6e4", "User", "USER" },
+                    { "938485f0-3e58-485b-8ed5-3ce4e63318f5", "ff66bfce-147e-4de1-9114-15b633068876", "Manager", "MANAGER" }
                 });
 
             migrationBuilder.InsertData(
@@ -334,6 +360,16 @@ namespace Products.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carts_ProductId",
+                table: "Carts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_UserId",
+                table: "Carts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Categories_Name",
                 table: "Categories",
                 column: "Name",
@@ -382,13 +418,16 @@ namespace Products.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Categories");

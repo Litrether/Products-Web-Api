@@ -193,7 +193,11 @@ namespace Products.Extensions
             services.AddAutoMapper(typeof(Startup));
 
         public static void ConfigureResponseCaching(this IServiceCollection services) =>
-            services.AddResponseCaching();
+            services.AddResponseCaching(options =>
+            {
+                options.MaximumBodySize = 5096;
+                options.UseCaseSensitivePaths = true;
+            });
 
         public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
             services.AddHttpCacheHeaders(

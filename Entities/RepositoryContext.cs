@@ -35,11 +35,12 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
+        public DbSet<Cart> Carts { get; set; }
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Provider> Providers { get; set; }
-
     }
 }

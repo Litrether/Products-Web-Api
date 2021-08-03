@@ -11,6 +11,7 @@ namespace Products.Managers
         private IProductRepository _productRepository;
         private ICategoryRepository _categoryRepository;
         private IProviderRepository _providerRepository;
+        private ICartRepository _cartRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -47,6 +48,17 @@ namespace Products.Managers
                     _providerRepository = new ProviderRepository(_repositoryContext);
 
                 return _providerRepository;
+            }
+        }
+
+        public ICartRepository Cart
+        {
+            get
+            {
+                if (_cartRepository == null)
+                    _cartRepository = new CartRepository(_repositoryContext);
+
+                return _cartRepository;
             }
         }
 

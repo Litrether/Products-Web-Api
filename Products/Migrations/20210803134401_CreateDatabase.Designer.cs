@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Products.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20210802171115_CreateDatabase")]
+    [Migration("20210803134401_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,28 @@ namespace Products.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Entities.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
+                });
 
             modelBuilder.Entity("Entities.Models.Category", b =>
                 {
@@ -631,22 +653,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "432d6003-b0b2-4a10-9a9d-d3c165c462de",
-                            ConcurrencyStamp = "aa61e891-409f-4086-b47a-be846f1a72de",
+                            Id = "939473a8-0aae-4116-8ee4-979c8e9e7550",
+                            ConcurrencyStamp = "3cff9dac-9e76-4b29-86d5-331239d1b6e4",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "6c9d45cd-0831-46b8-b87c-5605049b35a4",
-                            ConcurrencyStamp = "926aa0e5-3460-4fb9-97b7-d833ad0dfa15",
+                            Id = "938485f0-3e58-485b-8ed5-3ce4e63318f5",
+                            ConcurrencyStamp = "ff66bfce-147e-4de1-9114-15b633068876",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "037e7dc1-6796-492c-8f6d-e9b7844b96ef",
-                            ConcurrencyStamp = "60033abf-4a99-4c45-a4d7-52dfea65547a",
+                            Id = "80e3cf12-3391-48c8-85f2-3c2c9fc5c52a",
+                            ConcurrencyStamp = "f5b0d0c4-a386-479b-b7a7-bb89d415ff8a",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -756,6 +778,23 @@ namespace Products.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Entities.Models.Cart", b =>
+                {
+                    b.HasOne("Entities.Models.Product", "Product")
+                        .WithMany("Carts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany("Carts")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
                     b.HasOne("Entities.Models.Category", "Category")
@@ -831,9 +870,19 @@ namespace Products.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Entities.Models.Product", b =>
+                {
+                    b.Navigation("Carts");
+                });
+
             modelBuilder.Entity("Entities.Models.Provider", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Entities.Models.User", b =>
+                {
+                    b.Navigation("Carts");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,7 @@ using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 
@@ -19,15 +20,17 @@ namespace Products.Controllers
     public class ProviderController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
+        private readonly UserManager<User> _userManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
         public ProviderController(IRepositoryManager repository, ILoggerManager logger,
-            IMapper mapper)
+            IMapper mapper, UserManager<User> userManager)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
 
@@ -35,7 +38,7 @@ namespace Products.Controllers
         /// <param name="providerParameters"></param>
         /// <returns>The providers list</returns>
         [HttpGet(Name = "GetProviders")]
-        [Authorize(Roles = ("User, Manager, Administrator"))]
+        [Authorize]
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {
@@ -54,7 +57,7 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> Provider with a given id </returns>
         [HttpGet("{id}", Name = "GetProvider")]
-        [Authorize(Roles = ("User, Manager, Administrator"))]
+        [Authorize]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> GetProvider(int id)
         {

@@ -34,10 +34,6 @@ namespace Repository
             await FindByCondition(c => c.Id.Equals(categoryId), trackChanges)
             .SingleOrDefaultAsync();
 
-        public async Task<int> GetCountAsync() =>
-            await FindAll(trackChanges: false).CountAsync();
-
-
         public void CreateCategory(Category category) =>
             Create(category);
 
