@@ -39,7 +39,7 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns>The products list</returns>
         [HttpGet(Name = "GetProducts")]
-       // [Authorize]
+        [Authorize]
         public async Task<IActionResult> GetProducts(
             [FromQuery] ProductParameters productParameters)
         {
