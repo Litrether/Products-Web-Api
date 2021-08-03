@@ -72,9 +72,6 @@ namespace Products
                 ForwardedHeaders = ForwardedHeaders.All
             });
 
-            app.UseResponseCaching();
-            app.UseHttpCacheHeaders();
-
             app.UseRouting();
 
             app.UseAuthentication();
