@@ -39,12 +39,13 @@ namespace Products.Controllers
         public async Task<IActionResult> GetCategories(
             [FromQuery] CategoryParameters categoryParameters)
         {
-            var categories = await _repository.Category.GetAllCategoriesAsync(
+            var categoriesAndAmount = await _repository.Category.GetAllCategoriesAsync(
                 categoryParameters, trackChanges: false);
 
-            var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
+            var categories = categoriesAndAmount.Item1;
+            var totalAmount = categoriesAndAmount.Item2;
 
-            var totalAmount = await _repository.Category.GetCountAsync();
+            var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
 
             return Ok(new { totalAmount = totalAmount, categories = categoriesDto});
         }

@@ -15,7 +15,7 @@ namespace Repository
         {
         }
 
-        public async Task<PagedList<Category>> GetAllCategoriesAsync(
+        public async Task<(PagedList<Category>, int)> GetAllCategoriesAsync(
             CategoryParameters categoryParameters, bool trackChanges)
         {
             var categories = await FindAll(trackChanges)
@@ -23,9 +23,11 @@ namespace Repository
                 .Sort(categoryParameters.OrderBy)
                 .ToListAsync();
 
-            return PagedList<Category>
+            
+
+            return (PagedList<Category>
                 .ToPagedList(categories, categoryParameters.PageNumber,
-                    categoryParameters.PageSize);
+                    categoryParameters.PageSize), categories.Count);
         }
 
         public async Task<Category> GetCategoryAsync(int categoryId, bool trackChanges) =>

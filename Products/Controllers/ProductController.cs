@@ -48,11 +48,12 @@ namespace Products.Controllers
 
             var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
-            var products = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
+            var productsAndAmount = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
+
+            var products = productsAndAmount.Item1;
+            var totalAmount = productsAndAmount.Item2;
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
-
-            var totalAmount = await _repository.Product.GetCountAsync();
 
             return Ok( new { totalAmount = totalAmount, products = _dataShaper.ShapeData(productsDto, productParameters.Fields) });
         }

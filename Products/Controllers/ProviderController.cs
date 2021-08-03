@@ -39,12 +39,13 @@ namespace Products.Controllers
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {
-            var providers = await _repository.Provider.GetAllProvidersAsync(
+            var providersAndAmount = await _repository.Provider.GetAllProvidersAsync(
                 providerParameters, trackChanges: false);
 
-            var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
+            var providers = providersAndAmount.Item1;
+            var totalAmount = providersAndAmount.Item2;
 
-            var totalAmount = await _repository.Provider.GetCountAsync();
+            var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
 
             return Ok(new { totalAmount = totalAmount, providers = providersDto});
         }
