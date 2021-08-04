@@ -1,12 +1,13 @@
 ﻿using Entities.Models;
-using System.Collections.Generic;
+using Entities.RequestFeatures;
 using System.Threading.Tasks;
 
 namespace Contracts
 {
     public interface ICartRepository
     {
-        public Task<List<Product>> GetCartProducts(User user);
+        public Task<PagedList<Product>> GetCartProducts(ProductParameters productParameters, User user,
+            bool trackChanges, double exchangeRate = default(double));
 
         public void CreateCartProduct(Cart cart);
 
