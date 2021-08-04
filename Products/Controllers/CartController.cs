@@ -39,12 +39,11 @@ namespace Products.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            var productsAndAmount = await _repository.Cart.GetCartProducts(user);
+            var products = await _repository.Cart.GetCartProducts(user);
 
-            var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(productsAndAmount.Item1);
-            var totalAmount = productsAndAmount.Item2;
+            var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
-            return Ok(new { totalAmount = totalAmount, products = productsDto });
+            return Ok(productsDto);
         }
 
         /// <summary> Add product to user basket </summary>
@@ -60,9 +59,9 @@ namespace Products.Controllers
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var cart = new Cart { UserId = user.Id, ProductId = product.Id};
 
-            var productsAndAmount = await _repository.Cart.GetCartProducts(user);
+            var products = await _repository.Cart.GetCartProducts(user);
 
-            var productCart = productsAndAmount.Item1.Any(p => p.Id == product.Id);
+            var productCart = products.Any(p => p.Id == product.Id);
             if (productCart)
             {
                 _logger.LogError($"Product with id: {productId} exist in cart");

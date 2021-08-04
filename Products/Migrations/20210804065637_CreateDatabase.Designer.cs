@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Products.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20210803134401_CreateDatabase")]
+    [Migration("20210804065637_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -653,22 +653,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "939473a8-0aae-4116-8ee4-979c8e9e7550",
-                            ConcurrencyStamp = "3cff9dac-9e76-4b29-86d5-331239d1b6e4",
+                            Id = "a468f9d5-30f7-4cb2-b5db-b5281a58d8b3",
+                            ConcurrencyStamp = "97f48426-52f7-4455-98e2-fa487731ae9d",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "938485f0-3e58-485b-8ed5-3ce4e63318f5",
-                            ConcurrencyStamp = "ff66bfce-147e-4de1-9114-15b633068876",
+                            Id = "9764c591-4390-40f5-945a-38897278791d",
+                            ConcurrencyStamp = "73690b37-af52-4c3f-8705-c77eb66d9b0b",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "80e3cf12-3391-48c8-85f2-3c2c9fc5c52a",
-                            ConcurrencyStamp = "f5b0d0c4-a386-479b-b7a7-bb89d415ff8a",
+                            Id = "8b0e47cd-ed4f-470f-9e9c-6c9ae5d6a11d",
+                            ConcurrencyStamp = "7a4d8b1e-3c3d-4cfd-9907-84d8ef3dc85c",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

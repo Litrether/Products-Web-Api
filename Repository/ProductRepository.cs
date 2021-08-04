@@ -15,7 +15,7 @@ namespace Repository
         {
         }
 
-        public async Task<(PagedList<Product>, int)> GetAllProductsAsync(ProductParameters productParameters,
+        public async Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters,
             bool trackChanges, double exchangeRate = default(double))
         {
             var products = await FindAll(trackChanges)
@@ -28,10 +28,8 @@ namespace Repository
             products?.ConvertCurrency(exchangeRate);
             var filteredProducts = products?.FilterByCurrency(productParameters);
 
-            
-
-            return (PagedList<Product>
-                .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize), products.Count);
+            return PagedList<Product>
+                .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
 
         public async Task<Product> GetProductAsync(int productId, bool trackChanges, double exchangeRate = default(double))

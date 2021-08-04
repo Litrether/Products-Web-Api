@@ -15,7 +15,7 @@ namespace Repository
         {
         }
 
-        public async Task<(PagedList<Provider>, int)> GetAllProvidersAsync(
+        public async Task<PagedList<Provider>> GetAllProvidersAsync(
             ProviderParameters providerParameters, bool trackChanges)
         {
             var providers = await FindAll(trackChanges)
@@ -23,9 +23,9 @@ namespace Repository
                 .Sort(providerParameters.OrderBy)
                 .ToListAsync();
 
-            return (PagedList<Provider>
+            return PagedList<Provider>
                 .ToPagedList(providers, providerParameters.PageNumber,
-                    providerParameters.PageSize), providers.Count);
+                    providerParameters.PageSize);
         }
 
         public async Task<Provider> GetProviderAsync(int providerId, bool trackChanges) =>

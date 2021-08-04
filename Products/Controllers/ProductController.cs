@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
@@ -48,14 +49,11 @@ namespace Products.Controllers
 
             var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
-            var productsAndAmount = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
-
-            var products = productsAndAmount.Item1;
-            var totalAmount = productsAndAmount.Item2;
+            var products = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
+            Response.Headers.Add("Pagination", JsonSerializer.Serialize(products.MetaData));
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
-
-            return Ok( new { totalAmount = totalAmount, products = _dataShaper.ShapeData(productsDto, productParameters.Fields) });
+            return Ok(productsDto);
         }
 
         /// <summary> Get product by id </summary>
@@ -75,6 +73,7 @@ namespace Products.Controllers
             var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, exchangeRate);
 
             var productDto = _mapper.Map<ProductOutgoingDto>(productEntity);
+
 
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));
         }

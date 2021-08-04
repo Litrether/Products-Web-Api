@@ -16,7 +16,7 @@ namespace Repository
         {
         }
 
-        public async Task<(List<Product>, int)> GetCartProducts(User user)
+        public async Task<List<Product>> GetCartProducts(User user)
         {
             var carts = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges: false)
                 .IncludeFields()
@@ -24,7 +24,7 @@ namespace Repository
 
             var products = carts.Select(c => c.Product).ToList();
 
-            return (products, products.Count);
+            return products;
         }
 
         public void CreateCartProduct(Cart cart) =>

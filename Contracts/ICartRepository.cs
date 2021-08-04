@@ -6,7 +6,7 @@ namespace Contracts
 {
     public interface ICartRepository
     {
-        public Task<(List<Product>, int)> GetCartProducts(User user);
+        public Task<List<Product>> GetCartProducts(User user);
 
         public void CreateCartProduct(Cart cart);
 
