@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
@@ -45,9 +46,10 @@ namespace Products.Controllers
             var providers= await _repository.Provider.GetAllProvidersAsync(providerParameters,
                 trackChanges: false);
 
+            Response.Headers.Add("pagination", JsonSerializer.Serialize(providers.MetaData));
             var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
 
-            return Ok(new { pagination = providers.MetaData, providers = providersDto });
+            return Ok(providersDto);
         }
 
         /// <summary> Get provider by id </summary>

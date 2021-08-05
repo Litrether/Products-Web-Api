@@ -54,7 +54,7 @@ namespace Products.Controllers
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
-            return Ok(new { pagination = products.MetaData, products = productsDto });
+            return Ok(productsDto);
         }
 
         /// <summary> Get product by id </summary>

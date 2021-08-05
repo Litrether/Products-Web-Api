@@ -103,6 +103,9 @@
             <param name="id"></param>
             <returns> No content </returns>
         </member>
+        <member name="M:Messenger.Controllers.AccountController.GetCurrentUser">
+            <summary> Get information about current user </summary>
+        </member>
         <member name="M:Messenger.Controllers.AccountController.RegisterUser(Entities.DataTransferObjects.Incoming.UserRegistrationDto)">
             <summary> Create a new user account </summary>
             <param name="userForRegistration"></param>
@@ -115,6 +118,11 @@
         <member name="M:Messenger.Controllers.AccountController.DeleteUser(Entities.DataTransferObjects.Incoming.UserValidationDto)">
             <summary> Delete user after authenticate </summary>
             <param name="user"></param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:Messenger.Controllers.AccountController.ChangePassword(Entities.DataTransferObjects.Incoming.ChangePasswordDto)">
+            <summary> Change password </summary>
+            <param name="passwords"></param>
             <returns>No content</returns>
         </member>
     </members>

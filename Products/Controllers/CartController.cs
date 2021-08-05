@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Products.Controllers
@@ -48,6 +49,7 @@ namespace Products.Controllers
 
             var products = await _repository.Cart.GetCartProducts(productParameters, user, trackChanges: false, exchangeRate);
 
+            Response.Headers.Add("pagination", JsonSerializer.Serialize(products.MetaData));
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
             return Ok(productsDto);

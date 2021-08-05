@@ -34,7 +34,6 @@ namespace Products.Extensions
                 builder.AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyOrigin()
-                    .AllowCredentials()
                     .WithExposedHeaders("pagination"));
             });
 

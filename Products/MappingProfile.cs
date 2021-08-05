@@ -27,7 +27,8 @@ namespace Products
 
             CreateMap<Cart, CartOutgoingDto>()
                 .ForMember(c => c.User, opt => opt.MapFrom(x => x.User.UserName));
-            CreateMap<CartOutgoingDto, Cart>().ReverseMap();
+
+            CreateMap<User, UserOutgoingDto>();
         }
     }
 }

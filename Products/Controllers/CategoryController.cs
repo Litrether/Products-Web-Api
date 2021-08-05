@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
@@ -42,9 +43,10 @@ namespace Products.Controllers
             var categories = await _repository.Category.GetAllCategoriesAsync(
                 categoryParameters, trackChanges: false);
 
+            Response.Headers.Add("pagination", JsonSerializer.Serialize(categories.MetaData));
             var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
 
-            return Ok(new { pagination = categories.MetaData, categories = categoriesDto });
+            return Ok(categoriesDto);
         }
 
         /// <summary> Get category by id </summary>
