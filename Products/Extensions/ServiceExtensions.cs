@@ -31,9 +31,11 @@ namespace Products.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
-                builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+                builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()
+                    .AllowCredentials()
+                    .WithExposedHeaders("pagination"));
             });
 
         public static void ConfigureIISIntegration(this IServiceCollection services) =>
