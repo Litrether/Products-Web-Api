@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
 using System.Collections.Generic;
@@ -16,15 +17,22 @@ namespace Repository
         {
         }
 
-        public async Task<List<Product>> GetCartProducts(User user)
+        public async Task<PagedList<Product>> GetCartProducts(ProductParameters productParameters, User user,
+            bool trackChanges, double exchangeRate = default(double))
         {
-            var carts = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges: false)
+            var products = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges: false)
+                .Select(c => c.Product)
+                .Search(productParameters.SearchTerm)
+                .FilterByProperties(productParameters)
                 .IncludeFields()
+                .Sort(productParameters.OrderBy)
                 .ToListAsync();
 
-            var products = carts.Select(c => c.Product).ToList();
+            products?.ConvertCurrency(exchangeRate);
+            var filteredProducts = products?.FilterByCurrency(productParameters);
 
-            return products;
+            return PagedList<Product>
+                .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
 
         public void CreateCartProduct(Cart cart) =>

@@ -50,10 +50,11 @@ namespace Products.Controllers
             var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
             var products = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
-            Response.Headers.Add("Pagination", JsonSerializer.Serialize(products.MetaData));
+            Response.Headers.Add("pagination", JsonSerializer.Serialize(products.MetaData));
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
-            return Ok(productsDto);
+
+            return Ok(new { pagination = products.MetaData, products = productsDto });
         }
 
         /// <summary> Get product by id </summary>

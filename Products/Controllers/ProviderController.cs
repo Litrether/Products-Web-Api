@@ -47,7 +47,7 @@ namespace Products.Controllers
 
             var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
 
-            return Ok(providersDto);
+            return Ok(new { pagination = providers.MetaData, providers = providersDto });
         }
 
         /// <summary> Get provider by id </summary>

@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.DataTransferObjects.Outgoing;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,17 @@ namespace Products.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
+        private readonly ICurrencyApiConnection _currencyConnection;
         private readonly IRepositoryManager _repository;
         private readonly UserManager<User> _userManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public CartController(IRepositoryManager repository, ILoggerManager logger,
+        public CartController(ICurrencyApiConnection currencyConnection, 
+            IRepositoryManager repository, ILoggerManager logger,
             UserManager<User> userManager, IMapper mapper)
         {
+            _currencyConnection = currencyConnection;
             _repository = repository;
             _userManager = userManager;
             _logger = logger;
@@ -35,11 +39,14 @@ namespace Products.Controllers
         /// <returns> Products from a user basket</returns>
         [HttpGet(Name = "GetCartProducts")]
         [Authorize]
-        public async Task<IActionResult> GetCartProducts()
+        public async Task<IActionResult> GetCartProducts(
+            [FromQuery] ProductParameters productParameters)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            var products = await _repository.Cart.GetCartProducts(user);
+            var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
+
+            var products = await _repository.Cart.GetCartProducts(productParameters, user, trackChanges: false, exchangeRate);
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
@@ -59,18 +66,16 @@ namespace Products.Controllers
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var cart = new Cart { UserId = user.Id, ProductId = product.Id};
 
-            var products = await _repository.Cart.GetCartProducts(user);
-
-            var productCart = products.Any(p => p.Id == product.Id);
-            if (productCart)
-            {
-                _logger.LogError($"Product with id: {productId} exist in cart");
-                return BadRequest($"Product with id: {productId} exist in cart");
-            }
-
             _repository.Cart.CreateCartProduct(cart);
 
-            await _repository.SaveAsync();
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             var cartDto = _mapper.Map<CartOutgoingDto>(cart);
 

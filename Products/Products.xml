@@ -4,7 +4,7 @@
         <name>Products</name>
     </assembly>
     <members>
-        <member name="M:Products.Controllers.CartController.GetCartProducts">
+        <member name="M:Products.Controllers.CartController.GetCartProducts(Entities.RequestFeatures.ProductParameters)">
             <summary> Get products from a user basket </summary>
             <returns> Products from a user basket</returns>
         </member>

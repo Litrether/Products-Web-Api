@@ -44,7 +44,7 @@ namespace Products.Controllers
 
             var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
 
-            return Ok(categoriesDto);
+            return Ok(new { pagination = categories.MetaData, categories = categoriesDto });
         }
 
         /// <summary> Get category by id </summary>
