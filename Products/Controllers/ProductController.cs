@@ -16,7 +16,6 @@ namespace Products.Controllers
 {
     [Route("api/products")]
     [ApiController]
-    [ResponseCache(CacheProfileName = "180SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class ProductController : ControllerBase
     {
