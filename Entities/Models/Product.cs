@@ -12,6 +12,8 @@ namespace Entities.Models
 
         public double Cost { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public int ProviderId { get; set; }
         public  Provider Provider { get; set; }
 

@@ -15,6 +15,8 @@ namespace Entities.DataTransferObjects.Incoming
         [Range(0.01, double.MaxValue, ErrorMessage = "Product cost should be upper 0.01$")]
         public double Cost { get; set; }
 
+        public string ImageUrl { get; set; }
+
         [Required(ErrorMessage = "Provider id name is a required field.")]
         public int ProviderId { get; set; }
 
