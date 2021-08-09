@@ -7,7 +7,7 @@ namespace Products.Managers
 {
     public class RepositoryManager : IRepositoryManager
     {
-        private RepositoryContext _repositoryContext;
+        private readonly RepositoryContext _repositoryContext;
         private IProductRepository _productRepository;
         private ICategoryRepository _categoryRepository;
         private IProviderRepository _providerRepository;
