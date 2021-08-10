@@ -29,8 +29,8 @@ namespace Products.ActionFilters
             ActionExecutionDelegate next)
         {
             var requestPath = context.HttpContext.Request.Path.Value;
-            var needValidateUser = requestPath.Contains("/login") || requestPath.Contains("/delete");
-            var needValidateRoles = requestPath.EndsWith("/account");
+            var needValidateUser = requestPath.Contains("/login");
+            var needValidateRoles = requestPath.Contains("/account");
             var method = context.HttpContext.Request.Method;
 
             if (IsValidRequstModel(context, method) == false)

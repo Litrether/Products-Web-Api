@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -85,7 +84,7 @@ namespace Products.Controllers
         }
 
 
-        /// <summary> Delete user after authenticate </summary>
+        /// <summary> Delete product from user cart</summary>
         /// <param name="productId"></param>
         /// <returns>No content</returns>
         [HttpDelete(Name = "DeleteCartProduct")]

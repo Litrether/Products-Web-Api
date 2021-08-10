@@ -21,11 +21,12 @@ namespace Repository
             bool trackChanges, double exchangeRate = default(double))
         {
             var products = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges: false)
+                .Include(c => c.Product.Category)
+                .Include(c => c.Product.Provider)
                 .Select(c => c.Product)
                 .Search(productParameters.SearchTerm)
-                .FilterByProperties(productParameters)
-                .IncludeFields()
                 .Sort(productParameters.OrderBy)
+                .FilterByProperties(productParameters)
                 .ToListAsync();
 
             products?.ConvertCurrency(exchangeRate);

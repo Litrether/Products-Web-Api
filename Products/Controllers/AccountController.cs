@@ -95,15 +95,13 @@ namespace Messenger.Controllers
             return Ok(new { Token = await _authManager.CreateToken(), roles = roles });
         }
 
-        /// <summary> Delete user after authenticate </summary>
-        /// <param name="user"></param>
+        /// <summary> Delete current user account</summary>
         /// <returns>No content</returns>
         [HttpDelete("delete", Name = "DeleteUser")]
-        [ServiceFilter(typeof(ValidateAccountAttribute))]
-        public async Task<IActionResult> DeleteUser(
-            [FromBody] UserValidationDto user)
+        [Authorize]
+        public async Task<IActionResult> DeleteUser()
         {
-            var userForDelete = await _userManager.FindByNameAsync(user.UserName);
+            var userForDelete = await _userManager.FindByNameAsync(User.Identity.Name);
 
             var result = await _userManager.DeleteAsync(userForDelete);
             if (result.Succeeded == false)
@@ -117,7 +115,7 @@ namespace Messenger.Controllers
             return NoContent();
         }
 
-        /// <summary> Change password </summary>
+        /// <summary> Change account password</summary>
         /// <param name="passwords"></param>
         /// <returns>No content</returns>
         [HttpPut("password", Name = "ChangePassword")]
