@@ -44,8 +44,6 @@ namespace Products.ActionFilters
             return true;
         }
 
-
-
         public bool IsNullEntity(ActionExecutingContext context, T entity, int id)
         {
             if (entity == null)

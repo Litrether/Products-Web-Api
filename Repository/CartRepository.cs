@@ -20,7 +20,7 @@ namespace Repository
         public async Task<PagedList<Product>> GetCartProducts(ProductParameters productParameters, User user,
             bool trackChanges, double exchangeRate = default(double))
         {
-            var products = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges: false)
+            var products = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges)
                 .Include(c => c.Product.Category)
                 .Include(c => c.Product.Provider)
                 .Select(c => c.Product)
@@ -35,6 +35,10 @@ namespace Repository
             return PagedList<Product>
                 .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
+
+        public async Task<Cart> GetCartProductById(int productId, bool trackChanges) =>
+            await FindByCondition(c => c.Product.Id == productId, trackChanges)
+            .SingleOrDefaultAsync();
 
         public void CreateCartProduct(Cart cart) =>
             Create(cart);

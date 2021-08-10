@@ -9,6 +9,8 @@ namespace Contracts
         public Task<PagedList<Product>> GetCartProducts(ProductParameters productParameters, User user,
             bool trackChanges, double exchangeRate = default(double));
 
+        public Task<Cart> GetCartProductById(int productId, bool trackChanges);
+
         public void CreateCartProduct(Cart cart);
 
         public void DeleteCartProduct(Cart cart);

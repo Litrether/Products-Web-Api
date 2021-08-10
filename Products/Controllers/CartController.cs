@@ -46,9 +46,10 @@ namespace Products.Controllers
 
             var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
-            var products = await _repository.Cart.GetCartProducts(productParameters, user, trackChanges: false, exchangeRate);
-
+            var products = await _repository.Cart.GetCartProducts(productParameters,
+                user, trackChanges: false, exchangeRate);
             Response.Headers.Add("pagination", JsonSerializer.Serialize(products.MetaData));
+
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
             return Ok(productsDto);
@@ -87,17 +88,23 @@ namespace Products.Controllers
         /// <summary> Delete product from user cart</summary>
         /// <param name="productId"></param>
         /// <returns>No content</returns>
-        [HttpDelete(Name = "DeleteCartProduct")]
+        [HttpDelete("{productId}", Name = "DeleteCartProduct")]
         [Authorize]
         [ServiceFilter(typeof(ValidateCartAttribute))]
         public async Task<IActionResult> DeleteCartProduct(int productId)
         {
-            var product = await _repository.Product.GetProductAsync(productId, trackChanges: false);
-
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var cart = new Cart { UserId = user.Id, ProductId = product.Id };
+            var cart = await _repository.Cart.GetCartProductById(productId, trackChanges: false);
 
             _repository.Cart.DeleteCartProduct(cart);
+
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
 
             return NoContent();
         }
