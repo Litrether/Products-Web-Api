@@ -14,7 +14,7 @@
             <returns>No content</returns>
         </member>
         <member name="M:Products.Controllers.CartController.DeleteCartProduct(System.Int32)">
-            <summary> Delete user after authenticate </summary>
+            <summary> Delete product from user cart</summary>
             <param name="productId"></param>
             <returns>No content</returns>
         </member>
@@ -115,13 +115,12 @@
             <param name="user"></param>
             <returns>Bearer token</returns>
         </member>
-        <member name="M:Messenger.Controllers.AccountController.DeleteUser(Entities.DataTransferObjects.Incoming.UserValidationDto)">
-            <summary> Delete user after authenticate </summary>
-            <param name="user"></param>
+        <member name="M:Messenger.Controllers.AccountController.DeleteUser">
+            <summary> Delete current user account</summary>
             <returns>No content</returns>
         </member>
         <member name="M:Messenger.Controllers.AccountController.ChangePassword(Entities.DataTransferObjects.Incoming.ChangePasswordDto)">
-            <summary> Change password </summary>
+            <summary> Change account password</summary>
             <param name="passwords"></param>
             <returns>No content</returns>
         </member>
