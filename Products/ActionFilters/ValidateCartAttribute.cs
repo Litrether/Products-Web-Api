@@ -38,7 +38,7 @@ namespace Products.ActionFilters
             if (method == "DELETE" && IsNullEntity(context, cart, productId))
                 return;
 
-            if (method == "POST" && IsNullEntity(context, cart, productId) == false)
+            if (method == "POST" && cart != null)
             {
                 _logger.LogError($"Product with id: {productId} is in the cart.");
                 context.Result = new BadRequestObjectResult($"Product with id: {productId} is in the cart.");
@@ -47,6 +47,5 @@ namespace Products.ActionFilters
 
             await next();
         }
-
     }
 }

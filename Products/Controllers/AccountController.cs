@@ -16,15 +16,13 @@ namespace Messenger.Controllers
     [ApiExplorerSettings(GroupName = "v1")]
     public class AccountController : ControllerBase
     {
-        private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IAutenticationManager _authManager;
 
-        public AccountController(ILoggerManager logger, IMapper mapper,
-            UserManager<User> userManager, IAutenticationManager authManager)
+        public AccountController(IMapper mapper, UserManager<User> userManager,
+            IAutenticationManager authManager)
         {
-            _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
             _authManager = authManager;
@@ -68,16 +66,7 @@ namespace Messenger.Controllers
 
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
-            var userValidate = _mapper.Map<UserValidationDto>(userForRegistration);
-            if (await _authManager.ValidateUser(userValidate) == false)
-            {
-                return BadRequest();
-            }
-     
-            var userForRoles = await _userManager.FindByNameAsync(user.UserName);
-            var roles = await _userManager.GetRolesAsync(userForRoles);
-
-            return Ok(new { Token = await _authManager.CreateToken(), roles = roles });
+            return Ok();
         }
 
 
