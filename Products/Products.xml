@@ -115,7 +115,7 @@
             <param name="user"></param>
             <returns>Bearer token</returns>
         </member>
-        <member name="M:Messenger.Controllers.AccountController.DeleteUser">
+        <member name="M:Messenger.Controllers.AccountController.DeleteUser(Entities.DataTransferObjects.Incoming.UserValidationDto)">
             <summary> Delete current user account</summary>
             <returns>No content</returns>
         </member>

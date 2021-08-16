@@ -28,10 +28,11 @@ namespace Products.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
-            var requestPath = context.HttpContext.Request.Path.Value;
-            var needValidateUser = requestPath.EndsWith("/login");
-            var needValidateRoles = requestPath.EndsWith("/account");
             var method = context.HttpContext.Request.Method;
+            var requestPath = context.HttpContext.Request.Path.Value;
+            var needValidateRoles = requestPath.EndsWith("/account");
+            var needValidateUser = requestPath.EndsWith("/login") ||
+                                   method.Equals("DELETE");
 
             if (IsValidRequstModel(context, method) == false)
                 return;

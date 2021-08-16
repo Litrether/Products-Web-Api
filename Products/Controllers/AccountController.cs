@@ -88,10 +88,10 @@ namespace Messenger.Controllers
         /// <returns>No content</returns>
         [HttpDelete("delete", Name = "DeleteUser")]
         [Authorize]
-        public async Task<IActionResult> DeleteUser()
+        [ServiceFilter(typeof(ValidateAccountAttribute))]
+        public async Task<IActionResult> DeleteUser([FromBody] UserValidationDto user)
         {
-            var userForDelete = await _userManager.FindByNameAsync(User.Identity.Name);
-
+            var userForDelete = await _userManager.FindByNameAsync(user.UserName);
             var result = await _userManager.DeleteAsync(userForDelete);
             if (result.Succeeded == false)
             {
@@ -100,7 +100,7 @@ namespace Messenger.Controllers
 
                 return BadRequest(ModelState);
             }
-
+            
             return NoContent();
         }
 
