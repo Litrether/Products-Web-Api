@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.Outcoming;
-using Entities.DataTransferObjects.Outgoing;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
@@ -102,6 +101,7 @@ namespace Products.Controllers
             var cart = await _repository.Cart.GetCartProductAsync(user, productId, trackChanges: false);
             if (cart == null)
             {
+                _logger.LogError($"Cart with id: {productId} not found.");
                 return NotFound();
             }
 
@@ -113,7 +113,6 @@ namespace Products.Controllers
             }
             catch (System.Exception ex)
             {
-                _logger.LogError($"Cart with id: {productId} not found.");
                 return BadRequest(ex.InnerException.Message);
             }
 

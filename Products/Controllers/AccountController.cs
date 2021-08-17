@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outgoing;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
+using System.Threading.Tasks;
 
 namespace Messenger.Controllers
 {
@@ -100,7 +100,7 @@ namespace Messenger.Controllers
 
                 return BadRequest(ModelState);
             }
-            
+
             return NoContent();
         }
 
