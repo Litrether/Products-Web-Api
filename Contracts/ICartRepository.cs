@@ -6,10 +6,10 @@ namespace Contracts
 {
     public interface ICartRepository
     {
-        public Task<PagedList<Product>> GetCartProducts(ProductParameters productParameters, User user,
+        public Task<PagedList<Product>> GetCartProductsAsync(ProductParameters productParameters, User user,
             bool trackChanges, double exchangeRate = default(double));
 
-        public Task<Cart> GetCartProductById(int productId, bool trackChanges);
+        public Task<Cart> GetCartProductAsync(User user, int productId, bool trackChanges);
 
         public void CreateCartProduct(Cart cart);
 

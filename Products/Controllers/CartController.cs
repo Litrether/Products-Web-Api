@@ -24,7 +24,7 @@ namespace Products.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public CartController(ICurrencyApiConnection currencyConnection, 
+        public CartController(ICurrencyApiConnection currencyConnection,
             IRepositoryManager repository, ILoggerManager logger,
             UserManager<User> userManager, IMapper mapper)
         {
@@ -43,10 +43,9 @@ namespace Products.Controllers
             [FromQuery] ProductParameters productParameters)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
             var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
-            var products = await _repository.Cart.GetCartProducts(productParameters,
+            var products = await _repository.Cart.GetCartProductsAsync(productParameters,
                 user, trackChanges: false, exchangeRate);
             Response.Headers.Add("pagination", JsonSerializer.Serialize(products.MetaData));
 
@@ -63,12 +62,17 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateCartAttribute))]
         public async Task<IActionResult> CreateCartProduct(int productId)
         {
-            var product = await _repository.Product.GetProductAsync(productId, trackChanges: false);
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var cart = new Cart { UserId = user.Id, ProductId = product.Id};
+            var cart = await _repository.Cart.GetCartProductAsync(user, productId, trackChanges: false);
+            if (cart != null)
+            {
+                _logger.LogError($"Product with id: {productId} is in cart");
+                return BadRequest($"Product with id: {productId} is in cart");
+            }
+            var newCart = new Cart { UserId = user.Id, ProductId = productId };
 
-            _repository.Cart.CreateCartProduct(cart);
+            _repository.Cart.CreateCartProduct(newCart);
 
             try
             {
@@ -79,9 +83,10 @@ namespace Products.Controllers
                 return BadRequest(ex.InnerException.Message);
             }
 
-            var cartDto = _mapper.Map<CartOutgoingDto>(cart);
+            var product = await _repository.Product.GetProductAsync(productId, trackChanges: false);
+            var productDto = _mapper.Map<ProductOutgoingDto>(product);
 
-            return Ok(cartDto);
+            return Ok(productDto);
         }
 
 
@@ -93,7 +98,12 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateCartAttribute))]
         public async Task<IActionResult> DeleteCartProduct(int productId)
         {
-            var cart = await _repository.Cart.GetCartProductById(productId, trackChanges: false);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var cart = await _repository.Cart.GetCartProductAsync(user, productId, trackChanges: false);
+            if (cart == null)
+            {
+                return NotFound();
+            }
 
             _repository.Cart.DeleteCartProduct(cart);
 
@@ -103,6 +113,7 @@ namespace Products.Controllers
             }
             catch (System.Exception ex)
             {
+                _logger.LogError($"Cart with id: {productId} not found.");
                 return BadRequest(ex.InnerException.Message);
             }
 

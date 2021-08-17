@@ -17,7 +17,7 @@ namespace Repository
         {
         }
 
-        public async Task<PagedList<Product>> GetCartProducts(ProductParameters productParameters, User user,
+        public async Task<PagedList<Product>> GetCartProductsAsync(ProductParameters productParameters, User user,
             bool trackChanges, double exchangeRate = default(double))
         {
             var products = await FindByCondition(c => c.User.UserName == user.UserName, trackChanges)
@@ -36,8 +36,8 @@ namespace Repository
                 .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);
         }
 
-        public async Task<Cart> GetCartProductById(int productId, bool trackChanges) =>
-            await FindByCondition(c => c.Product.Id == productId, trackChanges)
+        public async Task<Cart> GetCartProductAsync(User user, int productId, bool trackChanges) =>
+            await FindByCondition(c => c.User.UserName == user.UserName && c.Product.Id == productId, trackChanges)
             .SingleOrDefaultAsync();
 
         public void CreateCartProduct(Cart cart) =>
