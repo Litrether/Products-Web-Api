@@ -18,19 +18,13 @@ namespace Products.ActionFilters
         {
             var action = context.RouteData.Values["action"];
             var controller = context.RouteData.Values["controller"];
-            var methodHasDtoParam = method == "PATCH" ||
-                                    method == "POST" ||
-                                    method == "PUT";
 
-            if (methodHasDtoParam)
+            var param = context.ActionArguments.SingleOrDefault(x => x.Value.ToString().Contains("Dto")).Value;
+            if (param == null)
             {
-                var param = context.ActionArguments.SingleOrDefault(x => x.Value.ToString().Contains("Dto")).Value;
-                if (param == null)
-                {
-                    _logger.LogError($"Object sent from client is null. Controller: {controller}, action: { action}.");
-                    context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action}.");
-                    return false;
-                }
+                _logger.LogError($"Object sent from client is null. Controller: { controller }, action: { action }.");
+                context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action }.");
+                return false;
             }
 
             if (context.ModelState.IsValid == false)
