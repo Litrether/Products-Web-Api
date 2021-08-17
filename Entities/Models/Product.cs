@@ -15,10 +15,10 @@ namespace Entities.Models
         public string ImageUrl { get; set; }
 
         public int ProviderId { get; set; }
-        public  Provider Provider { get; set; }
+        public Provider Provider { get; set; }
 
         public int CategoryId { get; set; }
-        public  Category Category { get; set; }
+        public Category Category { get; set; }
 
         public virtual List<Cart> Carts { get; set; }
     }

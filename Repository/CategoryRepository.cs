@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Contracts;
+﻿using Contracts;
 using Entities;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
+using System.Threading.Tasks;
 
 namespace Repository
 {

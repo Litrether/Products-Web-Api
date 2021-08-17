@@ -1,9 +1,9 @@
-﻿using System.Net;
-using Contracts;
+﻿using Contracts;
 using Entities.ErrorModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace Messenger.Extensions
 {
@@ -24,7 +24,7 @@ namespace Messenger.Extensions
                     {
                         logger.LogError($"Something went wrong: {contextFeature.Error}");
 
-                          await context.Response.WriteAsync(new ErrorDetails()
+                        await context.Response.WriteAsync(new ErrorDetails()
                         {
                             StatusCode = context.Response.StatusCode,
                             Message = "Internal Server Error."

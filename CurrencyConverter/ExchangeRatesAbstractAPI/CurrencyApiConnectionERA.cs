@@ -1,6 +1,5 @@
-﻿using System.Net;
-using System.Text.Json;
-using Contracts;
+﻿using Contracts;
+using System.Net;
 
 namespace CurrencyConverter.ExchangeRatesAbstractAPI
 {
@@ -12,7 +11,7 @@ namespace CurrencyConverter.ExchangeRatesAbstractAPI
             using (var webClient = new WebClient())
             {
                 //var url = @"https://exchange-rates.abstractapi.com/v1/live/?api_key=0996a12ad2d0439194a8d0780927ca10&base=USD";
-                
+
                 //var jsonResponse = webClient.DownloadString(url);
 
                 //var deserializedResponse = JsonSerializer.Deserialize<CurrencyERA>(jsonResponse);

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.Outcoming;
-using Entities.DataTransferObjects.Outgoing;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;

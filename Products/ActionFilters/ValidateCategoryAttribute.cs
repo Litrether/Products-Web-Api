@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Contracts;
+﻿using Contracts;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Threading.Tasks;
 
 namespace Products.ActionFilters
 {

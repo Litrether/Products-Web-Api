@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
@@ -11,6 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Products.Controllers
 {
@@ -42,7 +42,7 @@ namespace Products.Controllers
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {
-            var providers= await _repository.Provider.GetAllProvidersAsync(providerParameters,
+            var providers = await _repository.Provider.GetAllProvidersAsync(providerParameters,
                 trackChanges: false);
 
             Response.Headers.Add("pagination", JsonSerializer.Serialize(providers.MetaData));

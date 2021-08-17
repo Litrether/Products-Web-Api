@@ -9,6 +9,6 @@ namespace Entities.Models
 
         public string LastName { get; set; }
 
-        public  List<Cart> Carts { get; set; }
+        public List<Cart> Carts { get; set; }
     }
 }
