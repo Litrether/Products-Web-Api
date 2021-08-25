@@ -707,22 +707,22 @@ namespace Products.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d3608d6d-c14d-41b7-ac16-c4a0c45450d9",
-                            ConcurrencyStamp = "1e96aabe-a603-4517-b065-7fb638eddf43",
+                            Id = "4d150066-f148-4997-9c2b-bb3fe99fc89a",
+                            ConcurrencyStamp = "5b0302e4-4561-4aa8-a66a-0a4a8fa28049",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "1e9c7902-a4b2-4de8-b6c6-685d8ceb25d0",
-                            ConcurrencyStamp = "f3a47874-a9ed-49e5-873f-6c4c03cff1e9",
+                            Id = "99ffe4af-e809-4c34-85f8-f8b6572901ab",
+                            ConcurrencyStamp = "4361d154-4598-46d8-b191-519591a60cd9",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "6dc7b140-2706-4369-83b7-d80e8d1eda99",
-                            ConcurrencyStamp = "9bd3db65-693f-46b2-badb-aa6739951657",
+                            Id = "9dc77bec-8228-430e-bfc2-84594669fd47",
+                            ConcurrencyStamp = "d6f6a4a9-da59-437c-9cdd-60aebfe2393a",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
