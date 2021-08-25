@@ -7,5 +7,7 @@ namespace Entities.DataTransferObjects.Incoming
         [Required(ErrorMessage = "Provider name is a required field.")]
         [MaxLength(75, ErrorMessage = "Maximum length for the name is 75 characters.")]
         public string Name { get; set; }
+
+        public string LocationURl { get; set; }
     }
 }
