@@ -8,7 +8,7 @@ namespace Entities.Models
 
         public string Name { get; set; }
 
-        public string LocationURl { get; set; }
+        public string LocationUrl { get; set; }
 
         public ICollection<Product> Products { get; set; }
     }

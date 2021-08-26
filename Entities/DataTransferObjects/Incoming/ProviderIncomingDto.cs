@@ -8,6 +8,6 @@ namespace Entities.DataTransferObjects.Incoming
         [MaxLength(75, ErrorMessage = "Maximum length for the name is 75 characters.")]
         public string Name { get; set; }
 
-        public string LocationURl { get; set; }
+        public string LocationUrl { get; set; }
     }
 }
