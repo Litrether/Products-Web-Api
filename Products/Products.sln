@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "..\Repository
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyApiConnections", "..\CurrencyConverter\CurrencyApiConnections.csproj", "{2CBBFD35-BC52-4493-AFE7-FBF5FC97E2CC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossCuttingLayer", "..\..\CrossCuttingLayer\CrossCuttingLayer.csproj", "{8D0FA37E-003A-4D7E-840F-78C24A78C46E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{2CBBFD35-BC52-4493-AFE7-FBF5FC97E2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CBBFD35-BC52-4493-AFE7-FBF5FC97E2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CBBFD35-BC52-4493-AFE7-FBF5FC97E2CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

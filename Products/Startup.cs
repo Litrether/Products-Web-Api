@@ -1,4 +1,5 @@
 using Contracts;
+using MassTransit;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using Products.Extensions;
+using System;
 using System.IO;
+using CrossCuttingLayer;
 
 namespace Products
 {
@@ -25,6 +28,18 @@ namespace Products
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMassTransit(x =>
+            {
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+                {
+                    config.Host(new Uri(RabbitMqConsts.RabbitMqRootUri), h =>
+                    {
+                        h.Username(RabbitMqConsts.UserName);
+                        h.Password(RabbitMqConsts.Password);
+                    });
+                }));
+            });
+            services.AddMassTransitHostedService();
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerServices();
@@ -53,6 +68,7 @@ namespace Products
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             }).AddNewtonsoftJson();
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,

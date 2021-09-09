@@ -44,6 +44,16 @@
             <param name="id"></param>
             <returns> No content </returns>
         </member>
+        <member name="M:Products.Controllers.OrderController.PostOrder(System.Int32)">
+            <summary> Send message for creating new order </summary>
+            <param name="productId"></param>
+            <returns> Message about successfull sending query </returns>
+        </member>
+        <member name="M:Products.Controllers.OrderController.DeleteOrder(System.Int32)">
+            <summary> Send message for deleting order </summary>
+            <param name="id"></param>
+            <returns> Message about successfull sending query </returns>
+        </member>
         <member name="M:Products.Controllers.ProductController.GetProducts(Entities.RequestFeatures.ProductParameters)">
             <summary> Get list of all products </summary>
             <param name="productParameters"></param>
