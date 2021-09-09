@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
 using CrossCuttingLayer;
-using CrossCuttingLayer.Models;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
