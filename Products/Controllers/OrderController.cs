@@ -12,7 +12,6 @@ namespace Products.Controllers
     [ApiController]
     [Route("api/orders")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -32,6 +31,7 @@ namespace Products.Controllers
         /// <param name="productId"></param>
         /// <returns> Message about successfull sending query </returns>
         [HttpPost("{productId}")]
+        [Authorize(Roles = ("Administrator, Manager"))]
         public async Task<IActionResult> PostOrder(int productId)
         {
             var product = await _repository.Product.GetProductAsync(productId, trackChanges: false);
@@ -59,9 +59,33 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> Message about successfull sending query </returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = ("Administrator, Manager"))]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var message = new OrderMessage() { Id = id, Function = CrossFunction.DELETE };
+
+            var endPoint = await _bus.GetSendEndpoint(uri);
+            await endPoint.Send(message);
+
+            return Ok("The query is accepted for processing.");
+        }
+
+        /// <summary> Send message for update order status </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns> Message about successfull sending query </returns>
+        [HttpPut("{id}")]
+        [Authorize(Roles = ("Administrator, Manager"))]
+        public async Task<IActionResult> UpdateOrderStatus(int id, string status)
+        {
+            if (status != "Processed" && status != "On the way" && status != "Delivered")
+                return BadRequest("Status must has value: 'Processed','On the way' or 'Delivered'");
+
+            var message = new OrderMessage() {
+                Id = id,
+                Status = status,
+                Function = CrossFunction.PUT,
+            };
 
             var endPoint = await _bus.GetSendEndpoint(uri);
             await endPoint.Send(message);
