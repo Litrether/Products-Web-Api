@@ -19,7 +19,5 @@ namespace Entities.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
-        public virtual List<Cart> Carts { get; set; }
     }
 }

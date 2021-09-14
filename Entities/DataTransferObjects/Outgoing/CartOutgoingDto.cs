@@ -7,6 +7,5 @@
         public int ProductId { get; set; }
 
         public string User { get; set; }
-
     }
 }

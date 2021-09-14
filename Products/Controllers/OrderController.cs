@@ -55,21 +55,6 @@ namespace Products.Controllers
             return Ok("The order is accepted for processing.");
         }
 
-        /// <summary> Send message for deleting order </summary>
-        /// <param name="id"></param>
-        /// <returns> Message about successfull sending query </returns>
-        [HttpDelete("{id}")]
-        [Authorize(Roles = ("Administrator, Manager"))]
-        public async Task<IActionResult> DeleteOrder(int id)
-        {
-            var message = new OrderMessage() { Id = id, Function = CrossFunction.DELETE };
-
-            var endPoint = await _bus.GetSendEndpoint(uri);
-            await endPoint.Send(message);
-
-            return Ok("The query is accepted for processing.");
-        }
-
         /// <summary> Send message for update order status </summary>
         /// <param name="id"></param>
         /// <param name="status"></param>
@@ -81,11 +66,27 @@ namespace Products.Controllers
             if (status != "Processed" && status != "On the way" && status != "Delivered")
                 return BadRequest("Status must has value: 'Processed','On the way' or 'Delivered'");
 
-            var message = new OrderMessage() {
+            var message = new OrderMessage()
+            {
                 Id = id,
                 Status = status,
                 Function = CrossFunction.PUT,
             };
+
+            var endPoint = await _bus.GetSendEndpoint(uri);
+            await endPoint.Send(message);
+
+            return Ok("The query is accepted for processing.");
+        }
+
+        /// <summary> Send message for deleting order </summary>
+        /// <param name="id"></param>
+        /// <returns> Message about successfull sending query </returns>
+        [HttpDelete("{id}")]
+        [Authorize(Roles = ("Administrator, Manager"))]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var message = new OrderMessage() { Id = id, Function = CrossFunction.DELETE };
 
             var endPoint = await _bus.GetSendEndpoint(uri);
             await endPoint.Send(message);
