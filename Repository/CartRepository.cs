@@ -29,7 +29,7 @@ namespace Repository
                 .ToListAsync();
 
             products?.ConvertCurrency(exchangeRate);
-            var filteredProducts = products?.FilterByCurrency(productParameters);
+            var filteredProducts = products?.FilterByCost(productParameters);
 
             return PagedList<Product>
                 .ToPagedList(filteredProducts, productParameters.PageNumber, productParameters.PageSize);

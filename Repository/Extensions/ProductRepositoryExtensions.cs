@@ -18,11 +18,11 @@ namespace Repository.Extensions
 
             var lowerCaseTerm = searchTerm.Trim().ToLower();
 
-            return products.Where(c =>
-                c.Name.ToLower().Contains(lowerCaseTerm) ||
-                c.Description.ToLower().Contains(lowerCaseTerm) ||
-                c.Category.Name.ToLower().Contains(lowerCaseTerm) ||
-                c.Provider.Name.ToLower().Contains(lowerCaseTerm));
+            return products.Where(p =>
+                p.Name.ToLower().Contains(lowerCaseTerm) ||
+                p.Description.ToLower().Contains(lowerCaseTerm) ||
+                p.Category.Name.ToLower().Contains(lowerCaseTerm) ||
+                p.Provider.Name.ToLower().Contains(lowerCaseTerm));
         }
 
         public static IQueryable<Product> FilterByProperties(this IQueryable<Product> products,
@@ -66,7 +66,7 @@ namespace Repository.Extensions
             products.Include(p => p.Category)
                     .Include(p => p.Provider);
 
-        public static IEnumerable<Product> FilterByCurrency(this IEnumerable<Product> products,
+        public static IEnumerable<Product> FilterByCost(this IEnumerable<Product> products,
             ProductParameters productParameters) =>
             products.Where(p => productParameters.MinCost <= p.Cost && p.Cost <= productParameters.MaxCost);
 
