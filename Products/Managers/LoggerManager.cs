@@ -8,8 +8,7 @@ namespace Products.Managers
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public LoggerManager()
-        {
-        }
+        { }
 
         public void LogInfo(string message) =>
             _logger.Info(message);

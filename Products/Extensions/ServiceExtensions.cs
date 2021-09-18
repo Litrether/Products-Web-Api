@@ -1,5 +1,5 @@
 ﻿using Contracts;
-using CurrencyConverter.ExchangeRatesAbstractAPI;
+using CurrencyConverter;
 using Entities;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
@@ -55,7 +55,7 @@ namespace Products.Extensions
             services.AddScoped<RoleManager<IdentityRole>>();
 
         public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
-            services.AddScoped<ICurrencyApiConnection, CurrencyApiConnectionERA>();
+            services.AddScoped<ICurrencyApiConnection, CurrencyApiConnection>();
 
         public static void ConfigureSqlContext(this IServiceCollection services,
            IConfiguration configuration) =>

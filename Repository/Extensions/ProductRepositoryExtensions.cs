@@ -82,7 +82,7 @@ namespace Repository.Extensions
         public static Product ConvertCurrencyForEntities(this Product products, double exchangeRate)
         {
             if (exchangeRate != default(double))
-                products.Cost *= exchangeRate;
+                products.Cost /= exchangeRate;
 
             return products;
         }

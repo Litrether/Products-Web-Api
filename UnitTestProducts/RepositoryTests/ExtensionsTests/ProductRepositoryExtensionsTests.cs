@@ -200,10 +200,9 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             var product = GetProducts().First();
 
             var exchangeRate = 0.9;
-            var expectedConveredProducts= product.Cost * exchangeRate;
+            var expectedConveredProducts = product.Cost / exchangeRate;
             var converеedProducts = product.ConvertCurrencyForEntities(exchangeRate);
             Assert.AreEqual(converеedProducts.Cost, expectedConveredProducts);
-
         }
 
         public IQueryable<Product> GetProducts()
