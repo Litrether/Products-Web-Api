@@ -12,7 +12,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void ProviderSearchTest()
         {
-            var providers = GetProviders();
+            var providers = EntitiesForTests.Providers;
             var foundProviders_EmptySearchTerm = providers.Search("").ToList();
             var expectedFoundProviders_EmptySearchTerm = providers.ToList();
             Assert.AreEqual(expectedFoundProviders_EmptySearchTerm.Count, foundProviders_EmptySearchTerm.Count);
@@ -41,7 +41,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void ProviderSortTest()
         {
-            var providers = GetProviders();
+            var providers = EntitiesForTests.Providers;
 
             var sortedProviders_IdAsc = providers.Sort("id").ToList();
             var expectedSortedProviders_IdAsc = providers.OrderBy(c => c.Id).ToList();
@@ -107,20 +107,5 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             Assert.AreEqual(expectedSortedProviders_LocationLat[4].Id, sortedProviders_LocationLat[4].Id);
         }
 
-        public IQueryable<Provider> GetProviders()
-        {
-            return new List<Provider>()
-            {
-                new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
-                new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
-                new Provider { Id = 3, Name = "Shirin Agro", LocationLat = 40.73105861912476m, LocationLong = 46.27047156919906m, Products = { }},
-                new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
-                new Provider { Id = 5, Name = "Archeda", LocationLat = 49.764727469041816m, LocationLong = 43.65468679640968m, Products = { }},
-                new Provider { Id = 6, Name = "Pascual", LocationLat = 47.46106041862809m, LocationLong = -122.26236529486663m, Products = { }},
-                new Provider { Id = 7, Name = "Javimar", LocationLat = 39.16566430628417m, LocationLong = -0.2430474019997804m, Products = { }},
-                new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }}
-            }.AsQueryable();
-
-        }
     }
 }

@@ -12,7 +12,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void CategorySearchTest()
         {
-            var categories = GetCategories();
+            var categories = EntitiesForTests.Categories;
             var foundCategories_EmptySearchTerm = categories.Search("").ToList();
             var expectedFoundCategories_EmptySearchTerm = categories.ToList();
             Assert.AreEqual(expectedFoundCategories_EmptySearchTerm.Count, foundCategories_EmptySearchTerm.Count);
@@ -41,7 +41,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void CategorySortTest()
         {
-            var categories = GetCategories();
+            var categories = EntitiesForTests.Categories;
 
             var sortedCategories_IdAsc = categories.Sort("id").ToList();
             var expectedSortedCategories_IdAsc = categories.OrderBy(c => c.Id).ToList();
@@ -91,20 +91,6 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             Assert.AreEqual(expectedSortedCategories_Trash.Last().Id, sortedCategories_Trash.Last().Id);
             Assert.AreEqual(expectedSortedCategories_Trash[2].Id, sortedCategories_Trash[2].Id);
             Assert.AreEqual(expectedSortedCategories_Trash[4].Id, sortedCategories_Trash[4].Id);
-        }
-
-        public IQueryable<Category> GetCategories()
-        {
-            return new List<Category>()
-            {
-                new Category{Id = 1, Name = "Vegetables"},
-                new Category{Id = 2, Name = "Fruits"},
-                new Category{Id = 3, Name = "Grocery"},
-                new Category{Id = 4, Name = "Meat"},
-                new Category{Id = 5, Name = "Dairy Products"},
-                new Category{Id = 6, Name = "Confectionery"}
-            }.AsQueryable();
-
         }
     }
 }

@@ -17,7 +17,6 @@ namespace UnitTestProducts.RepositoryTests.ExtensionsTests.UtilityTest
             var builtQuery_Category = OrderQueryBuilder.CreateOrderQuery<Category>("Id,Name desc,Cost,Id");
             var exceptedBuiltQuery_Category = "Id ascending,Name descending,Id ascending";
             Assert.AreEqual(exceptedBuiltQuery_Category, builtQuery_Category);
-
         }
     }
 }

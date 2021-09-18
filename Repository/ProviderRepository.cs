@@ -37,7 +37,6 @@ namespace Repository
 
         public void DeleteProvider(Provider provider) =>
             Delete(provider);
-
     }
 }
 

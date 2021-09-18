@@ -13,7 +13,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void ProductSearchTest()
         {
-            var products = GetProducts();
+            var products = EntitiesForTests.Products;
 
             var EmptySearchTerm = "";
             var foundProducts_EmptySearchTerm = products.Search(EmptySearchTerm).ToList();
@@ -23,53 +23,53 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             var LowerCaseSearchTerm = "a";
             var foundProducts_LowerCaseSearchTerm = products.Search(LowerCaseSearchTerm).ToList();
             var expectedFoundProducts_LowerCaseSearchTerm = products.Where(p =>
-                p.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower()) ||
-                p.Description.ToLower().Contains(LowerCaseSearchTerm.ToLower()) ||
-                p.Category.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower()) ||
-                p.Provider.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower())).ToList();
+                p.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim()) ||
+                p.Description.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim()) ||
+                p.Category.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim()) ||
+                p.Provider.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim())).ToList();
             Assert.AreEqual(expectedFoundProducts_LowerCaseSearchTerm.Count, foundProducts_LowerCaseSearchTerm.Count);
 
             var UpperCaseSearchTerm = "A";
             var foundProducts_UpperCaseSearchTerm = products.Search("A").ToList();
             var expectedFoundProducts_UpperCaseSearchTerm = products.Where(p =>
-                p.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower()) ||
-                p.Description.ToLower().Contains(UpperCaseSearchTerm.ToLower()) ||
-                p.Category.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower()) ||
-                p.Provider.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower())).ToList();
+                p.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim()) ||
+                p.Description.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim()) ||
+                p.Category.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim()) ||
+                p.Provider.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim())).ToList();
             Assert.AreEqual(expectedFoundProducts_UpperCaseSearchTerm.Count, foundProducts_UpperCaseSearchTerm.Count);
 
             var SubstringSearchTerm = "do colo";
             var foundProducts_SubstringSearchTerm = products.Search(SubstringSearchTerm).ToList();
             var expectedFoundProducts_SubstringSearchTerm = products.Where(p =>
-                p.Name.ToLower().Contains(SubstringSearchTerm.ToLower()) ||
-                p.Description.ToLower().Contains(SubstringSearchTerm.ToLower()) ||
-                p.Category.Name.ToLower().Contains(SubstringSearchTerm.ToLower()) ||
-                p.Provider.Name.ToLower().Contains(SubstringSearchTerm.ToLower())).ToList();
+                p.Name.ToLower().Contains(SubstringSearchTerm.ToLower().Trim()) ||
+                p.Description.ToLower().Contains(SubstringSearchTerm.ToLower().Trim()) ||
+                p.Category.Name.ToLower().Contains(SubstringSearchTerm.ToLower().Trim()) ||
+                p.Provider.Name.ToLower().Contains(SubstringSearchTerm.ToLower().Trim())).ToList();
             Assert.AreEqual(expectedFoundProducts_SubstringSearchTerm.Count, foundProducts_SubstringSearchTerm.Count);
 
             var NotExistedCategoryName = "NoExistedProductName";
             var foundProducts_NotExistedCategoryName = products.Search(NotExistedCategoryName).ToList();
             var expectedFoundProducts_NotExistedCategoryName = products.Where(p =>
-                p.Name.ToLower().Contains(NotExistedCategoryName.ToLower()) ||
-                p.Description.ToLower().Contains(NotExistedCategoryName.ToLower()) ||
-                p.Category.Name.ToLower().Contains(NotExistedCategoryName.ToLower()) ||
-                p.Provider.Name.ToLower().Contains(NotExistedCategoryName.ToLower())).ToList();
+                p.Name.ToLower().Contains(NotExistedCategoryName.ToLower().Trim()) ||
+                p.Description.ToLower().Contains(NotExistedCategoryName.ToLower().Trim()) ||
+                p.Category.Name.ToLower().Contains(NotExistedCategoryName.ToLower().Trim()) ||
+                p.Provider.Name.ToLower().Contains(NotExistedCategoryName.ToLower().Trim())).ToList();
             Assert.AreEqual(expectedFoundProducts_NotExistedCategoryName.Count, foundProducts_NotExistedCategoryName.Count);
 
             var CheckTrim = "   PoTaTo  ";
             var foundProducts_CheckTrim = products.Search(CheckTrim).ToList();
             var expectedFoundProducts_CheckTrim = products.Where(p =>
-                p.Name.ToLower().Contains(CheckTrim.ToLower()) ||
-                p.Description.ToLower().Contains(CheckTrim.ToLower()) ||
-                p.Category.Name.ToLower().Contains(CheckTrim.ToLower()) ||
-                p.Provider.Name.ToLower().Contains(CheckTrim.ToLower())).ToList();
+                p.Name.ToLower().Contains(CheckTrim.ToLower().Trim()) ||
+                p.Description.ToLower().Contains(CheckTrim.ToLower().Trim()) ||
+                p.Category.Name.ToLower().Contains(CheckTrim.ToLower().Trim()) ||
+                p.Provider.Name.ToLower().Contains(CheckTrim.ToLower().Trim())).ToList();
             Assert.AreEqual(expectedFoundProducts_CheckTrim.Count, foundProducts_CheckTrim.Count);
         }
 
         [TestMethod]
         public void ProductSortTest()
         {
-            var products = GetProducts();
+            var products = EntitiesForTests.Products;
 
             var sortedProducts_IdAsc = products.Sort("id").ToList();
             var expectedSortedProducts_IdAsc = products.OrderBy(c => c.Id).ToList();
@@ -124,7 +124,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void FilterByProperties()
         {
-            var products = GetProducts();
+            var products = EntitiesForTests.Products;
 
             var CategoriesAndProviders = new ProductParameters()
             {
@@ -166,7 +166,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [TestMethod]
         public void FilterByCost()
         {
-            var products = GetProducts();
+            var products = EntitiesForTests.Products;
 
             var MinMaxCost = new ProductParameters() { MinCost = 1, MaxCost = 20, };
             var filteredProducts_MinMaxCost = products.FilterByCost(MinMaxCost).ToList();
@@ -183,93 +183,25 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             var MinCost = new ProductParameters() { MinCost = 1 };
             var filteredProducts_MinCost = products.FilterByCost(MinCost).ToList();
             var expectedFilteredProducts_MinCost = products.Where(p =>
-             MinMaxCost.MinCost <= p.Cost).ToList();
+             MinCost.MinCost <= p.Cost).ToList();
             Assert.AreEqual(expectedFilteredProducts_MinCost.Count, filteredProducts_MinCost.Count);
 
-            var MaxCost = new ProductParameters() { MinCost = 1 };
+            var MaxCost = new ProductParameters() { MaxCost = 1 };
             var filteredProducts_MaxCost = products.FilterByCost(MaxCost).ToList();
             var expectedFilteredProducts_MaxCost = products.Where(p =>
-             p.Cost <= MinCost.MaxCost).ToList();
+             p.Cost <= MaxCost.MaxCost).ToList();
             Assert.AreEqual(expectedFilteredProducts_MaxCost.Count, filteredProducts_MaxCost.Count);
-
         }
 
         [TestMethod]
         public void ConvertCurrency()
         {
-            var product = GetProducts().First();
+            var product = EntitiesForTests.Products.First();
 
             var exchangeRate = 0.9;
             var expectedConveredProducts = product.Cost / exchangeRate;
             var converеedProducts = product.ConvertCurrencyForEntities(exchangeRate);
             Assert.AreEqual(converеedProducts.Cost, expectedConveredProducts);
-        }
-
-        public IQueryable<Product> GetProducts()
-        {
-            return new List<Product>()
-            {
-                new Product
-                {
-                    Id = 1,
-                    Name = "Yoghurt",
-                    Description = "Contains useful trace elements",
-                    Cost = 1.53,
-                    CategoryId = 5,
-                    ProviderId = 4,
-                    Category = new Category{Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
-                    ImageUrl = "https://i.pinimg.com/564x/9f/19/09/9f19090f916c43dae8fa2d5e4f4298bd.jpg"
-                },
-                new Product
-                {
-                    Id = 2,
-                    Name = "Butter",
-                    Description = "From the freshest milk",
-                    Cost = 2.25,
-                    CategoryId = 5,
-                    ProviderId = 4,
-                    Category = new Category{ Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
-                    ImageUrl = "https://i.pinimg.com/564x/d1/4a/ac/d14aac685c7d492d34d5b1c06f9e57ad.jpg"
-                },
-                new Product
-                {
-                    Id = 3,
-                    Name = "Milk",
-                    Description = "From the healthiest cows",
-                    Cost = 1.17,
-                    CategoryId = 5,
-                    ProviderId = 2,
-                    Category = new Category{ Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
-                    ImageUrl = "https://i.pinimg.com/564x/11/37/9a/11379a0588f57f9e18f9e4fae9f3b6ed.jpg"
-                },
-                new Product
-                {
-                    Id = 4,
-                    Name = "Cake",
-                    Description = "Baked with love",
-                    Cost = 4.5,
-                    CategoryId = 6,
-                    ProviderId = 5,
-                    Category = new Category{ Id = 6, Name = "Confectionery"},
-                    Provider = new Provider { Id = 5, Name = "Archeda", LocationLat = 49.764727469041816m, LocationLong = 43.65468679640968m, Products = { }},
-                    ImageUrl = "https://i.pinimg.com/564x/ec/5f/08/ec5f08f5c24077ba5a892e39105cc066.jpg"
-                },
-                new Product
-                {
-                    Id = 5,
-                    Name = "Sausage",
-                    Description = "Fresh",
-                    Cost = 3.85,
-                    CategoryId = 4,
-                    ProviderId = 1,
-                    Category = new Category{Id = 4, Name = "Meat"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
-                    ImageUrl = "https://i.pinimg.com/564x/99/ee/3c/99ee3cc80018401e8f92a794ce4d5102.jpg"
-                },
-            }.AsQueryable();
         }
     }
 }
