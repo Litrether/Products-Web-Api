@@ -1,4 +1,5 @@
 using Contracts;
+using CrossCuttingLayer;
 using MassTransit;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +13,6 @@ using NLog;
 using Products.Extensions;
 using System;
 using System.IO;
-using CrossCuttingLayer;
 
 namespace Products
 {
@@ -68,7 +68,7 @@ namespace Products
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             }).AddNewtonsoftJson();
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,

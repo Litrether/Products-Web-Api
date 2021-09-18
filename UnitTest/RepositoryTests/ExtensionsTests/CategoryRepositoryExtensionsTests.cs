@@ -1,7 +1,5 @@
-﻿using Entities.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Repository.Extensions;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTestProducts.Tests.RepositoryExtensionsTests
@@ -79,14 +77,14 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             Assert.AreEqual(expectedSortedCategories_IdAscNameDesc[4].Id, sortedCategories_IdAscNameDesc[4].Id);
 
             var sortedCategories_NameDescIdAsc = categories.Sort("name desc, id asc").ToList();
-            var expectedSortedCategories_NameDescIdAsc  = categories.OrderByDescending(c => c.Name).ThenBy(c => c.Id).ToList();
+            var expectedSortedCategories_NameDescIdAsc = categories.OrderByDescending(c => c.Name).ThenBy(c => c.Id).ToList();
             Assert.AreEqual(expectedSortedCategories_NameDescIdAsc.First().Id, sortedCategories_NameDescIdAsc.First().Id);
             Assert.AreEqual(expectedSortedCategories_NameDescIdAsc.Last().Id, sortedCategories_NameDescIdAsc.Last().Id);
             Assert.AreEqual(expectedSortedCategories_NameDescIdAsc[2].Id, sortedCategories_NameDescIdAsc[2].Id);
             Assert.AreEqual(expectedSortedCategories_NameDescIdAsc[4].Id, sortedCategories_NameDescIdAsc[4].Id);
 
             var sortedCategories_Trash = categories.Sort("age desc, username asc").ToList();
-            var expectedSortedCategories_Trash  = categories.OrderBy(c => c.Name).ToList();
+            var expectedSortedCategories_Trash = categories.OrderBy(c => c.Name).ToList();
             Assert.AreEqual(expectedSortedCategories_Trash.First().Id, sortedCategories_Trash.First().Id);
             Assert.AreEqual(expectedSortedCategories_Trash.Last().Id, sortedCategories_Trash.Last().Id);
             Assert.AreEqual(expectedSortedCategories_Trash[2].Id, sortedCategories_Trash[2].Id);

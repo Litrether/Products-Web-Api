@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Contracts;
+﻿using Contracts;
 using CrossCuttingLayer;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;

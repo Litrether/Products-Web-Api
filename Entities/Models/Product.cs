@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Entities.Models
+﻿namespace Entities.Models
 {
     public class Product
     {

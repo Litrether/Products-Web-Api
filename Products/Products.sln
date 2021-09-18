@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyApiConnections", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossCuttingLayer", "..\..\CrossCuttingLayer\CrossCuttingLayer.csproj", "{8D0FA37E-003A-4D7E-840F-78C24A78C46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProducts", "..\UnitTestProducts\UnitTestProducts.csproj", "{9ADDC129-014A-4B52-BFD0-CCA1EC67628A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "..\UnitTest\UnitTests.csproj", "{420F4E30-DD4F-44F3-A5AE-00630B51D069}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D0FA37E-003A-4D7E-840F-78C24A78C46E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9ADDC129-014A-4B52-BFD0-CCA1EC67628A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9ADDC129-014A-4B52-BFD0-CCA1EC67628A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9ADDC129-014A-4B52-BFD0-CCA1EC67628A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9ADDC129-014A-4B52-BFD0-CCA1EC67628A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420F4E30-DD4F-44F3-A5AE-00630B51D069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420F4E30-DD4F-44F3-A5AE-00630B51D069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420F4E30-DD4F-44F3-A5AE-00630B51D069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420F4E30-DD4F-44F3-A5AE-00630B51D069}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

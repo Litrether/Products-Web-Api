@@ -5,10 +5,10 @@ using Repository.Extensions.Utility;
 namespace UnitTestProducts.RepositoryTests.ExtensionsTests.UtilityTest
 {
     [TestClass]
-    public class OrderQueryBuilderTest
+    public class OrderQueryBuilderTests
     {
         [TestMethod]
-        public void CreateOrderQueryTest()
+        public void CreateOrderQueryTests()
         {
             var builtQuery_Product = OrderQueryBuilder.CreateOrderQuery<Product>("Id,Name desc,ASD,FDS,coST");
             var exceptedBuiltQuery_Product = "Id ascending,Name descending,Cost ascending";

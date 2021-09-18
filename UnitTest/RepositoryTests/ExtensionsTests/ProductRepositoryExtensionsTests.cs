@@ -1,8 +1,6 @@
-﻿using Entities.Models;
-using Entities.RequestFeatures;
+﻿using Entities.RequestFeatures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Repository.Extensions;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTestProducts.Tests.RepositoryExtensionsTests
