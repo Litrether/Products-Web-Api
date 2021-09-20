@@ -1,205 +1,105 @@
 ﻿using Entities.RequestFeatures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Repository.Extensions;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using Xunit;
 
 namespace UnitTestProducts.Tests.RepositoryExtensionsTests
 {
-    [TestClass]
     public class ProductRepositoryExtensionsTests
     {
-        [TestMethod]
-        public void ProductSearchTest()
+        [Theory]
+        [InlineData("")]
+        [InlineData("a")]
+        [InlineData("A")]
+        [InlineData("iry Pro")]
+        [InlineData("NoExistedName")]
+        [InlineData("   MeAt  ")]
+        public void ProductSearchTest(string searchTerm)
         {
             var products = EntitiesForTests.Products;
 
-            var EmptySearchTerm = "";
-            var foundProducts_EmptySearchTerm = products.Search(EmptySearchTerm).ToList();
-            var expectedFoundProducts_EmptySearchTerm = products.ToList();
-            Assert.AreEqual(foundProducts_EmptySearchTerm.Count, expectedFoundProducts_EmptySearchTerm.Count);
-
-            var LowerCaseSearchTerm = "a";
-            var foundProducts_LowerCaseSearchTerm = products.Search(LowerCaseSearchTerm).ToList();
-            var expectedFoundProducts_LowerCaseSearchTerm = products.Where(p =>
-                p.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim()) ||
-                p.Description.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim()) ||
-                p.Category.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim()) ||
-                p.Provider.Name.ToLower().Contains(LowerCaseSearchTerm.ToLower().Trim())).ToList();
-            Assert.AreEqual(expectedFoundProducts_LowerCaseSearchTerm.Count, foundProducts_LowerCaseSearchTerm.Count);
-
-            var UpperCaseSearchTerm = "A";
-            var foundProducts_UpperCaseSearchTerm = products.Search("A").ToList();
-            var expectedFoundProducts_UpperCaseSearchTerm = products.Where(p =>
-                p.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim()) ||
-                p.Description.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim()) ||
-                p.Category.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim()) ||
-                p.Provider.Name.ToLower().Contains(UpperCaseSearchTerm.ToLower().Trim())).ToList();
-            Assert.AreEqual(expectedFoundProducts_UpperCaseSearchTerm.Count, foundProducts_UpperCaseSearchTerm.Count);
-
-            var SubstringSearchTerm = "do colo";
-            var foundProducts_SubstringSearchTerm = products.Search(SubstringSearchTerm).ToList();
-            var expectedFoundProducts_SubstringSearchTerm = products.Where(p =>
-                p.Name.ToLower().Contains(SubstringSearchTerm.ToLower().Trim()) ||
-                p.Description.ToLower().Contains(SubstringSearchTerm.ToLower().Trim()) ||
-                p.Category.Name.ToLower().Contains(SubstringSearchTerm.ToLower().Trim()) ||
-                p.Provider.Name.ToLower().Contains(SubstringSearchTerm.ToLower().Trim())).ToList();
-            Assert.AreEqual(expectedFoundProducts_SubstringSearchTerm.Count, foundProducts_SubstringSearchTerm.Count);
-
-            var NotExistedCategoryName = "NoExistedProductName";
-            var foundProducts_NotExistedCategoryName = products.Search(NotExistedCategoryName).ToList();
-            var expectedFoundProducts_NotExistedCategoryName = products.Where(p =>
-                p.Name.ToLower().Contains(NotExistedCategoryName.ToLower().Trim()) ||
-                p.Description.ToLower().Contains(NotExistedCategoryName.ToLower().Trim()) ||
-                p.Category.Name.ToLower().Contains(NotExistedCategoryName.ToLower().Trim()) ||
-                p.Provider.Name.ToLower().Contains(NotExistedCategoryName.ToLower().Trim())).ToList();
-            Assert.AreEqual(expectedFoundProducts_NotExistedCategoryName.Count, foundProducts_NotExistedCategoryName.Count);
-
-            var CheckTrim = "   PoTaTo  ";
-            var foundProducts_CheckTrim = products.Search(CheckTrim).ToList();
+            var foundProducts_CheckTrim = products.Search(searchTerm).ToList();
             var expectedFoundProducts_CheckTrim = products.Where(p =>
-                p.Name.ToLower().Contains(CheckTrim.ToLower().Trim()) ||
-                p.Description.ToLower().Contains(CheckTrim.ToLower().Trim()) ||
-                p.Category.Name.ToLower().Contains(CheckTrim.ToLower().Trim()) ||
-                p.Provider.Name.ToLower().Contains(CheckTrim.ToLower().Trim())).ToList();
-            Assert.AreEqual(expectedFoundProducts_CheckTrim.Count, foundProducts_CheckTrim.Count);
+                p.Name.ToLower().Contains(searchTerm.ToLower().Trim()) ||
+                p.Description.ToLower().Contains(searchTerm.ToLower().Trim()) ||
+                p.Category.Name.ToLower().Contains(searchTerm.ToLower().Trim()) ||
+                p.Provider.Name.ToLower().Contains(searchTerm.ToLower().Trim())).ToList();
+            Assert.Equal(expectedFoundProducts_CheckTrim.Count, foundProducts_CheckTrim.Count);
         }
 
-        [TestMethod]
-        public void ProductSortTest()
+        [Theory]
+        [InlineData("id asc")]
+        [InlineData("id desc")]
+        [InlineData("name asc")]
+        [InlineData("name desc")]
+        [InlineData("id asc, name desc")]
+        [InlineData("name desc, id asc")]
+        public void ProductSortTest(string OrderByQuery)
         {
             var products = EntitiesForTests.Products;
 
-            var sortedProducts_IdAsc = products.Sort("id").ToList();
-            var expectedSortedProducts_IdAsc = products.OrderBy(c => c.Id).ToList();
-            Assert.AreEqual(expectedSortedProducts_IdAsc.First().Id, sortedProducts_IdAsc.First().Id);
-            Assert.AreEqual(expectedSortedProducts_IdAsc.Last().Id, sortedProducts_IdAsc.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_IdAsc[2].Id, sortedProducts_IdAsc[2].Id);
-            Assert.AreEqual(expectedSortedProducts_IdAsc[4].Id, sortedProducts_IdAsc[4].Id);
-
-            var sortedProducts_IdDesc = products.Sort("id desc").ToList();
-            var expectedSortedProducts_IdDesc = products.OrderByDescending(c => c.Id).ToList();
-            Assert.AreEqual(expectedSortedProducts_IdDesc.First().Id, sortedProducts_IdDesc.First().Id);
-            Assert.AreEqual(expectedSortedProducts_IdDesc.Last().Id, sortedProducts_IdDesc.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_IdDesc[2].Id, sortedProducts_IdDesc[2].Id);
-            Assert.AreEqual(expectedSortedProducts_IdDesc[4].Id, sortedProducts_IdDesc[4].Id);
-
-            var sortedProducts_NameAsc = products.Sort("name").ToList();
-            var expectedSortedProducts_NameAsc = products.OrderBy(c => c.Name).ToList();
-            Assert.AreEqual(expectedSortedProducts_NameAsc.First().Id, sortedProducts_NameAsc.First().Id);
-            Assert.AreEqual(expectedSortedProducts_NameAsc.Last().Id, sortedProducts_NameAsc.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_NameAsc[2].Id, sortedProducts_NameAsc[2].Id);
-            Assert.AreEqual(expectedSortedProducts_NameAsc[4].Id, sortedProducts_NameAsc[4].Id);
-
-            var sortedProducts_NameDesc = products.Sort("name desc").ToList();
-            var expectedSortedProducts_NameDesc = products.OrderByDescending(c => c.Name).ToList();
-            Assert.AreEqual(expectedSortedProducts_NameDesc.First().Id, sortedProducts_NameDesc.First().Id);
-            Assert.AreEqual(expectedSortedProducts_NameDesc.Last().Id, sortedProducts_NameDesc.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_NameDesc[2].Id, sortedProducts_NameDesc[2].Id);
-            Assert.AreEqual(expectedSortedProducts_NameDesc[4].Id, sortedProducts_NameDesc[4].Id);
-
-            var sortedProducts_IdAscNameDesc = products.Sort("id asc, name desc").ToList();
-            var expectedSortedProducts_IdAscNameDesc = products.OrderBy(c => c.Id).ThenBy(c => c.Name).ToList();
-            Assert.AreEqual(expectedSortedProducts_IdAscNameDesc.First().Id, sortedProducts_IdAscNameDesc.First().Id);
-            Assert.AreEqual(expectedSortedProducts_IdAscNameDesc.Last().Id, sortedProducts_IdAscNameDesc.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_IdAscNameDesc[2].Id, sortedProducts_IdAscNameDesc[2].Id);
-            Assert.AreEqual(expectedSortedProducts_IdAscNameDesc[4].Id, sortedProducts_IdAscNameDesc[4].Id);
-
-            var sortedProducts_NameDescIdAsc = products.Sort("name desc, id asc").ToList();
-            var expectedSortedProducts_NameDescIdAsc = products.OrderByDescending(c => c.Name).ThenBy(c => c.Id).ToList();
-            Assert.AreEqual(expectedSortedProducts_NameDescIdAsc.First().Id, sortedProducts_NameDescIdAsc.First().Id);
-            Assert.AreEqual(expectedSortedProducts_NameDescIdAsc.Last().Id, sortedProducts_NameDescIdAsc.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_NameDescIdAsc[2].Id, sortedProducts_NameDescIdAsc[2].Id);
-            Assert.AreEqual(expectedSortedProducts_NameDescIdAsc[4].Id, sortedProducts_NameDescIdAsc[4].Id);
-
-            var sortedProducts_Trash = products.Sort("age desc, username asc").ToList();
-            var expectedSortedProducts_Trash = products.OrderBy(c => c.Name).ToList();
-            Assert.AreEqual(expectedSortedProducts_Trash.First().Id, sortedProducts_Trash.First().Id);
-            Assert.AreEqual(expectedSortedProducts_Trash.Last().Id, sortedProducts_Trash.Last().Id);
-            Assert.AreEqual(expectedSortedProducts_Trash[2].Id, sortedProducts_Trash[2].Id);
-            Assert.AreEqual(expectedSortedProducts_Trash[4].Id, sortedProducts_Trash[4].Id);
+            var sortedProducts_IdAsc = products.Sort(OrderByQuery).ToList();
+            var expectedSortedProducts_IdAsc = products.OrderBy(OrderByQuery).ToList();
+            Assert.Equal(expectedSortedProducts_IdAsc.First().Id, sortedProducts_IdAsc.First().Id);
+            Assert.Equal(expectedSortedProducts_IdAsc.Last().Id, sortedProducts_IdAsc.Last().Id);
+            Assert.Equal(expectedSortedProducts_IdAsc[2].Id, sortedProducts_IdAsc[2].Id);
+            Assert.Equal(expectedSortedProducts_IdAsc[4].Id, sortedProducts_IdAsc[4].Id);
         }
 
-        [TestMethod]
-        public void FilterByProperties()
+        [Theory]
+        [InlineData("Meat,Vegetables", "MiLida,Archeda,Underdog")]
+        [InlineData("", "MiLida,Archeda,Underdog,NotExisted")]
+        [InlineData("Meat,Vegetables,NotExisted", "")]
+        public void FilterByPropertiesTest(string providers, string categories)
         {
             var products = EntitiesForTests.Products;
 
-            var CategoriesAndProviders = new ProductParameters()
+            var parameters = new ProductParameters()
             {
-                Categories = "Meat,Vegetables",
-                Providers = "MiLida,Archeda,Underdog"
+                Providers = providers,
+                Categories = categories,
             };
-            var splitedCategories = CategoriesAndProviders.Categories.Split(',');
-            var splitedProviders = CategoriesAndProviders.Providers.Split(',');
-            var filteredProducts_ByCategoriesAndProviders = products.FilterByProperties(CategoriesAndProviders).ToList();
-            var expectedFilteredProducts_CategoriesAndProviders = products.Where(p =>
-                splitedCategories.Contains(p.Category.Name) &&
-                splitedProviders.Contains(p.Provider.Name))
+            var splitedCategories = categories.Split(',');
+            var splitedProviders = providers.Split(',');
+            var result = products.FilterByProperties(parameters).ToList();
+            var expected = products.Where(p =>
+                (splitedCategories != null && splitedCategories.Contains(p.Category.Name)) &&
+                (splitedProviders != null && splitedProviders.Contains(p.Provider.Name)))
                 .ToList();
-            Assert.AreEqual(expectedFilteredProducts_CategoriesAndProviders.Count, filteredProducts_ByCategoriesAndProviders.Count);
-
-            var сategories = new ProductParameters()
-            {
-                Categories = "Meat,Vegetables",
-            };
-            splitedCategories = сategories.Categories.Split(',');
-            var filteredProducts_ByCategories = products.FilterByProperties(сategories).ToList();
-            var expectedFilteredProducts_ByCategories = products.Where(p =>
-                splitedCategories.Contains(p.Category.Name))
-                .ToList();
-            Assert.AreEqual(expectedFilteredProducts_ByCategories.Count, filteredProducts_ByCategories.Count);
-
-            var providers = new ProductParameters()
-            {
-                Providers = "MiLida,Archeda,Underdog",
-            };
-            splitedProviders = providers.Providers.Split(',');
-            var filteredProducts_ByProviders = products.FilterByProperties(providers).ToList();
-            var expectedFilteredProducts_ByProviders = products.Where(p =>
-                splitedProviders.Contains(p.Provider.Name))
-                .ToList();
-            Assert.AreEqual(filteredProducts_ByProviders.Count, expectedFilteredProducts_ByProviders.Count);
+            Assert.Equal(expected.Count, result.Count);
         }
 
-        [TestMethod]
-        public void FilterByCost()
+        [Theory]
+        [InlineData(1, 20)]
+        [InlineData(10, 5)]
+        [InlineData(1, int.MaxValue)]
+        [InlineData(int.MinValue, 1)]
+        public void FilterByCostTest(int minCost, int maxCost)
         {
             var products = EntitiesForTests.Products;
 
-            var MinMaxCost = new ProductParameters() { MinCost = 1, MaxCost = 20, };
-            var filteredProducts_MinMaxCost = products.FilterByCost(MinMaxCost).ToList();
-            var expectedFilteredProducts_MinMaxCost = products.Where(p =>
-             MinMaxCost.MinCost <= p.Cost && p.Cost <= MinMaxCost.MaxCost).ToList();
-            Assert.AreEqual(expectedFilteredProducts_MinMaxCost.Count, filteredProducts_MinMaxCost.Count);
-
-            var MinMaxCostFail = new ProductParameters() { MinCost = 10, MaxCost = 5, };
-            var filteredProductsMinMaxCostFail = products.FilterByCost(MinMaxCostFail).ToList();
-            var expectedFilteredProducts_MinMaxCostFail = products.Where(p =>
-             MinMaxCostFail.MinCost <= p.Cost && p.Cost <= MinMaxCostFail.MaxCost).ToList();
-            Assert.AreEqual(expectedFilteredProducts_MinMaxCostFail.Count, filteredProductsMinMaxCostFail.Count);
-
-            var MinCost = new ProductParameters() { MinCost = 1 };
-            var filteredProducts_MinCost = products.FilterByCost(MinCost).ToList();
-            var expectedFilteredProducts_MinCost = products.Where(p =>
-             MinCost.MinCost <= p.Cost).ToList();
-            Assert.AreEqual(expectedFilteredProducts_MinCost.Count, filteredProducts_MinCost.Count);
-
-            var MaxCost = new ProductParameters() { MaxCost = 1 };
-            var filteredProducts_MaxCost = products.FilterByCost(MaxCost).ToList();
-            var expectedFilteredProducts_MaxCost = products.Where(p =>
-             p.Cost <= MaxCost.MaxCost).ToList();
-            Assert.AreEqual(expectedFilteredProducts_MaxCost.Count, filteredProducts_MaxCost.Count);
+            var parameters = new ProductParameters() { MinCost = minCost, MaxCost = maxCost, };
+            var result = products.FilterByCost(parameters).ToList();
+            var expected = products.Where(p =>
+             parameters.MinCost <= p.Cost && p.Cost <= parameters.MaxCost).ToList();
+            Assert.Equal(expected.Count, result.Count);
         }
 
-        [TestMethod]
-        public void ConvertCurrency()
+        [Theory]
+        [InlineData(0.9)]
+        [InlineData(14.3)]
+        [InlineData(200.0)]
+        [InlineData(0.1)]
+        [InlineData(0.0001)]
+        [InlineData(int.MinValue)]
+        public void ConvertCurrencyTest(double exchangeRate)
         {
             var product = EntitiesForTests.Products.First();
 
-            var exchangeRate = 0.9;
             var expectedConveredProducts = product.Cost / exchangeRate;
             var converеedProducts = product.ConvertCurrencyForEntities(exchangeRate);
-            Assert.AreEqual(converеedProducts.Cost, expectedConveredProducts);
+            Assert.Equal(converеedProducts.Cost, expectedConveredProducts);
         }
     }
 }

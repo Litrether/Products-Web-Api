@@ -1,15 +1,14 @@
 ﻿using Entities.Models;
 using Entities.RequestFeatures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using Xunit;
 
 namespace UnitTestProducts.EntitiesTests.RequestFeaturesTests
 {
-    [TestClass]
     public class PagedListTests
     {
-        [TestMethod]
+        [Fact]
         public void ToPagedListTest()
         {
             var products = EntitiesForTests.Products.ToList();
@@ -21,7 +20,7 @@ namespace UnitTestProducts.EntitiesTests.RequestFeaturesTests
             var resultFirstProduct = pagedProducts.First();
             var exceptedFirstProduct = products[rndPageSize * (rndPageNumber - 1)];
 
-            Assert.AreEqual(exceptedFirstProduct.Id, resultFirstProduct.Id);
+            Assert.Equal(exceptedFirstProduct.Id, resultFirstProduct.Id);
         }
     }
 }
