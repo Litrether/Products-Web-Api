@@ -11,7 +11,7 @@ namespace UnitTestProducts.EntitiesTests.RequestFeaturesTests
         [Fact]
         public void ToPagedListTest()
         {
-            var products = EntitiesForTests.Products.ToList();
+            var products = EntitiesForTests.Products().ToList();
 
             var rndPageSize = new Random().Next(1, products.Count / 3);
             var rndPageNumber = new Random().Next(1, (int)Math.Ceiling(products.Count / (double)rndPageSize));

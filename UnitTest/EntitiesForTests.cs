@@ -6,7 +6,7 @@ namespace UnitTestProducts
 {
     public static class EntitiesForTests
     {
-        public static IQueryable<Category> Categories =>
+        public static IQueryable<Category> Categories() =>
             new List<Category>()
             {
                 new Category{Id = 1, Name = "Vegetables"},
@@ -17,7 +17,7 @@ namespace UnitTestProducts
                 new Category{Id = 6, Name = "Confectionery"}
             }.AsQueryable();
 
-        public static IQueryable<Provider> Providers =>
+        public static IQueryable<Provider> Providers() =>
             new List<Provider>()
             {
                 new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
@@ -30,7 +30,7 @@ namespace UnitTestProducts
                 new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }}
             }.AsQueryable();
 
-        public static IQueryable<Product> Products =>
+        public static IQueryable<Product> Products() =>
             new List<Product>()
             {
                 new Product

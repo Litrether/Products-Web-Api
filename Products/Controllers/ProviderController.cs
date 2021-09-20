@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -20,17 +21,15 @@ namespace Products.Controllers
     public class ProviderController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        private readonly UserManager<User> _userManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
         public ProviderController(IRepositoryManager repository, ILoggerManager logger,
-            IMapper mapper, UserManager<User> userManager)
+            IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-            _userManager = userManager;
         }
 
 
@@ -42,10 +41,11 @@ namespace Products.Controllers
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {
-            var providers = await _repository.Provider.GetAllProvidersAsync(providerParameters,
-                trackChanges: false);
+            var providers = await _repository.Provider.GetAllProvidersAsync(providerParameters,                 trackChanges: false);
+            if (providers.ToList().Count == 0)
+                return NotFound();
 
-            Response.Headers.Add("pagination", JsonSerializer.Serialize(providers.MetaData));
+            Response?.Headers?.Add("pagination", JsonSerializer.Serialize(providers.MetaData));
             var providersDto = _mapper.Map<IEnumerable<ProviderOutgoingDto>>(providers);
 
             return Ok(providersDto);

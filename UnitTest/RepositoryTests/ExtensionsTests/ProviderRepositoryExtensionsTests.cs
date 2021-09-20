@@ -16,7 +16,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("   JaVimMAr  ")]
         public void ProviderSearchTest(string searchTerm)
         {
-            var providers = EntitiesForTests.Providers;
+            var providers = EntitiesForTests.Providers();
 
             var result = providers.Search(searchTerm).ToList();
             var expected = providers.Where(c => c.Name.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
@@ -34,7 +34,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("locationLat asc")]
         public void ProductSortTest(string OrderByQuery)
         {
-            var providers = EntitiesForTests.Providers;
+            var providers = EntitiesForTests.Providers();
 
             var sortedProducts_IdAsc = providers.Sort(OrderByQuery).ToList();
             var expectedSortedProducts_IdAsc = providers.OrderBy(OrderByQuery).ToList();

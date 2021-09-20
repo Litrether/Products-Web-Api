@@ -16,7 +16,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("   MeAt  ")]
         public void CategorySearchTest(string searchTerm)
         {
-            var categories = EntitiesForTests.Categories;
+            var categories = EntitiesForTests.Categories();
 
             var result = categories.Search(searchTerm).ToList();
             var expected = categories.Where(c => c.Name.ToLower().Contains(searchTerm.Trim().ToLower())).ToList();
@@ -30,7 +30,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("id asc,name desc")]
         public void CategorySortTest(string orderByQuery)
         {
-            var categories = EntitiesForTests.Categories;
+            var categories = EntitiesForTests.Categories();
 
             var result = categories.Sort(orderByQuery).ToList();
             var expected= categories.OrderBy(orderByQuery).ToList();

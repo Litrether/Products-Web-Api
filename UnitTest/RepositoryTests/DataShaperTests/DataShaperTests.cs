@@ -14,7 +14,7 @@ namespace UnitTestProducts.RepositoryTests.DataShaperTests
         public void EntityShapeDataExistPropertyTest()
         {
             var dataShaper = new DataShaper<Product>();
-            var product = EntitiesForTests.Products.First();
+            var product = EntitiesForTests.Products().First();
             IDictionary<string, object> shapedProduct = dataShaper.ShapeData(product, "id,cost,providerId");
             Assert.Equal(product.Id, shapedProduct["Id"]);
             Assert.Equal(product.Cost, shapedProduct["Cost"]);
@@ -24,7 +24,7 @@ namespace UnitTestProducts.RepositoryTests.DataShaperTests
         public void EntityShapeDataNotExistPropertyTest()
         {
             var dataShaper = new DataShaper<Product>();
-            var product = EntitiesForTests.Products.First();
+            var product = EntitiesForTests.Products().First();
             IDictionary<string, object> shapedProduct = dataShaper.ShapeData(product, "id,cost,providerId");
             Assert.False(shapedProduct.ContainsKey("Name"));
         }
@@ -33,7 +33,7 @@ namespace UnitTestProducts.RepositoryTests.DataShaperTests
         public void ShapeDataExistPropertyTest()
         {
             var dataShaper = new DataShaper<Product>();
-            var products = EntitiesForTests.Products.ToList();
+            var products = EntitiesForTests.Products().ToList();
             var randIndex = new Random().Next(0, products.Count);
 
             var expectedProduct = products[randIndex];
@@ -49,7 +49,7 @@ namespace UnitTestProducts.RepositoryTests.DataShaperTests
         public void ShapeDataNotExistPropertyTest()
         {
             var dataShaper = new DataShaper<Product>();
-            var products = EntitiesForTests.Products.ToList();
+            var products = EntitiesForTests.Products().ToList();
             var randIndex = new Random().Next(0, products.Count);
 
             List<ExpandoObject> shapedProducts = dataShaper.ShapeData(products, "id,cost,providerId").ToList();

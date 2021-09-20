@@ -17,7 +17,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("   MeAt  ")]
         public void ProductSearchTest(string searchTerm)
         {
-            var products = EntitiesForTests.Products;
+            var products = EntitiesForTests.Products();
 
             var foundProducts_CheckTrim = products.Search(searchTerm).ToList();
             var expectedFoundProducts_CheckTrim = products.Where(p =>
@@ -37,7 +37,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("name desc, id asc")]
         public void ProductSortTest(string OrderByQuery)
         {
-            var products = EntitiesForTests.Products;
+            var products = EntitiesForTests.Products();
 
             var sortedProducts_IdAsc = products.Sort(OrderByQuery).ToList();
             var expectedSortedProducts_IdAsc = products.OrderBy(OrderByQuery).ToList();
@@ -53,7 +53,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData("Meat,Vegetables,NotExisted", "")]
         public void FilterByPropertiesTest(string providers, string categories)
         {
-            var products = EntitiesForTests.Products;
+            var products = EntitiesForTests.Products();
 
             var parameters = new ProductParameters()
             {
@@ -77,7 +77,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData(int.MinValue, 1)]
         public void FilterByCostTest(int minCost, int maxCost)
         {
-            var products = EntitiesForTests.Products;
+            var products = EntitiesForTests.Products();
 
             var parameters = new ProductParameters() { MinCost = minCost, MaxCost = maxCost, };
             var result = products.FilterByCost(parameters).ToList();
@@ -95,7 +95,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
         [InlineData(int.MinValue)]
         public void ConvertCurrencyTest(double exchangeRate)
         {
-            var product = EntitiesForTests.Products.First();
+            var product = EntitiesForTests.Products().First();
 
             var expectedConveredProducts = product.Cost / exchangeRate;
             var converеedProducts = product.ConvertCurrencyForEntities(exchangeRate);

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -38,10 +39,11 @@ namespace Products.Controllers
         public async Task<IActionResult> GetCategories(
             [FromQuery] CategoryParameters categoryParameters)
         {
-            var categories = await _repository.Category.GetAllCategoriesAsync(
-                categoryParameters, trackChanges: false);
+            var categories = await _repository.Category.GetAllCategoriesAsync(categoryParameters, trackChanges: false);
+            if (categories.ToList().Count == 0)
+                return NotFound();
 
-            Response.Headers.Add("pagination", JsonSerializer.Serialize(categories.MetaData));
+            Response?.Headers?.Add("pagination", JsonSerializer.Serialize(categories.MetaData));
             var categoriesDto = _mapper.Map<IEnumerable<CategoryOutgoingDto>>(categories);
 
             return Ok(categoriesDto);

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -49,7 +50,10 @@ namespace Products.Controllers
             var exchangeRate = _currencyConnection.GetExchangeRate(productParameters.Currency);
 
             var products = await _repository.Product.GetAllProductsAsync(productParameters, trackChanges: false, exchangeRate);
-            Response.Headers.Add("pagination", JsonSerializer.Serialize(products.MetaData));
+            if (products.ToList().Count == 0)
+                return NotFound();
+
+            Response?.Headers?.Add("pagination", JsonSerializer.Serialize(products.MetaData));
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
@@ -73,7 +77,6 @@ namespace Products.Controllers
             var productEntity = await _repository.Product.GetProductAsync(id, trackChanges: false, exchangeRate);
 
             var productDto = _mapper.Map<ProductOutgoingDto>(productEntity);
-
 
             return Ok(_dataShaper.ShapeData(productDto, productParameters.Fields));
         }
