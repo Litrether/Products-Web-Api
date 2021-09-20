@@ -46,7 +46,7 @@ namespace Products.Controllers
 
             var products = await _repository.Cart.GetCartProductsAsync(productParameters,
                 user, trackChanges: false, exchangeRate);
-            Response.Headers.Add("pagination", JsonSerializer.Serialize(products.MetaData));
+            Response?.Headers?.Add("pagination", JsonSerializer.Serialize(products.MetaData));
 
             var productsDto = _mapper.Map<IEnumerable<ProductOutgoingDto>>(products);
 
@@ -61,7 +61,6 @@ namespace Products.Controllers
         [ServiceFilter(typeof(ValidateCartAttribute))]
         public async Task<IActionResult> CreateCartProduct(int productId)
         {
-
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var cart = await _repository.Cart.GetCartProductAsync(user, productId, trackChanges: false);
             if (cart != null)

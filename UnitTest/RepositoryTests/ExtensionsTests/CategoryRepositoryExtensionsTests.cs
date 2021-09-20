@@ -1,7 +1,7 @@
 ﻿using Repository.Extensions;
 using System.Linq;
-using Xunit;
 using System.Linq.Dynamic.Core;
+using Xunit;
 
 namespace UnitTestProducts.Tests.RepositoryExtensionsTests
 {
@@ -33,7 +33,7 @@ namespace UnitTestProducts.Tests.RepositoryExtensionsTests
             var categories = EntitiesForTests.Categories();
 
             var result = categories.Sort(orderByQuery).ToList();
-            var expected= categories.OrderBy(orderByQuery).ToList();
+            var expected = categories.OrderBy(orderByQuery).ToList();
             Assert.Equal(expected.First().Id, result.First().Id);
             Assert.Equal(expected.Last().Id, result.Last().Id);
             Assert.Equal(expected[2].Id, result[2].Id);

@@ -4,17 +4,12 @@ using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Moq;
-using Products;
 using Products.Controllers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using UnitTestProducts;
 using Xunit;
 
@@ -42,7 +37,6 @@ namespace UnitTests.ProductsTests.ControllersTests
                 MinCost = 10,
                 MaxCost = 0,
             };
-            var controller = new ProductController(_repo.Object, _logger.Object, _mapper.Object, _dataShaper.Object, _currencyConnection.Object);
 
             var result = await _controller.GetProduct(-1, productParams);
 
@@ -72,7 +66,7 @@ namespace UnitTests.ProductsTests.ControllersTests
                 .ToPagedList(EntitiesForTests.Products(), productParams.PageNumber, productParams.PageSize);
             _repo.Setup(repo => repo.Product.GetAllProductsAsync(productParams, false, 0).Result)
                 .Returns(products);
-           
+
             var result = await _controller.GetProducts(productParams);
 
             Assert.IsType<OkObjectResult>(result);
@@ -87,7 +81,7 @@ namespace UnitTests.ProductsTests.ControllersTests
                 .ToPagedList(emptyProductList, productParams.PageNumber, productParams.PageSize);
             _repo.Setup(repo => repo.Product.GetAllProductsAsync(productParams, false, 0).Result)
                 .Returns(products);
-           
+
             var result = await _controller.GetProducts(productParams);
 
             Assert.IsType<NotFoundResult>(result);
@@ -193,6 +187,5 @@ namespace UnitTests.ProductsTests.ControllersTests
                 Provider = null,
             };
         }
-
     }
 }

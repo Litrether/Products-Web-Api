@@ -5,7 +5,6 @@ using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Products.ActionFilters;
 using System.Collections.Generic;
@@ -41,7 +40,7 @@ namespace Products.Controllers
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {
-            var providers = await _repository.Provider.GetAllProvidersAsync(providerParameters,                 trackChanges: false);
+            var providers = await _repository.Provider.GetAllProvidersAsync(providerParameters, trackChanges: false);
             if (providers.ToList().Count == 0)
                 return NotFound();
 

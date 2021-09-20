@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Contracts;
+﻿using Contracts;
 using Entities.Models;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
@@ -8,10 +7,8 @@ using Moq;
 using Products.Controllers;
 using System;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using UnitTestProducts;
 using Xunit;
 
@@ -41,7 +38,18 @@ namespace UnitTests.ProductsTests.ControllersTests
             };
         }
 
-        //todo AddOrderReturnsBadRequestWhenProductNotExist
+        [Fact]
+        public async void AddOrderReturnsBadRequestWhenProductNotExist()
+        {
+            Mock<ISendEndpoint> sendEndpoint = new Mock<ISendEndpoint>();
+            var testProductId = 1;
+            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, It.IsAny<int>()).Result).Returns(null as Product);
+
+            var result = await _controller.PostOrder(testProductId);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
         [Fact]
         public async void AddOrderReturnsOkObjectResult()
@@ -96,6 +104,5 @@ namespace UnitTests.ProductsTests.ControllersTests
 
             Assert.IsType<OkObjectResult>(result);
         }
-
     }
 }
