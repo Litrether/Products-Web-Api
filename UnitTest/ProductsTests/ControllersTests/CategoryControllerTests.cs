@@ -33,9 +33,8 @@ namespace UnitTests.ProductsTests.ControllersTests
             var testCategoryId = 1;
             var testCategory = EntitiesForTests.Categories().First();
 
-            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, false).Result)
+            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, It.IsAny<bool>()).Result)
                 .Returns(testCategory);
-            var categoryParams = new CategoryParameters();
 
             var result = await _controller.GetCategory(testCategoryId);
 
@@ -43,12 +42,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void GetCategoriesReturnsListOfCategories()
+        public async void GetCategoriesReturnsOkObjectResult()
         {
             var categoryParams = new CategoryParameters();
             var categories = PagedList<Category>
                 .ToPagedList(EntitiesForTests.Categories(), categoryParams.PageNumber, categoryParams.PageSize);
-            _repo.Setup(repo => repo.Category.GetAllCategoriesAsync(categoryParams, false).Result)
+            _repo.Setup(repo => repo.Category.GetAllCategoriesAsync(categoryParams, It.IsAny<bool>()).Result)
                 .Returns(categories);
 
             var result = await _controller.GetCategories(categoryParams);
@@ -57,7 +56,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void GetCategoriesReturnsNotFoundWhenCategoriesEmpty()
+        public async void GetCategoriesReturnsNotFoundResultWhenCategoriesEmpty()
         {
             var CategoryParams = new CategoryParameters();
             var emptyCategoryList = new List<Category>();
@@ -89,12 +88,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateCategoryReturnsNoContents()
+        public async void UpdateCategoryReturnsNoContentResult()
         {
             var testCategoryId = 1;
             var Category = EntitiesForTests.Categories().First();
             var CategoryIncomingDto = MapCategoryToCategoryIncomingDto(Category);
-            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, true).Result).Returns(Category);
+            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, true)).ReturnsAsync(Category);
 
             var result = await _controller.UpdateCategory(testCategoryId, CategoryIncomingDto);
 
@@ -102,12 +101,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateCategoryReturnsBadRequestWhenExceptionSave()
+        public async void UpdateCategoryReturnsBadRequestObjectResultWhenExceptionSave()
         {
             var testCategoryId = 1;
             var Category = EntitiesForTests.Categories().First();
             var CategoryIncomingDto = MapCategoryToCategoryIncomingDto(Category);
-            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, true).Result).Returns(Category);
+            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, true)).ReturnsAsync(Category);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
             var result = await _controller.UpdateCategory(testCategoryId, CategoryIncomingDto);
@@ -120,7 +119,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         {
             var testCategoryId = 1;
             var Category = EntitiesForTests.Categories().ToList().First(p => p.Id == testCategoryId);
-            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, false).Result).Returns(Category);
+            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, false)).ReturnsAsync(Category);
             _repo.Setup(repo => repo.Category.DeleteCategory(Category)).Verifiable();
 
             var result = await _controller.DeleteCategory(testCategoryId);
@@ -130,12 +129,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void DeleteCategoryReturnsBadRequestWhenExceptionSave()
+        public async void DeleteCategoryReturnsBadRequestObjectResultWhenExceptionSave()
         {
             var testCategoryId = 1;
             var Category = EntitiesForTests.Categories().ToList().First(p => p.Id == testCategoryId);
             var CategoryIncomingDto = MapCategoryToCategoryIncomingDto(Category);
-            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, true).Result).Returns(Category);
+            _repo.Setup(repo => repo.Category.GetCategoryAsync(testCategoryId, true)).ReturnsAsync(Category);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
             var result = await _controller.DeleteCategory(testCategoryId);

@@ -59,7 +59,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void GetProductsReturnsListOfProducts()
+        public async void GetProductsReturnsOkObjectResult()
         {
             var productParams = new ProductParameters();
             var products = PagedList<Product>
@@ -73,7 +73,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void GetProductsReturnsNotFoundWhenProductsEmpty()
+        public async void GetProductsReturnsNotFoundResultWhenProductsEmpty()
         {
             var productParams = new ProductParameters();
             var emptyProductList = new List<Product>();
@@ -105,12 +105,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateProductReturnsNoContents()
+        public async void UpdateProductReturnsNoContentResult()
         {
             var testProductId = 1;
             var product = EntitiesForTests.Products().First();
             var productIncomingDto = MapProductToProductIncomingDto(product);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0).Result).Returns(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0)).ReturnsAsync(product);
 
             var result = await _controller.UpdateProduct(testProductId, productIncomingDto);
 
@@ -118,12 +118,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateProductReturnsBadRequestWhenExceptionSave()
+        public async void UpdateProductReturnsBadRequestObjectResultWhenExceptionSave()
         {
             var testProductId = 1;
             var product = EntitiesForTests.Products().First();
             var productIncomingDto = MapProductToProductIncomingDto(product);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0).Result).Returns(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
             var result = await _controller.UpdateProduct(testProductId, productIncomingDto);
@@ -132,11 +132,11 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void DeleteProductReturnsNoContents()
+        public async void DeleteProductReturnsNoContentResult()
         {
             var testProductId = 1;
             var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0).Result).Returns(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.Product.DeleteProduct(product)).Verifiable();
 
             var result = await _controller.DeleteProduct(testProductId);
@@ -146,12 +146,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void DeleteProductReturnsBadRequestWhenExceptionSave()
+        public async void DeleteProductReturnsBadRequestObjectResultWhenExceptionSave()
         {
             var testProductId = 1;
             var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
             var productIncomingDto = MapProductToProductIncomingDto(product);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0).Result).Returns(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
             var result = await _controller.DeleteProduct(testProductId);

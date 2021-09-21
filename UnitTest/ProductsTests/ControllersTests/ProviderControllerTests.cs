@@ -44,7 +44,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void GetProvidersReturnsListOfProviders()
+        public async void GetProvidersReturnsOkObjectResult()
         {
             var providerParams = new ProviderParameters();
             var providers = PagedList<Provider>
@@ -58,7 +58,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void GetProvidersReturnsNotFoundWhenProvidersEmpty()
+        public async void GetProvidersReturnsNotFoundResultWhenProvidersEmpty()
         {
             var providerParams = new ProviderParameters();
             var emptyProviderList = new List<Provider>();
@@ -90,7 +90,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateProviderReturnsNoContents()
+        public async void UpdateProviderReturnsNoContentResult()
         {
             var testProviderId = 1;
             var Provider = EntitiesForTests.Providers().First();
@@ -103,7 +103,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateProviderReturnsBadRequestWhenExceptionSave()
+        public async void UpdateProviderReturnsBadRequestObjectResultWhenExceptionSave()
         {
             var testProviderId = 1;
             var Provider = EntitiesForTests.Providers().First();
@@ -117,7 +117,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void DeleteProviderReturnsNoContents()
+        public async void DeleteProviderReturnsNoContentResult()
         {
             var testProviderId = 1;
             var Provider = EntitiesForTests.Providers().ToList().First(p => p.Id == testProviderId);
@@ -131,7 +131,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void DeleteProviderReturnsBadRequestWhenExceptionSave()
+        public async void DeleteProviderReturnsBadRequestObjectResultWhenExceptionSave()
         {
             var testProviderId = 1;
             var Provider = EntitiesForTests.Providers().ToList().First(p => p.Id == testProviderId);

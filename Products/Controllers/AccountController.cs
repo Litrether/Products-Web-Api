@@ -61,14 +61,13 @@ namespace Messenger.Controllers
             }
             catch (System.Exception ex)
             {
-                return BadRequest(ex.InnerException.Message);
+                return BadRequest(ex?.InnerException?.Message);
             }
 
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
             return Ok();
         }
-
 
         /// <summary> Authenticate and autorization user if his exists in the database</summary>
         /// <param name="user"></param>

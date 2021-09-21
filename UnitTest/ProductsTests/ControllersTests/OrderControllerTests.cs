@@ -39,12 +39,13 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void AddOrderReturnsBadRequestWhenProductNotExist()
+        public async void AddOrderReturnsBadRequestObjectResultWhenProductNotExist()
         {
             Mock<ISendEndpoint> sendEndpoint = new Mock<ISendEndpoint>();
             var testProductId = 1;
             var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, It.IsAny<int>()).Result).Returns(null as Product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false,
+                It.IsAny<int>())).ReturnsAsync(null as Product);
 
             var result = await _controller.PostOrder(testProductId);
 
@@ -57,8 +58,8 @@ namespace UnitTests.ProductsTests.ControllersTests
             Mock<ISendEndpoint> sendEndpoint = new Mock<ISendEndpoint>();
             var testProductId = 1;
             var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0).Result).Returns(product);
-            _bus.Setup(bus => bus.GetSendEndpoint(_uri).Result).Returns(sendEndpoint.Object);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0)).ReturnsAsync(product);
+            _bus.Setup(bus => bus.GetSendEndpoint(_uri)).ReturnsAsync(sendEndpoint.Object);
 
             var result = await _controller.PostOrder(testProductId);
 
@@ -72,8 +73,8 @@ namespace UnitTests.ProductsTests.ControllersTests
             var testProductId = 1;
             var status = "Processed";
             var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0).Result).Returns(product);
-            _bus.Setup(bus => bus.GetSendEndpoint(_uri).Result).Returns(sendEndpoint.Object);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0)).ReturnsAsync(product);
+            _bus.Setup(bus => bus.GetSendEndpoint(_uri)).ReturnsAsync(sendEndpoint.Object);
 
             var result = await _controller.UpdateOrderStatus(testProductId, status);
 
@@ -81,7 +82,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void UpdateOrderStatusReturnsBadRequestWhenStatusInvalid()
+        public async void UpdateOrderStatusReturnsBadRequestObjectResultWhenStatusInvalid()
         {
             Mock<ISendEndpoint> sendEndpoint = new Mock<ISendEndpoint>();
             var testProductId = 1;
@@ -98,7 +99,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         {
             var testOrderId = 1;
             Mock<ISendEndpoint> sendEndpoint = new Mock<ISendEndpoint>();
-            _bus.Setup(bus => bus.GetSendEndpoint(_uri).Result).Returns(sendEndpoint.Object);
+            _bus.Setup(bus => bus.GetSendEndpoint(_uri)).ReturnsAsync(sendEndpoint.Object);
 
             var result = await _controller.DeleteOrder(testOrderId);
 

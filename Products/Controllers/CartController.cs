@@ -62,7 +62,7 @@ namespace Products.Controllers
         public async Task<IActionResult> CreateCartProduct(int productId)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var cart = await _repository.Cart.GetCartProductAsync(user, productId, trackChanges: false);
+            var cart = await _repository.Cart.GetCartProductAsync(user, productId,  trackChanges: false);
             if (cart != null)
             {
                 _logger.LogError($"Product with id: {productId} is in cart");

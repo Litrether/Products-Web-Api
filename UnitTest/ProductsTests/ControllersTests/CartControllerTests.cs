@@ -29,15 +29,15 @@ namespace UnitTests.ProductsTests.ControllersTests
         public CartControllerTests()
         {
             var store = new Mock<IUserStore<User>>();
-            store.Setup(x => x.FindByIdAsync("123", CancellationToken.None))
+            store.Setup(x => x.FindByNameAsync("UserName", CancellationToken.None))
                 .ReturnsAsync(new User()
                 {
-                    UserName = "Name",
-                    Id = "111"
+                    UserName = "UserName",
+                    Id = "7c8790f8-2d7e-4229-be67-a373d8ceaeb7"
                 });
             _userManager = new UserManager<User>(store.Object, null, null, null, null, null, null, null, null);
 
-            var identity = new GenericIdentity("Name", "test");
+            var identity = new GenericIdentity("UserName", "test");
             var contextUser = new ClaimsPrincipal(identity);
             var controllerContext = new ControllerContext()
             { HttpContext = new DefaultHttpContext { User = contextUser } };
@@ -56,7 +56,7 @@ namespace UnitTests.ProductsTests.ControllersTests
             var products = PagedList<Product>
                 .ToPagedList(EntitiesForTests.Products(), productParams.PageNumber, productParams.PageSize);
             _repo.Setup(repo => repo.Cart.GetCartProductsAsync(productParams, It.IsAny<User>(),
-                false, 0).Result).Returns(products);
+                false, 0)).ReturnsAsync(products);
 
             var result = await _controller.GetCartProducts(productParams);
 
@@ -64,7 +64,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void CreateCartProductsReturnsBadRequestWhenCartExist()
+        public async void CreateCartProductsReturnsBadRequestObjectResultWhenCartExist()
         {
             var testProductId = 1;
             var cart = new Cart
@@ -76,7 +76,7 @@ namespace UnitTests.ProductsTests.ControllersTests
                 UserId = "111"
             };
             _repo.Setup(repo => repo.Cart.GetCartProductAsync(It.IsAny<User>(),
-                testProductId, false).Result).Returns(cart);
+                testProductId, false)).ReturnsAsync(cart);
 
             var result = await _controller.CreateCartProduct(testProductId);
 
@@ -86,31 +86,101 @@ namespace UnitTests.ProductsTests.ControllersTests
         [Fact]
         public async void CreateCartProductsReturnsBadRequestWhenExceptionSave()
         {
+            var user = new User()
+            {
+                UserName = "UserName",
+                Id = "7c8790f8-2d7e-4229-be67-a373d8ceaeb7"
+            };
             var testProductId = 1;
             var product = EntitiesForTests.Products().First();
-            _repo.Setup(repo => repo.Cart.GetCartProductAsync(It.IsAny<User>(),
-                It.IsAny<int>(), It.IsAny<bool>()).Result).Returns(null as Cart);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0).Result).Returns(product);
+            _repo.Setup(repo => repo.Cart.GetCartProductAsync(user,
+                It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(null as Cart);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
-            var result = await _controller.CreateCartProduct(testProductId);
+           var result = await _controller.CreateCartProduct(testProductId);
 
-            Assert.IsType<BadRequestObjectResult>(result);
+           Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
         public async void CreateCartProductsReturnsOkResult()
         {
+            var user = new User()
+            {
+                UserName = "UserName",
+                Id = "7c8790f8-2d7e-4229-be67-a373d8ceaeb7"
+            };
             var testProductId = 1;
             var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
-            _repo.Setup(repo => repo.Cart.GetCartProductAsync(It.IsAny<User>(),
-                testProductId, false).Result).Returns(null as Cart);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0).Result).Returns(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0)).ReturnsAsync(product); 
+            _repo.Setup(repo => repo.Cart.GetCartProductAsync(user,
+                It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(null as Cart);
 
             var result = await _controller.CreateCartProduct(testProductId);
 
             Assert.IsType<OkObjectResult>(result);
         }
 
+        [Fact]
+        public async void DeleteCartProductsReturnsNoContent()
+        {
+            var testProductId = 1;
+            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
+            var cart = new Cart
+            {
+                Id = 1,
+                Product = null,
+                ProductId = testProductId,
+                User = null,
+                UserId = "111"
+            };
+            _repo.Setup(repo => repo.Cart.GetCartProductAsync(It.IsAny<User>(),
+                testProductId, false)).ReturnsAsync(cart);
+
+            var result = await _controller.DeleteCartProduct(testProductId);
+
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async void DeleteCartProductsReturnsNotFoundWhenCartNotExist()
+        {
+            var user = new User()
+            {
+                UserName = "UserName",
+                Id = "7c8790f8-2d7e-4229-be67-a373d8ceaeb7"
+            };
+            var testProductId = 1;
+            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
+            _repo.Setup(repo => repo.Cart.GetCartProductAsync(user,
+                testProductId, false)).ReturnsAsync(null as Cart);
+
+            var result = await _controller.DeleteCartProduct(testProductId);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async void DeleteCartProductsReturnsBadRequestObjectResultWhenExceptionSave()
+        {
+            var testProductId = 1;
+            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
+            var cart = new Cart
+            {
+                Id = 1,
+                Product = null,
+                ProductId = testProductId,
+                User = null,
+                UserId = "111"
+            };
+            _repo.Setup(repo => repo.Cart.GetCartProductAsync(It.IsAny<User>(),
+                testProductId, false)).ReturnsAsync(cart);
+            _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
+
+            var result = await _controller.DeleteCartProduct(testProductId);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
     }
 }
