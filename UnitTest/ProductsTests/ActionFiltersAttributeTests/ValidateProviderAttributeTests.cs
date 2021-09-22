@@ -12,7 +12,7 @@ using Products.ActionFilters;
 using System.Collections.Generic;
 using Xunit;
 
-namespace UnitTests.ProductsTests.ActionFiltersAttribute
+namespace UnitTests.ProductsTests.ActionFiltersAttributeTests
 {
     public class ValidateProviderAttributeTests
     {

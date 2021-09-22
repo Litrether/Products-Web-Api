@@ -30,8 +30,7 @@ namespace Products.Managers
         {
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
 
-            return _user != null && await _userManager.CheckPasswordAsync(_user,
-                userForAuth.Password);
+            return _user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password);
         }
 
         public async Task<string> CreateToken()
