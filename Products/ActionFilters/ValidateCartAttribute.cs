@@ -11,16 +11,13 @@ namespace Products.ActionFilters
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
 
-        public ValidateCartAttribute(IRepositoryManager repository,
-            ILoggerManager logger)
-            : base(logger)
+        public ValidateCartAttribute(IRepositoryManager repository, ILoggerManager logger) : base(logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context,
-            ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var productId = (int)context.ActionArguments["productId"];
 

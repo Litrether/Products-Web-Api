@@ -39,7 +39,7 @@ namespace UnitTests.ProductsTests.ControllersTests
         }
 
         [Fact]
-        public async void AddOrderReturnsBadRequestObjectResultWhenProductNotExist()
+        public async void AddOrderReturnsBadRequestObjectResultWhenProductNotFound()
         {
             Mock<ISendEndpoint> sendEndpoint = new Mock<ISendEndpoint>();
             _repo.Setup(repo => repo.Product.GetProductAsync(It.IsAny<int>(), It.IsAny<bool>(),

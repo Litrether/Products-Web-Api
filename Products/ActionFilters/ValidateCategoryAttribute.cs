@@ -37,6 +37,5 @@ namespace Products.ActionFilters
 
             await next();
         }
-
     }
 }

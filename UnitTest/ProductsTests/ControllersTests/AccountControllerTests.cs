@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
@@ -20,41 +19,31 @@ namespace UnitTests.ProductsTests.ControllersTests
     {
         Mock<IMapper> _mapper = new Mock<IMapper>();
         Mock<IAutenticationManager> _authManager = new Mock<IAutenticationManager>();
-        Mock<UserManager<User>> _userManager = new Mock<UserManager<User>>();
+        Mock<UserManager<User>> _userManager;
         private ControllerContext _controllerContext;
         private AccountController _controller;
         private User _user;
 
         public AccountControllerTests()
         {
-            _user = new User()
-            {
-                UserName = "UserName",
-                Id = "7c8790f8-2d7e-4229-be67-a373d8ceaeb7"
-            };
+            _user = new User() { UserName = "UserName", Id = "id" };
+            SetUserManager();
+            var identity = new GenericIdentity("UserName", "test");
+            var contextUser = new ClaimsPrincipal(identity);
+            _controllerContext = new ControllerContext() { HttpContext = new DefaultHttpContext { User = contextUser } };
+            _controller = new AccountController(_mapper.Object, _userManager.Object, _authManager.Object) { ControllerContext = _controllerContext, };
+        }
 
+        private void SetUserManager()
+        {
             var store = new Mock<IUserStore<User>>();
-            store.Setup(x => x.FindByNameAsync(It.IsAny<string>(), CancellationToken.None)).ReturnsAsync(_user);
             _userManager = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
-            _userManager.Object.UserValidators.Add(new UserValidator<User>());
-            _userManager.Object.PasswordValidators.Add(new PasswordValidator<User>());
-
             _userManager.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_user);
             _userManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(x => x.UpdateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
             _userManager.Setup(x => x.GetRolesAsync(_user)).ReturnsAsync(new string[] { "Administrator", "User" });
-
-            var identity = new GenericIdentity("UserName", "test");
-            var contextUser = new ClaimsPrincipal(identity);
-            _controllerContext = new ControllerContext()
-            { HttpContext = new DefaultHttpContext { User = contextUser } };
-
-            _controller = new AccountController(_mapper.Object, _userManager.Object, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
         }
 
         [Fact]
