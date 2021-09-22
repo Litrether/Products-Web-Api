@@ -46,14 +46,14 @@ namespace UnitTests.ProductsTests.ControllersTests
         [Fact]
         public async void GetProductReturnsOkObjectResultWhenProductExist()
         {
-            var testProductId = 1;
+            var testId = 1;
             var testProduct = EntitiesForTests.Products().First();
 
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0).Result)
+            _repo.Setup(repo => repo.Product.GetProductAsync(testId, false, 0).Result)
                 .Returns(testProduct);
             var productParams = new ProductParameters();
 
-            var result = await _controller.GetProduct(testProductId, productParams);
+            var result = await _controller.GetProduct(testId, productParams);
 
             Assert.IsType<OkObjectResult>(result);
         }
@@ -107,12 +107,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         [Fact]
         public async void UpdateProductReturnsNoContentResult()
         {
-            var testProductId = 1;
+            var testId = 1;
             var product = EntitiesForTests.Products().First();
             var productIncomingDto = MapProductToProductIncomingDto(product);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0)).ReturnsAsync(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testId, true, 0)).ReturnsAsync(product);
 
-            var result = await _controller.UpdateProduct(testProductId, productIncomingDto);
+            var result = await _controller.UpdateProduct(testId, productIncomingDto);
 
             Assert.IsType<NoContentResult>(result);
         }
@@ -120,13 +120,13 @@ namespace UnitTests.ProductsTests.ControllersTests
         [Fact]
         public async void UpdateProductReturnsBadRequestObjectResultWhenExceptionSave()
         {
-            var testProductId = 1;
+            var testId = 1;
             var product = EntitiesForTests.Products().First();
             var productIncomingDto = MapProductToProductIncomingDto(product);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0)).ReturnsAsync(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testId, true, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
-            var result = await _controller.UpdateProduct(testProductId, productIncomingDto);
+            var result = await _controller.UpdateProduct(testId, productIncomingDto);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -134,12 +134,12 @@ namespace UnitTests.ProductsTests.ControllersTests
         [Fact]
         public async void DeleteProductReturnsNoContentResult()
         {
-            var testProductId = 1;
-            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, false, 0)).ReturnsAsync(product);
+            var testId = 1;
+            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testId);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testId, false, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.Product.DeleteProduct(product)).Verifiable();
 
-            var result = await _controller.DeleteProduct(testProductId);
+            var result = await _controller.DeleteProduct(testId);
 
             Assert.IsType<NoContentResult>(result);
             _repo.Verify(repo => repo.Product.DeleteProduct(It.IsAny<Product>()));
@@ -148,13 +148,13 @@ namespace UnitTests.ProductsTests.ControllersTests
         [Fact]
         public async void DeleteProductReturnsBadRequestObjectResultWhenExceptionSave()
         {
-            var testProductId = 1;
-            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testProductId);
+            var testId = 1;
+            var product = EntitiesForTests.Products().ToList().First(p => p.Id == testId);
             var productIncomingDto = MapProductToProductIncomingDto(product);
-            _repo.Setup(repo => repo.Product.GetProductAsync(testProductId, true, 0)).ReturnsAsync(product);
+            _repo.Setup(repo => repo.Product.GetProductAsync(testId, true, 0)).ReturnsAsync(product);
             _repo.Setup(repo => repo.SaveAsync()).Throws(new Exception("Test message", new Exception("Test inner message")));
 
-            var result = await _controller.DeleteProduct(testProductId);
+            var result = await _controller.DeleteProduct(testId);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }

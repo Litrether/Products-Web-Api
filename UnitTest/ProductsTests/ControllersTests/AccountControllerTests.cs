@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
@@ -19,8 +20,7 @@ namespace UnitTests.ProductsTests.ControllersTests
     {
         Mock<IMapper> _mapper = new Mock<IMapper>();
         Mock<IAutenticationManager> _authManager = new Mock<IAutenticationManager>();
-        Mock<IUserRoleStore<User>> _roleStore = new Mock<IUserRoleStore<User>>();
-        Mock<IUserPasswordStore<User>> _passStore = new Mock<IUserPasswordStore<User>>();
+        Mock<UserManager<User>> _userManager = new Mock<UserManager<User>>();
         private ControllerContext _controllerContext;
         private AccountController _controller;
         private User _user;
@@ -33,16 +33,28 @@ namespace UnitTests.ProductsTests.ControllersTests
                 Id = "7c8790f8-2d7e-4229-be67-a373d8ceaeb7"
             };
 
-            _roleStore.Setup(x => x.FindByNameAsync("UserName", CancellationToken.None))
-                .ReturnsAsync(_user);
+            var store = new Mock<IUserStore<User>>();
+            store.Setup(x => x.FindByNameAsync(It.IsAny<string>(), CancellationToken.None)).ReturnsAsync(_user);
+            _userManager = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
+            _userManager.Object.UserValidators.Add(new UserValidator<User>());
+            _userManager.Object.PasswordValidators.Add(new PasswordValidator<User>());
 
-            _passStore.Setup(x => x.FindByNameAsync("UserName", CancellationToken.None))
-                .ReturnsAsync(_user);
+            _userManager.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_user);
+            _userManager.Setup(x => x.DeleteAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
+            _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            _userManager.Setup(x => x.UpdateAsync(It.IsAny<User>())).ReturnsAsync(IdentityResult.Success);
+            _userManager.Setup(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            _userManager.Setup(x => x.GetRolesAsync(_user)).ReturnsAsync(new string[] { "Administrator", "User" });
 
             var identity = new GenericIdentity("UserName", "test");
             var contextUser = new ClaimsPrincipal(identity);
             _controllerContext = new ControllerContext()
             { HttpContext = new DefaultHttpContext { User = contextUser } };
+
+            _controller = new AccountController(_mapper.Object, _userManager.Object, _authManager.Object)
+            {
+                ControllerContext = _controllerContext,
+            };
         }
 
         [Fact]
@@ -51,21 +63,13 @@ namespace UnitTests.ProductsTests.ControllersTests
             _mapper.Setup(map => map.Map<UserOutgoingDto>(It.IsAny<User>()))
                 .Returns(new UserOutgoingDto());
 
-            _roleStore.Setup(x => x.GetRolesAsync(_user, CancellationToken.None))
-                .ReturnsAsync(new string[] { "Administrator", "User" });
-            var _userManager = new UserManager<User>(_roleStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, _userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
-
             var result = await _controller.GetCurrentUser();
 
             Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
-        public async void RegisterUserReturnsBadRequestResultWhenException()
+        public async void RegisterUserReturnsBadRequestObjectResultWhenException()
         {
             var registrDto = new UserRegistrationDto()
             {
@@ -77,19 +81,10 @@ namespace UnitTests.ProductsTests.ControllersTests
                 Roles = new string[] { "test1", "test2" },
             };
 
-            _mapper.Setup(map => map.Map<User>(It.IsAny<UserRegistrationDto>()))
-                .Returns(new User());
-
-            _passStore.Setup(x => x.CreateAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Failed());
-            var userManager = new UserManager<User>(_passStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
-
+            _mapper.Setup(map => map.Map<User>(It.IsAny<UserRegistrationDto>())).Returns(new User());
+            _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).Throws(new System.Exception("test"));
             var result = await _controller.RegisterUser(registrDto);
-            
+
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
@@ -106,22 +101,34 @@ namespace UnitTests.ProductsTests.ControllersTests
                 Roles = new string[] { "test1", "test2" },
             };
 
-            _mapper.Setup(map => map.Map<User>(It.IsAny<UserRegistrationDto>()))
-                .Returns(new User());
-
-            _passStore.Setup(x => x.CreateAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Failed());
-            var userManager = new UserManager<User>(_passStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
+            _mapper.Setup(map => map.Map<User>(It.IsAny<UserRegistrationDto>())).Returns(new User());
+            _userManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed());
 
             var result = await _controller.RegisterUser(registrDto);
 
-            Assert.IsType<ClientErrorData>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        [Fact]
+        public async void RegisterUserReturnsOkResultMOCK()
+        {
+            var registrDto = new UserRegistrationDto()
+            {
+                Email = "test@test.com",
+                FirstName = "test",
+                LastName = "test",
+                UserName = "test",
+                Password = "test",
+                Roles = new string[] { "test1", "test2" },
+            };
+
+            _mapper.Setup(map => map.Map<User>(It.IsAny<UserRegistrationDto>()))
+                .Returns(new User());
+
+            var result = await _controller.RegisterUser(registrDto);
+
+            Assert.IsType<OkResult>(result);
+        }
         [Fact]
         public async void RegisterUserReturnsOkResult()
         {
@@ -138,14 +145,6 @@ namespace UnitTests.ProductsTests.ControllersTests
             _mapper.Setup(map => map.Map<User>(It.IsAny<UserRegistrationDto>()))
                 .Returns(new User());
 
-            _passStore.Setup(x => x.CreateAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Failed());
-            var userManager = new UserManager<User>(_passStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
-
             var result = await _controller.RegisterUser(registrDto);
 
             Assert.IsType<OkResult>(result);
@@ -159,11 +158,6 @@ namespace UnitTests.ProductsTests.ControllersTests
             {
                 UserName = "UserName",
                 Password = "111"
-            };
-            var _userManager = new UserManager<User>(_roleStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, _userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
             };
 
             var result = await _controller.Authenticate(user);
@@ -179,13 +173,6 @@ namespace UnitTests.ProductsTests.ControllersTests
                 UserName = "UserName",
                 Password = "111"
             };
-            _roleStore.Setup(x => x.DeleteAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Success);
-            var _userManager = new UserManager<User>(_roleStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, _userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
 
             var result = await _controller.DeleteUser(user);
 
@@ -200,13 +187,7 @@ namespace UnitTests.ProductsTests.ControllersTests
                 UserName = "UserName",
                 Password = "111"
             };
-            _roleStore.Setup(x => x.DeleteAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Failed());
-            var _userManager = new UserManager<User>(_roleStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, _userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
+            _userManager.Setup(x => x.DeleteAsync(_user)).ReturnsAsync(IdentityResult.Failed());
 
             var result = await _controller.DeleteUser(user);
 
@@ -222,35 +203,21 @@ namespace UnitTests.ProductsTests.ControllersTests
                 OldPassword = "newPass",
             };
 
-            _roleStore.Setup(x => x.DeleteAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Failed());
-            var _userManager = new UserManager<User>(_passStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, _userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
-
             var result = await _controller.ChangePassword(changePass);
 
             Assert.IsType<NoContentResult>(result);
         }
 
         [Fact]
-        public async void ChangePasswordReturnsBadRequestObjectResult()
+        public async void ChangePasswordReturnsBadRequestObjectResultWhenError()
         {
             var changePass = new ChangePasswordDto()
             {
                 NewPassword = "oldPass",
                 OldPassword = "newPass",
             };
-            _roleStore.Setup(x => x.DeleteAsync(_user, CancellationToken.None))
-                .ReturnsAsync(IdentityResult.Failed());
-            var _userManager = new UserManager<User>(_passStore.Object, null, null, null, null, null, null, null, null);
-            _controller = new AccountController(_mapper.Object, _userManager, _authManager.Object)
-            {
-                ControllerContext = _controllerContext,
-            };
 
+            _userManager.Setup(x => x.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed());
             var result = await _controller.ChangePassword(changePass);
 
             Assert.IsType<BadRequestObjectResult>(result);
