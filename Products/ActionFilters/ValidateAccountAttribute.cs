@@ -40,7 +40,7 @@ namespace Products.ActionFilters
             if (needValidateUser && await IsValidUser(context) == false)
                 return;
 
-            if (needValidateRoles && await IsValidRoles(context) == false)
+            if (needValidateRoles && IsValidRoles(context) == false)
                 return;
 
             await next();
@@ -60,10 +60,10 @@ namespace Products.ActionFilters
             return true;
         }
 
-        private async Task<bool> IsValidRoles(ActionExecutingContext context)
+        private bool IsValidRoles(ActionExecutingContext context)
         {
             var userRoles = (context.ActionArguments["userForRegistration"] as UserRegistrationDto).Roles.ToList();
-            var existRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            var existRoles = _roleManager.Roles.Select(r => r.Name).ToList();
 
             var notExistUserRoles = userRoles.Where(r => existRoles.Contains(r) == false).ToList();
 

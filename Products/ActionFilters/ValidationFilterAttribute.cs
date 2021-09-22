@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Messenger.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
@@ -21,7 +22,8 @@ namespace Products.ActionFilters
 
             var methodHasDtoParam = method == "PATCH" ||
                                    method == "POST" ||
-                                   method == "PUT";
+                                   method == "PUT" ||
+                                   (method == "DELETE" && controller?.ToString() == "Account");
 
             if (methodHasDtoParam)
             {
