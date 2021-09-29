@@ -58,15 +58,5 @@ namespace UnitTests.ProductsTests.ManagersTests
 
             Assert.False(result);
         }
-
-        [Fact]
-        public async void CreateTokenReturnsToken()
-        {
-            _userManager.Setup(x => x.CheckPasswordAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(false);
-            await _authManager.ValidateUser(new UserValidationDto());
-            var result = await _authManager.CreateToken();
-
-            Assert.NotNull(result);
-        }
     }
 }
