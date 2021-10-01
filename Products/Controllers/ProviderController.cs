@@ -36,7 +36,6 @@ namespace Products.Controllers
         /// <param name="providerParameters"></param>
         /// <returns>The providers list</returns>
         [HttpGet(Name = "GetProviders")]
-        [Authorize]
         public async Task<IActionResult> GetProviders(
             [FromQuery] ProviderParameters providerParameters)
         {

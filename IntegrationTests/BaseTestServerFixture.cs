@@ -11,7 +11,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using UnitTestProducts;
 
 namespace IntegrationTests
@@ -44,10 +43,10 @@ namespace IntegrationTests
             {
                 FirstName = "string",
                 LastName = "string",
-                UserName = "string",
-                Password = "string",
+                UserName = "string2",
+                Password = "string2",
                 Email = "string@string.com",
-                Roles = new string[] { "Administrator" }
+                Roles = new string[] { "User" }
             };
 
             var contentCreateUser = new StringContent(JsonConvert.SerializeObject(createUser), Encoding.UTF8, "application/json");
@@ -55,8 +54,8 @@ namespace IntegrationTests
 
             var authUser = new UserValidationDto()
             {
-                UserName = "string",
-                Password = "string",
+                UserName = "string2",
+                Password = "string2",
             };
 
             var contentAuth = new StringContent(JsonConvert.SerializeObject(authUser), Encoding.UTF8, "application/json");
@@ -69,7 +68,9 @@ namespace IntegrationTests
 
             DbContext.Categories.AddRange(EntitiesForDb.Categories());
             DbContext.Providers.AddRange(EntitiesForDb.Providers());
-            DbContext.Products.AddRange(EntitiesForDb.Products());
+
+            var models = DbContext.Providers.ToList();
+
         }
 
         public void Dispose()

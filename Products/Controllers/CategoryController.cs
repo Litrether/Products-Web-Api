@@ -35,7 +35,6 @@ namespace Products.Controllers
         /// <param name="categoryParameters"></param>
         /// <returns>The categories list</returns>
         [HttpGet(Name = "GetCategories")]
-        [Authorize]
         public async Task<IActionResult> GetCategories(
             [FromQuery] CategoryParameters categoryParameters)
         {

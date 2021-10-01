@@ -24,9 +24,10 @@ namespace IntegrationTests
         [InlineData("categories")]
         public async Task Get_ShouldReturnListResult(string path)
         {
-            var response = await _fixture.Client.GetAsync($"/api/{path}/");
-
-           var models = JsonConvert.DeserializeObject<IEnumerable<Category>>(await response.Content.ReadAsStringAsync());
+            var response = await _fixture.Client.GetAsync($"api/providers");
+            
+            response.EnsureSuccessStatusCode();
+            var models = await response.Content.ReadAsStringAsync();
 
             Assert.NotEmpty(models);
         }
