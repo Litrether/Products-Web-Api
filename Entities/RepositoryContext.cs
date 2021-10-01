@@ -26,7 +26,7 @@ namespace Entities
             modelBuilder.Entity<Provider>().Property(p => p.Name).IsRequired();
 
             modelBuilder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<Provider>().Property(p => p.Name).IsRequired();
+            modelBuilder.Entity<Category>().Property(p => p.Name).IsRequired();
 
             modelBuilder.Entity<Cart>().HasIndex(c => new { c.UserId, c.ProductId }).IsUnique();
             modelBuilder.Entity<Cart>().Property(c => c.UserId).IsRequired();

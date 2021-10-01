@@ -1,11 +1,14 @@
 ﻿using Contracts;
+using CrossCuttingLayer;
 using CurrencyConverter;
 using Entities;
 using Entities.DataTransferObjects.Outcoming;
 using Entities.Models;
 using Marvin.Cache.Headers;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -57,11 +60,21 @@ namespace Products.Extensions
         public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
             services.AddScoped<ICurrencyApiConnection, CurrencyApiConnection>();
 
-        public static void ConfigureSqlContext(this IServiceCollection services,
-           IConfiguration configuration) =>
-           services.AddDbContext<RepositoryContext>(options =>
-             options.UseSqlServer(configuration.GetConnectionString("sqlConnection"), builder =>
-             builder.MigrationsAssembly("Products")));
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration, 
+            IWebHostEnvironment currentEnviroment)
+        {
+            if(currentEnviroment.EnvironmentName == "Testing")
+            {
+                services.AddDbContext<RepositoryContext>(options =>
+                    options.UseInMemoryDatabase("TestingDB"));
+            }
+            else
+            {
+                services.AddDbContext<RepositoryContext>(options =>
+                  options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builder =>
+                  builder.MigrationsAssembly("Products")));
+            }
+        }
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -85,8 +98,7 @@ namespace Products.Extensions
                 .AddDefaultTokenProviders();
         }
 
-        public static void ConfigureJWT(this IServiceCollection services,
-            IConfiguration configuration)
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = configuration.GetSection("SECRET").Value;
@@ -98,7 +110,7 @@ namespace Products.Extensions
             })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -107,8 +119,7 @@ namespace Products.Extensions
 
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
-                    IssuerSigningKey =
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("CodeMazeSecretKey"))
                 };
             });
         }
@@ -212,5 +223,19 @@ namespace Products.Extensions
                 {
                     validationOpt.MustRevalidate = true;
                 });
+
+        public static void ConfigureMassTransit(this IServiceCollection services) =>
+            services.AddMassTransit(x =>
+            {
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+                {
+                    config.Host(new Uri(RabbitMqConsts.RabbitMqRootUri), h =>
+                    {
+                        h.Username(RabbitMqConsts.UserName);
+                        h.Password(RabbitMqConsts.Password);
+                    });
+                }));
+            })
+            .AddMassTransitHostedService();
     }
 }

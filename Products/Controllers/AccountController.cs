@@ -64,7 +64,8 @@ namespace Messenger.Controllers
                 return BadRequest(ex?.InnerException?.Message);
             }
 
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            //await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            await _userManager.AddToRolesAsync(user, new string[] { "Administrator", "Manager" });
 
             return Ok();
         }

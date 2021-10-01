@@ -1,6 +1,4 @@
 using Contracts;
-using CrossCuttingLayer;
-using MassTransit;
 using Messenger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,68 +9,56 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using Products.Extensions;
-using System;
 using System.IO;
 
 namespace Products
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        private readonly IWebHostEnvironment _currentEnviroment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment currentEnviroment)
         {
             LogManager.LoadConfiguration($"{Directory.GetCurrentDirectory()}/nlog.config");
             Configuration = configuration;
+            _currentEnviroment = currentEnviroment;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMassTransit(x =>
-            {
-                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
-                {
-                    config.Host(new Uri(RabbitMqConsts.RabbitMqRootUri), h =>
-                    {
-                        h.Username(RabbitMqConsts.UserName);
-                        h.Password(RabbitMqConsts.Password);
-                    });
-                }));
-            });
-            services.AddMassTransitHostedService();
-            services.ConfigureCors();
-            services.ConfigureIISIntegration();
-            services.ConfigureLoggerServices();
-            services.ConfigureSqlContext(Configuration);
-            services.ConfigureRepositoryManager();
-            services.ConfigureCurrencyApiConnection();
-            services.ConfigureSwagger();
-            services.ConfigureVersioning();
-            services.ConfigureAuthenticationManager();
-            services.ConfigureRoleManager();
-            services.ConfigureIdentity();
-            services.ConfigureJWT(Configuration);
             services.AddAuthentication();
             services.AddAuthorization();
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
-            services.ConfigureValidationAttributes();
-            services.ConfigureDataShaper();
-            services.ConfigureAutoMapper();
-            services.ConfigureResponseCaching();
-            services.ConfigureHttpCacheHeaders();
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             }).AddNewtonsoftJson();
-
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            services.ConfigureAuthenticationManager();
+            services.ConfigureAutoMapper();
+            services.ConfigureCors();
+            services.ConfigureCurrencyApiConnection();
+            services.ConfigureDataShaper();
+            services.ConfigureHttpCacheHeaders();
+            services.ConfigureIdentity();
+            services.ConfigureIISIntegration();
+            services.ConfigureJWT(Configuration);
+            services.ConfigureLoggerServices();
+            services.ConfigureMassTransit();
+            services.ConfigureRepositoryManager();
+            services.ConfigureResponseCaching();
+            services.ConfigureRoleManager();
+            services.ConfigureSqlContext(Configuration, _currentEnviroment);
+            services.ConfigureSwagger();
+            services.ConfigureValidationAttributes();
+            services.ConfigureVersioning();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            ILoggerManager logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {

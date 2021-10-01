@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace UnitTestProducts
 {
-    public static class EntitiesForTests
+    public static class EntitiesForDb
     {
         public static IQueryable<Category> Categories() =>
             new List<Category>()
@@ -35,14 +35,12 @@ namespace UnitTestProducts
             {
                 new Product
                 {
-                    Id = 1, 
+                    Id = 1,
                     Name = "Yoghurt",
                     Description = "Contains useful trace elements",
                     Cost = 1.53,
                     CategoryId = 5,
                     ProviderId = 4,
-                    Category = new Category{Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/9f/19/09/9f19090f916c43dae8fa2d5e4f4298bd.jpg"
                 },
                 new Product
@@ -53,8 +51,6 @@ namespace UnitTestProducts
                     Cost = 2.25,
                     CategoryId = 5,
                     ProviderId = 4,
-                    Category = new Category{ Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/d1/4a/ac/d14aac685c7d492d34d5b1c06f9e57ad.jpg"
                 },
                 new Product
@@ -65,8 +61,6 @@ namespace UnitTestProducts
                     Cost = 1.17,
                     CategoryId = 5,
                     ProviderId = 2,
-                    Category = new Category{ Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/11/37/9a/11379a0588f57f9e18f9e4fae9f3b6ed.jpg"
                 },
                 new Product
@@ -77,8 +71,6 @@ namespace UnitTestProducts
                     Cost = 4.5,
                     CategoryId = 6,
                     ProviderId = 5,
-                    Category = new Category{ Id = 6, Name = "Confectionery"},
-                    Provider = new Provider { Id = 5, Name = "Archeda", LocationLat = 49.764727469041816m, LocationLong = 43.65468679640968m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/ec/5f/08/ec5f08f5c24077ba5a892e39105cc066.jpg"
                 },
                 new Product
@@ -89,10 +81,9 @@ namespace UnitTestProducts
                     Cost = 3.85,
                     CategoryId = 4,
                     ProviderId = 1,
-                    Category = new Category{Id = 4, Name = "Meat"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
                     ImageUrl = "https://i.pinimg.com/564x/99/ee/3c/99ee3cc80018401e8f92a794ce4d5102.jpg"
-                },new Product
+                },
+                new Product
                 {
                     Id = 6,
                     Name = "Meatballs",
@@ -100,8 +91,6 @@ namespace UnitTestProducts
                     Cost = 2.55,
                     CategoryId = 4,
                     ProviderId = 1,
-                    Category = new Category{Id = 4, Name = "Meat"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
                     ImageUrl = "https://i.pinimg.com/564x/11/f3/03/11f303bbb87435d297b257ffeaee3f1e.jpg"
                 },
                 new Product
@@ -112,8 +101,6 @@ namespace UnitTestProducts
                     Cost = 1.13,
                     CategoryId = 1,
                     ProviderId = 6,
-                    Category = new Category{Id = 1, Name = "Vegetables"},
-                    Provider = new Provider { Id = 6, Name = "Pascual", LocationLat = 47.46106041862809m, LocationLong = -122.26236529486663m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/6d/b9/cc/6db9cc5ed7fc8ee8492dfb60b50cbf28.jpg"
                 },
                 new Product
@@ -124,8 +111,6 @@ namespace UnitTestProducts
                     Cost = 1.07,
                     CategoryId = 1,
                     ProviderId = 6,
-                    Category = new Category{Id = 1, Name = "Vegetables"},
-                    Provider = new Provider { Id = 6, Name = "Pascual", LocationLat = 47.46106041862809m, LocationLong = -122.26236529486663m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/98/3e/dd/983edd484bec3c19bbec13bf95ffb2c0.jpg"
                 },
                 new Product
@@ -136,8 +121,6 @@ namespace UnitTestProducts
                     Cost = 1.78,
                     CategoryId = 1,
                     ProviderId = 2,
-                    Category = new Category{Id = 1, Name = "Vegetables"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/47/a8/ed/47a8edca3321c8282a6cd2af73f1400a.jpg"
                 },
                 new Product
@@ -148,8 +131,6 @@ namespace UnitTestProducts
                     Cost = 1.10,
                     CategoryId = 2,
                     ProviderId = 2,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/9c/e9/d5/9ce9d5b1f6c97f27d7b4f5a96d5ee6ab.jpg"
                 },
                 new Product
@@ -160,8 +141,6 @@ namespace UnitTestProducts
                     Cost = 1.99,
                     CategoryId = 2,
                     ProviderId = 2,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/15/b4/99/15b499819be25fa974752cce150c19c6.jpg"
                 },
                 new Product
@@ -172,8 +151,6 @@ namespace UnitTestProducts
                     Cost = 2.42,
                     CategoryId = 2,
                     ProviderId = 7,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 7, Name = "Javimar", LocationLat = 39.16566430628417m, LocationLong = -0.2430474019997804m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/c5/10/6f/c5106f5fd0684b45f12c8517a47cff5c.jpg"
                 },
                 new Product
@@ -184,8 +161,6 @@ namespace UnitTestProducts
                     Cost = 1.72,
                     CategoryId = 2,
                     ProviderId = 7,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 7, Name = "Javimar", LocationLat = 39.16566430628417m, LocationLong = -0.2430474019997804m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/e8/7a/07/e87a07cbdd1cc7d3638613e68db39a79.jpg"
                 },
                 new Product
@@ -196,8 +171,6 @@ namespace UnitTestProducts
                     Cost = 3.10,
                     CategoryId = 2,
                     ProviderId = 3,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 3, Name = "Shirin Agro", LocationLat = 40.73105861912476m, LocationLong = 46.27047156919906m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/ce/a8/f1/cea8f12d0dc21d5ba8ffa9af50ee8b47.jpg"
                 },
                 new Product
@@ -208,8 +181,6 @@ namespace UnitTestProducts
                     Cost = 5.49,
                     CategoryId = 4,
                     ProviderId = 1,
-                    Category = new Category{Id = 4, Name = "Meat"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
                     ImageUrl = "https://i.pinimg.com/564x/96/01/b3/9601b3603412852ef8fb8ccb940323ce.jpg"
                 },
                 new Product
@@ -220,8 +191,6 @@ namespace UnitTestProducts
                     Cost = 4.00,
                     CategoryId = 4,
                     ProviderId = 1,
-                    Category = new Category{Id = 4, Name = "Meat"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
                     ImageUrl = "https://i.pinimg.com/564x/15/0e/6b/150e6b8ac28a4ddbdc4640a9225b0712.jpg"
                 },
                 new Product
@@ -232,8 +201,6 @@ namespace UnitTestProducts
                     Cost = 3.35,
                     CategoryId = 4,
                     ProviderId = 2,
-                    Category = new Category{Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/54/30/14/543014bffb4aab8bfd5b3c169e7de841.jpg"
                 },
                 new Product
@@ -244,8 +211,6 @@ namespace UnitTestProducts
                     Cost = 3.10,
                     CategoryId = 4,
                     ProviderId = 2,
-                    Category = new Category{Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 2, Name = "Atha Makina", LocationLat = 38.54213540495325m, LocationLong = 27.033468297986936m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/dd/c4/2e/ddc42ece75ab1489285b6c8b1f21773b.jpg"
                 },
                 new Product
@@ -256,8 +221,6 @@ namespace UnitTestProducts
                     Cost = 0.80,
                     CategoryId = 6,
                     ProviderId = 3,
-                    Category = new Category{ Id = 6, Name = "Confectionery"},
-                    Provider = new Provider { Id = 3, Name = "Shirin Agro", LocationLat = 40.73105861912476m, LocationLong = 46.27047156919906m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/73/cc/1d/73cc1d67358e6297f3eccbc797fa449b.jpg"
                 },
                 new Product
@@ -268,8 +231,6 @@ namespace UnitTestProducts
                     Cost = 1.20,
                     CategoryId = 1,
                     ProviderId = 3,
-                    Category = new Category{Id = 1, Name = "Vegetables"},
-                    Provider = new Provider { Id = 3, Name = "Shirin Agro", LocationLat = 40.73105861912476m, LocationLong = 46.27047156919906m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/da/6a/cf/da6acf414f983a50e0f836f2eabf43e7.jpg"
                 },
                 new Product
@@ -280,8 +241,6 @@ namespace UnitTestProducts
                     Cost = 3.12,
                     CategoryId = 5,
                     ProviderId = 4,
-                    Category = new Category{Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/f4/30/7f/f4307f509a13125c657e882ae7ebb26a.jpg"
                 },
                 new Product
@@ -292,8 +251,6 @@ namespace UnitTestProducts
                     Cost = 4.32,
                     CategoryId = 5,
                     ProviderId = 4,
-                    Category = new Category{Id = 5, Name = "Dairy Products"},
-                    Provider = new Provider { Id = 4, Name = "Milk Gorki", LocationLat = 54.26659741177842m, LocationLong = 30.98771355605172m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/f4/54/c3/f454c30262fdbf92b128415b66f92794.jpg"
                 },
                 new Product
@@ -304,8 +261,6 @@ namespace UnitTestProducts
                     Cost = 2.10,
                     CategoryId = 2,
                     ProviderId = 8,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/9c/cb/90/9ccb90064100431e87f0b593d31e21b3.jpg"
                 },
                 new Product
@@ -316,8 +271,6 @@ namespace UnitTestProducts
                     Cost = 0.75,
                     CategoryId = 1,
                     ProviderId = 5,
-                    Category = new Category{Id = 1, Name = "Vegetables"},
-                    Provider = new Provider { Id = 5, Name = "Archeda", LocationLat = 49.764727469041816m, LocationLong = 43.65468679640968m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/33/1b/e5/331be57b94b67ec8e145aafb382fe7a7.jpg"
                 },
                 new Product
@@ -328,8 +281,6 @@ namespace UnitTestProducts
                     Cost = 1.05,
                     CategoryId = 6,
                     ProviderId = 7,
-                    Category = new Category{Id = 6, Name = "Confectionery"},
-                    Provider = new Provider { Id = 7, Name = "Javimar", LocationLat = 39.16566430628417m, LocationLong = -0.2430474019997804m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/61/64/99/616499b8d8bf55455880e89bc4eeb475.jpg"
                 },
                 new Product
@@ -340,8 +291,6 @@ namespace UnitTestProducts
                     Cost = 2.63,
                     CategoryId = 2,
                     ProviderId = 5,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 5, Name = "Archeda", LocationLat = 49.764727469041816m, LocationLong = 43.65468679640968m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/41/7e/b1/417eb1212f7a3713aec76a166f3cfd81.jpg"
                 },
                 new Product
@@ -352,8 +301,6 @@ namespace UnitTestProducts
                     Cost = 5.10,
                     CategoryId = 4,
                     ProviderId = 1,
-                    Category = new Category{Id = 4, Name = "Meat"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
                     ImageUrl = "https://i.pinimg.com/564x/5a/90/ea/5a90eae4ae481f2d56f7fdd00110e85d.jpg"
                 },
                 new Product
@@ -364,8 +311,6 @@ namespace UnitTestProducts
                     Cost = 2.60,
                     CategoryId = 1,
                     ProviderId = 8,
-                    Category = new Category{Id = 1, Name = "Vegetables"},
-                    Provider = new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/6f/bb/a7/6fbba70bc454a584a088386c23600d09.jpg"
                 },
                 new Product
@@ -376,8 +321,6 @@ namespace UnitTestProducts
                     Cost = 1.59,
                     CategoryId = 2,
                     ProviderId = 8,
-                    Category = new Category{Id = 2, Name = "Fruits"},
-                    Provider = new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }},
                     ImageUrl = "https://i.pinimg.com/564x/89/88/91/89889125af33bf6483f58f4fa4d3d9ea.jpg"
                 },
                 new Product
@@ -388,10 +331,108 @@ namespace UnitTestProducts
                     Cost = 0.45,
                     CategoryId = 6,
                     ProviderId = 1,
-                    Category = new Category{ Id = 6, Name = "Confectionery"},
-                    Provider = new Provider { Id = 1, Name = "Underdog", LocationLat = 53.89019010647972m, LocationLong = 27.575736202063215m, Products = { } },
                     ImageUrl = "https://i.pinimg.com/564x/22/c2/a3/22c2a39a04e3a978997f6bbfceeb4b2c.jpg"
                 },
+                new Product
+                {
+                    Id = 31,
+                    Name = "Raspberry",
+                    Description = "From my garden",
+                    Cost = 1.49,
+                    CategoryId = 2,
+                    ProviderId = 5,
+                    ImageUrl = "https://i.pinimg.com/564x/e3/7f/54/e37f547f5cbfc397a7caf53a4fe87b51.jpg"
+                },
+                new Product
+                {
+                    Id = 32,
+                    Name = "Lemon",
+                    Description = "Sour like cranberries",
+                    Cost = 0.99,
+                    CategoryId = 2,
+                    ProviderId = 6,
+                    ImageUrl = "https://i.pinimg.com/564x/a5/58/fd/a558fdacb9b77ae1236dd0c24ae98c1c.jpg"
+                },
+                new Product
+                {
+                    Id = 33,
+                    Name = "Cereals",
+                    Description = "Student food",
+                    Cost = 1.20,
+                    CategoryId = 3,
+                    ProviderId = 5,
+                    ImageUrl = "https://i.pinimg.com/564x/b3/76/3f/b3763f5a0de60415d3fcfe6c741a15c0.jpg"
+                },
+                new Product
+                {
+                    Id = 34,
+                    Name = "Wafer",
+                    Description = "For coffee",
+                    Cost = 0.80,
+                    CategoryId = 6,
+                    ProviderId = 3,
+                    ImageUrl = "https://i.pinimg.com/564x/ac/21/b0/ac21b0a905b1be5754a31bd82d1d89c4.jpg"
+                },
+                new Product
+                {
+                    Id = 35,
+                    Name = "Apricot",
+                    Description = "With a leaf",
+                    Cost = 1.89,
+                    CategoryId = 2,
+                    ProviderId = 6,
+                    ImageUrl = "https://i.pinimg.com/564x/37/f1/ba/37f1ba10f0fd4687f136d7e8288ed8a0.jpg"
+                },
+                new Product
+                {
+                    Id = 36,
+                    Name = "Beef",
+                    Description = "Not for vegans",
+                    Cost = 7.10,
+                    CategoryId = 4,
+                    ProviderId = 1,
+                    ImageUrl = "https://i.pinimg.com/564x/7f/cb/fa/7fcbfab68d2148614fc39bee18a1fd55.jpg"
+                },
+                new Product
+                {
+                    Id = 37,
+                    Name = "Buckwheat",
+                    Description = "Delicious with stew",
+                    Cost = 5.69,
+                    CategoryId = 3,
+                    ProviderId = 8,
+                    ImageUrl = "https://i.pinimg.com/564x/7d/76/de/7d76de4679c2cd3992b24c796f821c40.jpg"
+                },
+                new Product
+                {
+                    Id = 38,
+                    Name = "Rice",
+                    Description = "Chinese delicacy",
+                    Cost = 1.18,
+                    CategoryId = 3,
+                    ProviderId = 8,
+                    ImageUrl = "https://i.pinimg.com/564x/a4/5b/00/a45b00ba09ce546c6a3843b413addbdc.jpg"
+                },
+                new Product
+                {
+                    Id = 39,
+                    Name = "Oatmeal",
+                    Description = "Ser",
+                    Cost = 0.95,
+                    CategoryId = 3,
+                    ProviderId = 8,
+                    ImageUrl = "https://i.pinimg.com/564x/b1/8c/ba/b18cba5f27ab4c7a2ec6dc8c117da2c2.jpg"
+                },
+                new Product
+                {
+                    Id = 40,
+                    Name = "Pie",
+                    Description = "In the form of a heart",
+                    Cost = 4.95,
+                    CategoryId = 6,
+                    ProviderId = 6,
+                    ImageUrl = "https://i.pinimg.com/564x/7e/31/1b/7e311b77e991407b30c5c4201fd76a40.jpg"
+                }
             }.AsQueryable();
     }
 }

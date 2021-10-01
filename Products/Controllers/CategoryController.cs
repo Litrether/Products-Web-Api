@@ -68,7 +68,7 @@ namespace Products.Controllers
         /// <param name="category"></param>
         /// <returns> Created category with id </returns>
         [HttpPost(Name = "CreateCategory")]
-        [Authorize(Roles = ("Administrator"))]
+        //[Authorize(Roles = ("Administrator"))]
         [ServiceFilter(typeof(ValidateCategoryAttribute))]
         public async Task<IActionResult> CreateCategory(
             [FromBody] CategoryIncomingDto category)
