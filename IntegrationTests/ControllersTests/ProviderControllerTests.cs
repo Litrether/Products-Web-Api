@@ -5,12 +5,11 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using UnitTestProducts;
 using Xunit;
 
 namespace IntegrationTests.ControllersTests
 {
-    public class ProviderControllerTests 
+    public class ProviderControllerTests
     {
         [Fact]
         public async Task GetProvidersReturnsProviders()
@@ -47,8 +46,8 @@ namespace IntegrationTests.ControllersTests
         }
 
         [Theory]
-        [InlineData(4)]
-        [InlineData(5)]
+        [InlineData(9)]
+        [InlineData(10)]
         public async Task DeleteProviderReturnsNoContentAndDeleteProvider(int id)
         {
             var response = await TestFixture.Client.DeleteAsync($"api/providers/{id}");

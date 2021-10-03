@@ -1,18 +1,15 @@
 ﻿using Entities.DataTransferObjects.Incoming;
 using Entities.DataTransferObjects.Outcoming;
-using Entities.Models;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using UnitTestProducts;
 using Xunit;
 
 namespace IntegrationTests.ControllerTests
 {
-    public class CategoryControllerTests 
+    public class CategoryControllerTests
     {
         [Fact]
         public async Task GetCategoriesReturnsCategories()
@@ -49,8 +46,8 @@ namespace IntegrationTests.ControllerTests
         }
 
         [Theory]
-        [InlineData(4)]
-        [InlineData(5)]
+        [InlineData(7)]
+        [InlineData(8)]
         public async Task DeleteCategoryReturnsNoContentAndDeleteCategory(int id)
         {
             var response = await TestFixture.Client.DeleteAsync($"api/categories/{id}");
@@ -108,7 +105,7 @@ namespace IntegrationTests.ControllerTests
 
             Assert.Equal(newName, category.Name);
         }
-        
+
         [Fact]
         public async Task CreateCategoryRedirectToRouteGetCategory()
         {

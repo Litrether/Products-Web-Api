@@ -1,6 +1,5 @@
 ﻿using Contracts;
 using Entities.DataTransferObjects.Incoming;
-using Messenger.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

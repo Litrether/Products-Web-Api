@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
 using Xunit;
 
 namespace UnitTests.ProductsTests.ControllersTests

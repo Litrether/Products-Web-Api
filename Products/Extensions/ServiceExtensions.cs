@@ -60,10 +60,10 @@ namespace Products.Extensions
         public static void ConfigureCurrencyApiConnection(this IServiceCollection services) =>
             services.AddScoped<ICurrencyApiConnection, CurrencyApiConnection>();
 
-        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration, 
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration,
             IWebHostEnvironment currentEnviroment)
         {
-            if(currentEnviroment.EnvironmentName == "Testing")
+            if (currentEnviroment.EnvironmentName == "Testing")
             {
                 services.AddDbContext<RepositoryContext>(options =>
                     options.UseInMemoryDatabase("TestingDB"));

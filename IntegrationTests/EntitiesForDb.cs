@@ -14,7 +14,9 @@ namespace UnitTestProducts
                 new Category{Id = 3, Name = "Grocery"},
                 new Category{Id = 4, Name = "Meat"},
                 new Category{Id = 5, Name = "Dairy Products"},
-                new Category{Id = 6, Name = "Confectionery"}
+                new Category{Id = 6, Name = "Confectionery"},
+                new Category{Id = 7, Name = "ForDelete1"},
+                new Category{Id = 8, Name = "ForDelete2"},
             }.AsQueryable();
 
         public static IQueryable<Provider> Providers() =>
@@ -27,7 +29,9 @@ namespace UnitTestProducts
                 new Provider { Id = 5, Name = "Archeda", LocationLat = 49.764727469041816m, LocationLong = 43.65468679640968m, Products = { }},
                 new Provider { Id = 6, Name = "Pascual", LocationLat = 47.46106041862809m, LocationLong = -122.26236529486663m, Products = { }},
                 new Provider { Id = 7, Name = "Javimar", LocationLat = 39.16566430628417m, LocationLong = -0.2430474019997804m, Products = { }},
-                new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }}
+                new Provider { Id = 8, Name = "MiLida", LocationLat = 10.158678793639453m, LocationLong = -10.753070951045318m, Products = { }},
+                new Provider { Id = 9, Name = "ForDelete1", LocationLat = 0, LocationLong = 0, Products = { }},
+                new Provider { Id = 10, Name = "ForDelete2", LocationLat = 0, LocationLong = 0, Products = { }},
             }.AsQueryable();
 
         public static IQueryable<Product> Products() =>

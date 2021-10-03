@@ -1,5 +1,4 @@
 ﻿using Contracts;
-using Messenger.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;

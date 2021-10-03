@@ -1,5 +1,4 @@
 ﻿using Contracts;
-using Entities.Models;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
