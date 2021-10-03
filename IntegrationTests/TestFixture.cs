@@ -16,15 +16,15 @@ using UnitTestProducts;
 
 namespace IntegrationTests
 {
-    public class BaseTestServerFixture
+    public static class TestFixture
     {
-        public TestServer TestServer { get; }
-        public RepositoryContext Repository { get; }
-        public HttpClient Client { get; }
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        public static TestServer TestServer { get; }
+        public static RepositoryContext Repository { get; }
+        public static HttpClient Client { get; }
+        private static UserManager<User> _userManager;
+        private static RoleManager<IdentityRole> _roleManager;
 
-        public BaseTestServerFixture()
+        static TestFixture()
         {
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -45,13 +45,13 @@ namespace IntegrationTests
             SetToken();
         }
 
-        public void Dispose()
+        public static void Dispose()
         {
             Client.Dispose();
             TestServer.Dispose();
         }
 
-        private void SetToken()
+        private static void SetToken()
         {
             var createUser = new UserRegistrationDto()
             {
@@ -80,7 +80,7 @@ namespace IntegrationTests
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        private void FillingDatabase()
+        private static void FillingDatabase()
         {
             _roleManager.CreateAsync(new IdentityRole { Name = "User" });
             _roleManager.CreateAsync(new IdentityRole { Name = "Manager" });
