@@ -1,0 +1,16 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "JwtSettings": {
+    "validIssuer": "ProductsApi",
+    "validAudience": "https://localhost",
+    "expires": 30
+  },
+  "SECRET": "CodeMazeSecretKey",
+  "AllowedHosts": "*"
+}

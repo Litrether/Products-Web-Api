@@ -64,7 +64,6 @@ namespace Products.Controllers
         /// <param name="productParameters"></param>
         /// <returns> Product with a given id</returns>
         [HttpGet("{id}", Name = "GetProduct")]
-        [Authorize]
         [ServiceFilter(typeof(ValidateProductAttribute))]
         public async Task<IActionResult> GetProduct(int id, [FromQuery] ProductParameters productParameters)
         {

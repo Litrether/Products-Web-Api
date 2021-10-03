@@ -44,8 +44,8 @@ namespace Products.Managers
 
         private SigningCredentials GetSigningCredentials()
         {
-            //var key = Encoding.UTF8.GetBytes(_configuration.GetSection("SECRET").Value);
-            var key = Encoding.UTF8.GetBytes("CodeMazeSecretKey");
+            var key = Encoding.UTF8.GetBytes(_configuration.GetSection("SECRET").Value);
+            //var key = Encoding.UTF8.GetBytes("CodeMazeSecretKey");
             var secret = new SymmetricSecurityKey(key);
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);

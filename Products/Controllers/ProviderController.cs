@@ -53,7 +53,6 @@ namespace Products.Controllers
         /// <param name="id"></param>
         /// <returns> Provider with a given id </returns>
         [HttpGet("{id}", Name = "GetProvider")]
-        [Authorize]
         [ServiceFilter(typeof(ValidateProviderAttribute))]
         public async Task<IActionResult> GetProvider(int id)
         {
