@@ -2,12 +2,11 @@
 using Entities.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Text.Json;
-using Xunit;
 using System.Text;
-using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace IntegrationTests
 {
@@ -22,32 +21,43 @@ namespace IntegrationTests
 
         [Theory]
         [InlineData("categories")]
-        public async Task Get_ShouldReturnListResult(string path)
+        [InlineData("providers")]
+        [InlineData("products")]
+        public async Task GetReturnsModels(string path)
         {
-            var response = await _fixture.Client.GetAsync($"api/providers");
-            
+            var response = await _fixture.Client.GetAsync($"api/{path}");
+
             response.EnsureSuccessStatusCode();
             var models = await response.Content.ReadAsStringAsync();
 
             Assert.NotEmpty(models);
         }
 
-        //[Theory]
-        //[InlineData("categories")]
-        //public async Task Post_ShouldReturnListResult(string path)
-        //{
-        //    var category = new CategoryIncomingDto
-        //    {
-        //        Name = "asdas",
-        //    };
+        [Theory]
+        [InlineData("cart")]
+        public async Task GetReturnsNotFound(string path)
+        {
+            var response = await _fixture.Client.GetAsync($"api/{path}");
 
-        //    var content = new StringContent(JsonConvert.SerializeObject(category), Encoding.UTF8, "application/json");
-        //    var response = await _fixture.Client.PostAsync($"/api/{path}/", content);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
 
-        //    response.EnsureSuccessStatusCode();
-        //    var models = JsonConvert.DeserializeObject<IEnumerable<Category>>(await response.Content.ReadAsStringAsync());
+        [Theory]
+        [InlineData("categories")]
+        public async Task Post_ShouldReturnListResult(string path)
+        {
+            var category = new CategoryIncomingDto
+            {
+                Name = "asdas",
+            };
 
-        //    Assert.NotEmpty(models);
-        //}
+            var content = new StringContent(JsonConvert.SerializeObject(category), Encoding.UTF8, "application/json");
+            var response = await _fixture.Client.PostAsync($"/api/{path}/", content);
+
+          fresponse.EnsureSuccessStatusCode();
+            var models = JsonConvert.DeserializeObject<IEnumerable<Category>>(await response.Content.ReadAsStringAsync());
+
+            Assert.NotEmpty(models);
+        }
     }
 }

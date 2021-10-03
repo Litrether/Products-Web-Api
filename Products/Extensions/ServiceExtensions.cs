@@ -117,8 +117,10 @@ namespace Products.Extensions
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    //ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    //ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    ValidIssuer = "30",
+                    ValidAudience = "https://localhost:5001",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("CodeMazeSecretKey"))
                 };
             });

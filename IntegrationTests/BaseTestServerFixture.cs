@@ -18,7 +18,7 @@ namespace IntegrationTests
     public class BaseTestServerFixture
     {
         public TestServer TestServer { get; }
-        public RepositoryContext DbContext { get; }
+        public RepositoryContext Repository { get; }
         public HttpClient Client { get; }
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole> _roleManager;
@@ -31,7 +31,7 @@ namespace IntegrationTests
 
             TestServer = new TestServer(builder);
             Client = TestServer.CreateClient();
-            DbContext = TestServer.Host.Services.GetService(typeof(RepositoryContext)) as RepositoryContext;
+            Repository = TestServer.Host.Services.GetService(typeof(RepositoryContext)) as RepositoryContext;
             _userManager = TestServer.Host.Services.GetService(typeof(UserManager<User>)) as UserManager<User>;
             _roleManager = TestServer.Host.Services.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
 
@@ -66,11 +66,10 @@ namespace IntegrationTests
 
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            DbContext.Categories.AddRange(EntitiesForDb.Categories());
-            DbContext.Providers.AddRange(EntitiesForDb.Providers());
-
-            var models = DbContext.Providers.ToList();
-
+            Repository.Categories.AddRange(EntitiesForDb.Categories());
+            Repository.Providers.AddRange(EntitiesForDb.Providers());
+            Repository.Products.AddRange(EntitiesForDb.Products());
+            Repository.SaveChanges();
         }
 
         public void Dispose()
