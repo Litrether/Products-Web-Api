@@ -107,7 +107,7 @@ namespace IntegrationTests.ControllersTests
             var contentAuth = new StringContent(JsonConvert.SerializeObject(authUser), Encoding.UTF8, "application/json");
             var responseAuth = await TestFixture.Client.PostAsync($"/api/account/login", contentAuth);
             responseAuth.EnsureSuccessStatusCode();
-            var responseJson = await  responseAuth.Content.ReadAsStringAsync();
+            var responseJson = await responseAuth.Content.ReadAsStringAsync();
             var token = JObject.Parse(responseJson).SelectToken("token").ToString();
             TestFixture.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

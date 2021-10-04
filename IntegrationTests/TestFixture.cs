@@ -21,7 +21,6 @@ namespace IntegrationTests
         public static TestServer TestServer { get; }
         public static RepositoryContext Repository { get; }
         public static HttpClient Client { get; }
-        private static UserManager<User> _userManager;
         private static RoleManager<IdentityRole> _roleManager;
 
         static TestFixture()
