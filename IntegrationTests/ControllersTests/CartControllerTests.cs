@@ -1,11 +1,7 @@
-﻿using Entities.DataTransferObjects.Incoming;
-using Entities.DataTransferObjects.Outcoming;
+﻿using Entities.DataTransferObjects.Outcoming;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,7 +23,7 @@ namespace IntegrationTests.ControllersTests
 
             Assert.Equal(id, product.Id);
         }
-        
+
         [Fact]
         public async Task GetCartProductsReturnsProducts()
         {
@@ -42,7 +38,7 @@ namespace IntegrationTests.ControllersTests
 
             Assert.NotEmpty(models);
         }
-        
+
         [Fact]
         public async Task DeleteCartProductReturnsProducts()
         {
